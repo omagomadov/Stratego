@@ -14,7 +14,15 @@ include(../config.pri)
 
 SOURCES +=
 
-HEADERS +=
+HEADERS += \
+    Board.h \
+    Color.h \
+    Direction.h \
+    Game.h \
+    Pawn.h \
+    Position.h \
+    Role.h \
+    State.h
 
 # Default rules for deployment.
 unix {
