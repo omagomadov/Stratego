@@ -39,11 +39,11 @@ public:
     /**
      * @brief setX the setter of x.
      */
-    void setX();
+    void setX(int x);
     /**
      * @brief setY the setter of y.
      */
-    void setY();
+    void setY(int y);
     /**
      * @brief operator == overloaded operator of comparison.
      * @param lhs the position
