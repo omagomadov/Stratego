@@ -14,6 +14,7 @@ include(../config.pri)
 
 SOURCES += \
     Board.cpp \
+    Pawn.cpp \
     Position.cpp
 
 HEADERS += \
