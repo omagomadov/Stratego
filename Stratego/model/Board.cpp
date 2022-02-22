@@ -17,6 +17,8 @@ bool Board::isInside(Position position) {
 
 void Board::addPawn(Pawn pawn, Position position) {
     if(isInside(position)) {
-        pawns_[position.getX()][position.getY()] = pawn;
+        if(!pawns_[pawn.getPosition().getX()][pawn.getPosition().getY()]->isValide()) {
+            pawns_[position.getX()][position.getY()] = pawn;
+        }
     }
 }
