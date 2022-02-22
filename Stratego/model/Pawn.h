@@ -1,9 +1,9 @@
 #ifndef PAWN_H
 #define PAWN_H
 
-#include <Role.h>
-#include <Color.h>
-#include <Position.h>
+#include "Role.h"
+#include "Color.h"
+#include "Position.h"
 #include <ostream>
 
 using namespace std;

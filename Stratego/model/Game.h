@@ -1,10 +1,10 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <Board.h>
-#include <State.h>
-#include <Color.h>
-#include <Direction.h>
+#include "Board.h"
+#include "State.h"
+#include "Color.h"
+#include "Direction.h"
 #include <array>
 
 using namespace std;
