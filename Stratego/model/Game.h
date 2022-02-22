@@ -69,7 +69,7 @@ public:
      * @param position the position
      * @param direction the direction
      */
-    void move(Position position, Direction direction);
+    void move(Position& position, Direction direction);
     /**
      * @brief addPawn adds the given pawn in parameter at the positon given in parameter.
      * @param pawn the pawn

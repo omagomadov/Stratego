@@ -3,6 +3,7 @@
 
 #include "Pawn.h"
 #include <optional>
+#include <vector>
 #include <array>
 
 using namespace std;
@@ -16,6 +17,10 @@ class Board {
      * @brief pawns_ represents the board.
      */
     array<array<optional<Pawn>, 10>, 10> pawns_;
+    /**
+     * @brief water represents the position of the waters.
+     */
+    vector<Position> water;
 
 public:
     /**
@@ -39,6 +44,11 @@ public:
      * @param position the position
      */
     void addPawn(Pawn pawn, Position position);
+    /**
+     * @brief getWater gives the position of the water on the board.
+     * @return the vector of position
+     */
+    vector<Position> getWater();
 };
 
 #endif // BOARD_H

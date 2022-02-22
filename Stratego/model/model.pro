@@ -14,6 +14,7 @@ include(../config.pri)
 
 SOURCES += \
     Board.cpp \
+    Game.cpp \
     Pawn.cpp \
     Position.cpp
 
