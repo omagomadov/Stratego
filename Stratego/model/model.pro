@@ -12,7 +12,8 @@ CONFIG += staticlib
 
 include(../config.pri)
 
-SOURCES +=
+SOURCES += \
+    Board.cpp
 
 HEADERS += \
     Board.h \
