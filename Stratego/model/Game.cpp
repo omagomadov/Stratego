@@ -38,33 +38,34 @@ bool Game::isPawn(Position position) {
 }
 
 void Game::move(Position& position, Direction direction) {
-    Position pos {position.getX(), position.getY()};
+    optional<Pawn> empty;
+    optional<Pawn> pawn = board_.getPawns()[position.getX()][position.getY()];
     switch(direction) {
     case Direction::FORWARD :
-        pos.setX(pos.getX() - 1);
-        if(board_.isInside(pos)) {
-            position.setX(pos.getX());
-        }
+        board_.getPawns()[position.getX()][position.getY()] = empty;
+        position.setX(position.getX() - 1);
+        board_.getPawns()[position.getX()][position.getY()] = pawn;
         break;
     case Direction::LEFT :
-        pos.setY(pos.getY() - 1);
-        if(board_.isInside(pos)) {
-            position.setY(pos.getY());
-        }
+        board_.getPawns()[position.getX()][position.getY()] = empty;
+        position.setY(position.getY() - 1);
+        board_.getPawns()[position.getX()][position.getY()] = pawn;
         break;
     case Direction::RIGHT :
-        pos.setY(pos.getY() + 1);
-        if(board_.isInside(pos)) {
-            position.setY(pos.getY());
-        }
+        board_.getPawns()[position.getX()][position.getY()] = empty;
+        position.setY(position.getY() + 1);
+        board_.getPawns()[position.getX()][position.getY()] = pawn;
         break;
     case Direction::BACKWARD :
-        pos.setX(pos.getX() + 1);
-        if(board_.isInside(pos)) {
-            position.setX(pos.getX());
-        }
+        board_.getPawns()[position.getX()][position.getY()] = empty;
+        position.setX(position.getX() + 1);
+        board_.getPawns()[position.getX()][position.getY()] = pawn;
         break;
     }
+}
+
+bool Game::isEmpty(Position position, Direction direction) {
+    return board_.isEmpty(position, direction);
 }
 
 void Game::addPawn(Pawn pawn, Position position) {

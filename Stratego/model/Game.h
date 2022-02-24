@@ -77,6 +77,13 @@ public:
      */
     void addPawn(Pawn pawn, Position position);
     /**
+     * @brief isEmpty checks if there is a pawn at the given position in parameter.
+     * @param position the position
+     * @param direction the direction
+     * @return true if there isn't a pawn else false
+     */
+    bool isEmpty(Position position, Direction direction);
+    /**
      * @brief fillBoard fills the board with pawns after reading the file.
      * @param file the file
      * @param color the color

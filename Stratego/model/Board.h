@@ -2,6 +2,7 @@
 #define BOARD_H
 
 #include "Pawn.h"
+#include "Direction.h"
 #include <optional>
 #include <vector>
 #include <array>
@@ -49,6 +50,13 @@ public:
      * @return the vector of position
      */
     vector<Position> getWater();
+    /**
+     * @brief isEmpty checks if there is a pawn at the given position in parameter.
+     * @param position the position
+     * @param direction the direction
+     * @return true if there isn't a pawn else false
+     */
+    bool isEmpty(Position position, Direction direction);
 };
 
 #endif // BOARD_H
