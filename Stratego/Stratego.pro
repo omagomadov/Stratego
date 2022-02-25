@@ -1,6 +1,7 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    model
+    model \
+    tui
 
 OTHER_FILES += config.pri
