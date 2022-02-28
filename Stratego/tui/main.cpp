@@ -5,5 +5,8 @@ using namespace std;
 
 int main()
 {
-    //todo
+    Game game {};
+    View view {game};
+    Controller controller {game, view};
+    controller.start();
 }

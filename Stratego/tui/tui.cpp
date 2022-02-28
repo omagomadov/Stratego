@@ -63,6 +63,15 @@ Direction View::askDirection() {
 Controller::Controller(Game& game, View& view) : game_ {game}, view_ {view} {}
 
 void Controller::start() {
-    //todo
+    view_.displayWelcome();
+    while(!game_.isEnd()) {
+        view_.displayBoard();
+        view_.displayPlayer();
+        Position position = view_.askPosition();
+        Direction direction = view_.askDirection();
+        game_.move(position, direction);
+    }
+    // method in construction. . .
+    // method not yet finished. . .
 }
 
