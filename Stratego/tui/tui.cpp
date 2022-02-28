@@ -4,7 +4,10 @@
 View::View(Game& game) : game_ {game} {}
 
 void View::displayWelcome() {
-    // todo
+    cout << "##################################" << endl;
+    cout << "#       Welcome on Stratego      #"<< endl;
+    cout << "#          version: v1.0         #" << endl;
+    cout << "##################################" << endl;
 }
 
 void View::displayBoard() {
