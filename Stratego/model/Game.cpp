@@ -1,4 +1,5 @@
 #include "Game.h"
+#include <iostream>
 
 Game::Game() {}
 
@@ -42,30 +43,34 @@ void Game::move(Position& position, Direction direction) {
     optional<Pawn> pawn = board_.getPawns()[position.getX()][position.getY()];
     switch(direction) {
     case Direction::FORWARD :
-        board_.getPawns()[position.getX()][position.getY()] = empty;
+        board_.setPawn(empty, position);
         position.setX(position.getX() - 1);
-        board_.getPawns()[position.getX()][position.getY()] = pawn;
+        board_.setPawn(pawn, position);
         break;
     case Direction::LEFT :
-        board_.getPawns()[position.getX()][position.getY()] = empty;
+        board_.setPawn(empty, position);
         position.setY(position.getY() - 1);
-        board_.getPawns()[position.getX()][position.getY()] = pawn;
+        board_.setPawn(pawn, position);
         break;
     case Direction::RIGHT :
-        board_.getPawns()[position.getX()][position.getY()] = empty;
+        board_.setPawn(empty, position);
         position.setY(position.getY() + 1);
-        board_.getPawns()[position.getX()][position.getY()] = pawn;
+        board_.setPawn(pawn, position);
         break;
     case Direction::BACKWARD :
-        board_.getPawns()[position.getX()][position.getY()] = empty;
+        board_.setPawn(empty, position);
         position.setX(position.getX() + 1);
-        board_.getPawns()[position.getX()][position.getY()] = pawn;
+        board_.setPawn(pawn, position);
         break;
     }
 }
 
 bool Game::isEmpty(Position position, Direction direction) {
     return board_.isEmpty(position, direction);
+}
+
+bool Game::isWater(int row, int col) {
+    return board_.isWater(row, col);
 }
 
 void Game::addPawn(Pawn pawn, Position position) {

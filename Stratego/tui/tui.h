@@ -5,10 +5,10 @@
 
 class View {
 
-    Game game_;
+    Game& game_;
 
 public:
-    View(Game game);
+    View(Game& game);
     void displayWelcome();
     void displayBoard();
     void displayPlayer();
@@ -18,11 +18,11 @@ public:
 
 class Controller {
 
-    Game game_;
-    View view_;
+    Game& game_;
+    View& view_;
 
 public:
-    Controller(Game game, View view);
+    Controller(Game& game, View& view);
     void start();
 };
 

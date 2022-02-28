@@ -1,19 +1,27 @@
 #include <iostream>
 #include "tui.h"
 
-View::View(Game game) : game_ {game} {}
+View::View(Game& game) : game_ {game} {}
 
 void View::displayWelcome() {
     // todo
 }
 
 void View::displayBoard() {
+    printf("%3s"," ");
+    for(unsigned i = 1; i <= game_.getPawns().size(); i++) {
+        cout << " " << i << " ";
+    }
+    cout << endl;
     for(unsigned row = 0; row < game_.getPawns().size(); row++) {
+        printf("%3d", row + 1);
         for(unsigned col = 0; col < game_.getPawns().size(); col++) {
             if(game_.getPawns()[row][col].has_value()) {
-                cout << game_.getPawns()[row][col]->getRole() << " ";
+                cout << " " << game_.getPawns()[row][col]->getRole() << " ";
+            } else if(game_.isWater(row, col)) {
+                cout << " x ";
             } else {
-                cout << " ";
+                cout << " . ";
             }
         }
         cout << endl;
@@ -52,7 +60,7 @@ Direction View::askDirection() {
     }
 }
 
-Controller::Controller(Game game, View view) : game_ {game}, view_ {view} {}
+Controller::Controller(Game& game, View& view) : game_ {game}, view_ {view} {}
 
 void Controller::start() {
     //todo

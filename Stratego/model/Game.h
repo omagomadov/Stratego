@@ -84,6 +84,13 @@ public:
      */
     bool isEmpty(Position position, Direction direction);
     /**
+     * @brief isWater checks if there is a water at the given row and column.
+     * @param row the row
+     * @param col the column
+     * @return true if there is water at this position else false
+     */
+    bool isWater(int row, int col);
+    /**
      * @brief fillBoard fills the board with pawns after reading the file.
      * @param file the file
      * @param color the color

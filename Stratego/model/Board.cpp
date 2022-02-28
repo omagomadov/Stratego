@@ -1,6 +1,27 @@
 #include "Board.h"
+#include <iostream>
 
-Board::Board() {}
+Board::Board() {
+    Position pos1 {4,2};
+    water_.push_back(pos1);
+    pos1.setX(pos1.getX() + 1);
+    water_.push_back(pos1);
+
+    Position pos2 {4,3};
+    water_.push_back(pos2);
+    pos2.setX(pos2.getX() + 1);
+    water_.push_back(pos2);
+
+    Position pos3 {4,6};
+    water_.push_back(pos3);
+    pos3.setX(pos3.getX() + 1);
+    water_.push_back(pos3);
+
+    Position pos4 {4,7};
+    water_.push_back(pos4);
+    pos4.setX(pos4.getX() + 1);
+    water_.push_back(pos4);
+}
 
 array<array<optional<Pawn>, 10>, 10> Board::getPawns() {
     return pawns_;
@@ -51,4 +72,17 @@ bool Board::isEmpty(Position position, Direction direction) {
         break;
     }
     return false;
+}
+
+bool Board::isWater(int row, int col) {
+    for(Position pos : water_) {
+        if(pos.getX() == row && pos.getY() == col) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void Board::setPawn(optional<Pawn> pawn, Position position) {
+    pawns_[position.getX()][position.getY()] = pawn;
 }

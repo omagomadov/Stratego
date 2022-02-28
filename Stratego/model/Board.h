@@ -21,7 +21,7 @@ class Board {
     /**
      * @brief water represents the position of the waters.
      */
-    vector<Position> water;
+    vector<Position> water_;
 
 public:
     /**
@@ -57,6 +57,19 @@ public:
      * @return true if there isn't a pawn else false
      */
     bool isEmpty(Position position, Direction direction);
+    /**
+     * @brief isWater checks if there is a water at the given row and column.
+     * @param row the row
+     * @param col the column
+     * @return true if there is water at this position else false
+     */
+    bool isWater(int row, int col);
+    /**
+     * @brief setPawn sets a pawn at the given position on the board.
+     * @param pawn the pawn
+     * @param position the position
+     */
+    void setPawn(optional<Pawn> pawn, Position position);
 };
 
 #endif // BOARD_H
