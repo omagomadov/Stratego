@@ -16,4 +16,14 @@ public:
     Direction askDirection();
 };
 
+class Controller {
+
+    Game game_;
+    View view_;
+
+public:
+    Controller(Game game, View view);
+    void start();
+};
+
 #endif // TUI_H

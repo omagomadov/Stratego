@@ -21,7 +21,8 @@ void View::displayBoard() {
 }
 
 void View::displayPlayer() {
-    // todo
+    cout << "Current player is "
+         << (game_.getCurrentPlayer() ? "blue" : "red") << endl;
 }
 
 Position View::askPosition() {
@@ -50,3 +51,10 @@ Direction View::askDirection() {
         return Direction::RIGHT;
     }
 }
+
+Controller::Controller(Game game, View view) : game_ {game}, view_ {view} {}
+
+void Controller::start() {
+    //todo
+}
+
