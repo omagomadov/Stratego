@@ -32,6 +32,10 @@ public:
      */
     void displayPlayer();
     /**
+     * @brief DisplayRemainingPawns displays the remaining pawns.
+     */
+    void DisplayRemainingPawns();
+    /**
      * @brief askPosition asks to the current player a position.
      * @return the position that the player has given
      */

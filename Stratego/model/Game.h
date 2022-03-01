@@ -6,6 +6,7 @@
 #include "Color.h"
 #include "Direction.h"
 #include <array>
+#include <map>
 
 using namespace std;
 
@@ -26,6 +27,10 @@ class Game {
      * @brief currentPlayer_ represents the current player of the game.
      */
     Color currentPlayer_;
+    /**
+     * @brief pawns_ contains the pawns.
+     */
+    map<Role, int> pawns_;
 
 public:
     /**
@@ -90,6 +95,15 @@ public:
      * @return true if there is water at this position else false
      */
     bool isWater(int row, int col);
+    /**
+     * @brief initPawns initializes the pawns possible.
+     */
+    void initPawns();
+    /**
+     * @brief getRemainingPawns returns the remaining pawns.
+     * @return the pawns
+     */
+    map<Role, int> getRemainingPawns();
     /**
      * @brief fillBoard fills the board with pawns after reading the file.
      * @param file the file

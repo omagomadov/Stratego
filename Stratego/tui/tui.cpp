@@ -36,6 +36,52 @@ void View::displayPlayer() {
          << (game_.getCurrentPlayer() ? "blue" : "red") << endl;
 }
 
+void View::DisplayRemainingPawns() {
+    cout << "##############################" << endl;
+    cout << "Remaining pawns :" << endl;
+    for(auto const& [key, val] : game_.getRemainingPawns()) {
+        switch(key) {
+        case Role::MARSHAL :
+            cout << "Marshal : " << val << endl;
+            break;
+        case Role::GENERAL :
+            cout << "General : " << val << endl;
+            break;
+        case Role::COLONEL :
+            cout << "Colonel : " << val << endl;
+            break;
+        case Role::MAJOR :
+            cout << "Major : " << val << endl;
+            break;
+        case Role::COMMANDER :
+            cout << "Commander : " << val << endl;
+            break;
+        case Role::LIEUTENANT :
+            cout << "Lieutenant : " << val << endl;
+            break;
+        case Role::SERGEANT :
+            cout << "Sergeant : " << val << endl;
+            break;
+        case Role::MINESWEEPER :
+            cout << "Minesweeper : " << val << endl;
+            break;
+        case Role::SCOUT :
+            cout << "Scout : " << val << endl;
+            break;
+        case Role::SPY :
+            cout << "Spy : " << val << endl;
+            break;
+        case Role::FLAG :
+            cout << "Flag : " << val << endl;
+            break;
+        case Role::BOMB :
+            cout << "Bomb : " << val << endl;
+            break;
+        }
+    }
+    cout << "##############################" << endl;
+}
+
 Position View::askPosition() {
     int row, col;
     cout << "Enter the position of your pawn" << endl;
@@ -67,9 +113,11 @@ Controller::Controller(Game& game, View& view) : game_ {game}, view_ {view} {}
 
 void Controller::start() {
     view_.displayWelcome();
+    game_.initPawns();
     while(!game_.isEnd()) {
         view_.displayBoard();
         view_.displayPlayer();
+        view_.DisplayRemainingPawns();
         Position position = view_.askPosition();
         Direction direction = view_.askDirection();
         while(!game_.isEmpty(position, direction)

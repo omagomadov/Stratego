@@ -76,6 +76,25 @@ void Game::addPawn(Pawn pawn, Position position) {
     board_.addPawn(pawn, position);
 }
 
+void Game::initPawns() {
+    pawns_.insert({Role::MARSHAL, 1});
+    pawns_.insert({Role::GENERAL, 1});
+    pawns_.insert({Role::COLONEL, 2});
+    pawns_.insert({Role::MAJOR, 3});
+    pawns_.insert({Role::COMMANDER, 4});
+    pawns_.insert({Role::LIEUTENANT, 4});
+    pawns_.insert({Role::SERGEANT, 4});
+    pawns_.insert({Role::MINESWEEPER, 5});
+    pawns_.insert({Role::SCOUT, 8});
+    pawns_.insert({Role::SPY, 1});
+    pawns_.insert({Role::FLAG, 1});
+    pawns_.insert({Role::BOMB, 6});
+}
+
+map<Role, int> Game::getRemainingPawns() {
+    return pawns_;
+}
+
 void Game::fillBoard(string file, Color color) {
     // todo
 }
