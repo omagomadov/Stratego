@@ -80,7 +80,7 @@ public:
      * @param pawn the pawn
      * @param position the position
      */
-    void addPawn(Pawn pawn, Position position);
+    void addPawn(int pawn, Color color, Position position);
     /**
      * @brief isEmpty checks if there is a pawn at the given position in parameter.
      * @param position the position
@@ -95,6 +95,22 @@ public:
      * @return true if there is water at this position else false
      */
     bool isWater(int row, int col);
+    /**
+     * @brief isAvailable checks if there is a pawn avalaible to place.
+     * @param pawn the pawn
+     * @return true if there is a pawn avalaible else false
+     */
+    bool isAvailable(int pawn);
+    /**
+     * @brief isAllPawnsPlaced checks if all pawns are placed on the board.
+     * @return true if all pawns are placed on the board else false
+     */
+    bool isAllPawnsPlaced();
+    /**
+     * @brief setState setter of State.
+     * @param state the state
+     */
+    void setState(State state);
     /**
      * @brief initPawns initializes the pawns possible.
      */

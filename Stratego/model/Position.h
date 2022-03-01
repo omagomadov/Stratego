@@ -26,6 +26,7 @@ public:
      * @param y the y
      */
     Position(int x, int y);
+    Position() = default;
     /**
      * @brief getX getter of x.
      * @return the abscissa

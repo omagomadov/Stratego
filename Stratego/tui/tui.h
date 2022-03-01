@@ -45,6 +45,11 @@ public:
      * @return the direction that the player has given
      */
     Direction askDirection();
+    /**
+     * @brief askPawn asks to the current player which pawn he want to place.
+     * @return the index of the chosen pawn
+     */
+    int askPawn();
 };
 
 /**

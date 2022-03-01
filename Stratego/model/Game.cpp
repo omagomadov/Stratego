@@ -1,6 +1,8 @@
 #include "Game.h"
 
-Game::Game() {}
+Game::Game() {
+    state_ = State::NOT_STARTED;
+}
 
 array<array<optional<Pawn>, 10>, 10> Game::getPawns() {
     return board_.getPawns();
@@ -72,8 +74,87 @@ bool Game::isWater(int row, int col) {
     return board_.isWater(row, col);
 }
 
-void Game::addPawn(Pawn pawn, Position position) {
-    board_.addPawn(pawn, position);
+bool Game::isAvailable(int pawn) {
+    switch(pawn) {
+    case 1:
+        if(pawns_[Role::MARSHAL] == 0) {
+            return false;
+        }
+        break;
+    case 2:
+        if(pawns_[Role::GENERAL] == 0) {
+            return false;
+        }
+        break;
+    case 3:
+        if(pawns_[Role::COLONEL] == 0) {
+            return false;
+        }
+        break;
+    case 4:
+        if(pawns_[Role::MAJOR] == 0) {
+            return false;
+        }
+        break;
+    case 5:
+        if(pawns_[Role::COMMANDER] == 0) {
+            return false;
+        }
+        break;
+    case 6:
+        if(pawns_[Role::LIEUTENANT] == 0) {
+            return false;
+        }
+        break;
+    case 7:
+        if(pawns_[Role::SERGEANT] == 0) {
+            return false;
+        }
+        break;
+    case 8:
+        if(pawns_[Role::MINESWEEPER] == 0) {
+            return false;
+        }
+        break;
+    case 9:
+        if(pawns_[Role::SCOUT] == 0) {
+            return false;
+        }
+        break;
+    case 10:
+        if(pawns_[Role::SPY] == 0) {
+            return false;
+        }
+        break;
+    case 11:
+        if(pawns_[Role::FLAG] == 0) {
+            return false;
+        }
+        break;
+    case 12:
+        if(pawns_[Role::BOMB] == 0) {
+            return false;
+        }
+        break;
+    }
+    return true;
+}
+
+bool Game::isAllPawnsPlaced() {
+    for(auto const&[key, value] : pawns_) {
+        if(value != 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+void Game::setState(State state) {
+    state_ = state;
+}
+
+void Game::addPawn(int pawn, Color color, Position position) {
+    board_.addPawn(pawn, color, position);
 }
 
 void Game::initPawns() {
@@ -95,6 +176,9 @@ map<Role, int> Game::getRemainingPawns() {
     return pawns_;
 }
 
+/*
 void Game::fillBoard(string file, Color color) {
     // todo
 }
+*/
+

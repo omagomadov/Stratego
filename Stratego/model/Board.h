@@ -44,7 +44,7 @@ public:
      * @param pawn the pawn
      * @param position the position
      */
-    void addPawn(Pawn pawn, Position position);
+    void addPawn(int pawn, Color color, Position position);
     /**
      * @brief getWater gives the position of the water on the board.
      * @return the vector of position

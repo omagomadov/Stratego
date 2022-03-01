@@ -7,6 +7,8 @@
 enum State {
     NOT_STARTED,
     STARTED,
+    BLUE_TURN,
+    RED_TURN,
     ENDED
 };
 
