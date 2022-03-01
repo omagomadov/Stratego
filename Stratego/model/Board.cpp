@@ -48,25 +48,25 @@ bool Board::isEmpty(Position position, Direction direction) {
     case Direction::FORWARD :
         position.setX(position.getX() - 1);
         if(isInside(position)) {
-            return pawns_[position.getX()][position.getY()]->isValide();
+            return !pawns_[position.getX()][position.getY()]->isValide();
         }
         break;
     case Direction::LEFT :
         position.setY(position.getY() - 1);
         if(isInside(position)) {
-            return pawns_[position.getX()][position.getY()]->isValide();
+            return !pawns_[position.getX()][position.getY()]->isValide();
         }
         break;
     case Direction::RIGHT :
         position.setY(position.getY() + 1);
         if(isInside(position)) {
-            return pawns_[position.getX()][position.getY()]->isValide();
+            return !pawns_[position.getX()][position.getY()]->isValide();
         }
         break;
     case Direction::BACKWARD :
         position.setX(position.getX() + 1);
         if(isInside(position)) {
-            return pawns_[position.getX()][position.getY()]->isValide();
+            return !pawns_[position.getX()][position.getY()]->isValide();
         }
         break;
     }

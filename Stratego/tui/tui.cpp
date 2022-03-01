@@ -4,10 +4,10 @@
 View::View(Game& game) : game_ {game} {}
 
 void View::displayWelcome() {
-    cout << "##################################" << endl;
-    cout << "#       Welcome on Stratego      #"<< endl;
-    cout << "#          version: v1.0         #" << endl;
-    cout << "##################################" << endl;
+    cout << "###################################" << endl;
+    cout << "#       Welcome on Stratego       #"<< endl;
+    cout << "#          version: v1.0          #" << endl;
+    cout << "###################################" << endl;
 }
 
 void View::displayBoard() {
@@ -72,7 +72,12 @@ void Controller::start() {
         view_.displayPlayer();
         Position position = view_.askPosition();
         Direction direction = view_.askDirection();
-        game_.move(position, direction);
+        while(!game_.isEmpty(position, direction)
+              || game_.isWater(position.getX(), position.getY())) {
+            cout << "Pawn goes outside the board or pawn can't go there !" << endl;
+            position = view_.askPosition();
+            direction = view_.askDirection();
+        }
     }
     // method in construction. . .
     // method not yet finished. . .
