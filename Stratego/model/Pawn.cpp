@@ -1,7 +1,8 @@
 #include "Pawn.h"
 #include <iostream>
 
-Pawn::Pawn(Role role, Color color, Position position, bool movable) : role_ {role}, color_ {color}, position_ {position}, movable_ {movable} {}
+Pawn::Pawn(Role role, Color color, Position position, bool movable) : role_ {role}, color_ {color},
+    position_ {position}, movable_ {movable}, valide_ {true} {}
 
 Role Pawn::getRole() {
     return role_;

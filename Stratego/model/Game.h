@@ -125,6 +125,7 @@ public:
      * @param file the file
      * @param color the color
      */
+    void decrementPawnCount(int index);
     void fillBoard(string file, Color color);
 };
 

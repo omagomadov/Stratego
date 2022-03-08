@@ -11,20 +11,31 @@ void View::displayWelcome() {
 }
 
 void View::displayBoard() {
-    printf("%3s"," ");
-    for(unsigned i = 1; i <= game_.getPawns().size(); i++) {
-        cout << " " << i << " ";
+    printf("%3s", " ");
+    for(unsigned i = 0; i < game_.getPawns().size(); i++) {
+        printf("%3c", ('A' + i));
     }
     cout << endl;
     for(unsigned row = 0; row < game_.getPawns().size(); row++) {
         printf("%3d", row + 1);
         for(unsigned col = 0; col < game_.getPawns().size(); col++) {
             if(game_.getPawns()[row][col].has_value()) {
-                cout << " " << game_.getPawns()[row][col]->getRole() << " ";
+                switch(game_.getPawns()[row][col]->getRole()) {
+                case FLAG :
+                    printf("%3s", "F");
+                    break;
+                case BOMB :
+                    printf("%3s", "B");
+                    break;
+                default:
+                    //cout << " " << game_.getPawns()[row][col]->getRole() << " ";
+                    printf("%3d", game_.getPawns()[row][col]->getRole());
+                    break;
+                }
             } else if(game_.isWater(row, col)) {
-                cout << " x ";
+                printf("%3s", "x");
             } else {
-                cout << " . ";
+                printf("%3s", ".");
             }
         }
         cout << endl;
@@ -36,37 +47,37 @@ void View::displayPlayer() {
          << (game_.getCurrentPlayer() ? "blue" : "red") << endl;
 }
 
-void View::DisplayRemainingPawns() {
-    cout << "##############################" << endl;
+void View::displayRemainingPawns() {
+    cout << "#################################" << endl;
     cout << "Remaining pawns :" << endl;
     for(auto const& [key, val] : game_.getRemainingPawns()) {
         switch(key) {
         case Role::MARSHAL :
-            cout << "[1] Marshal : " << val << endl;
+            cout << "[1]  Marshal : " << val << endl;
             break;
         case Role::GENERAL :
-            cout << "[2] General : " << val << endl;
+            cout << "[2]  General : " << val << endl;
             break;
         case Role::COLONEL :
-            cout << "[3] Colonel : " << val << endl;
+            cout << "[3]  Colonel : " << val << endl;
             break;
         case Role::MAJOR :
-            cout << "[4] Major : " << val << endl;
+            cout << "[4]  Major : " << val << endl;
             break;
         case Role::COMMANDER :
-            cout << "[5] Commander : " << val << endl;
+            cout << "[5]  Commander : " << val << endl;
             break;
         case Role::LIEUTENANT :
-            cout << "[6] Lieutenant : " << val << endl;
+            cout << "[6]  Lieutenant : " << val << endl;
             break;
         case Role::SERGEANT :
-            cout << "[7] Sergeant : " << val << endl;
+            cout << "[7]  Sergeant : " << val << endl;
             break;
         case Role::MINESWEEPER :
-            cout << "[8] Minesweeper : " << val << endl;
+            cout << "[8]  Minesweeper : " << val << endl;
             break;
         case Role::SCOUT :
-            cout << "[9] Scout : " << val << endl;
+            cout << "[9]  Scout : " << val << endl;
             break;
         case Role::SPY :
             cout << "[10] Spy : " << val << endl;
@@ -79,7 +90,7 @@ void View::DisplayRemainingPawns() {
             break;
         }
     }
-    cout << "##############################" << endl;
+    cout << "#################################" << endl;
 }
 
 Position View::askPosition() {
@@ -119,6 +130,24 @@ int View::askPawn() {
     return pawn;
 }
 
+int View::askLevel() {
+    char level = 0;
+    cout << "Which level do you want :" << endl;
+    cout << "[1] Normal\n"
+            "[2] Easy" << endl;
+    cin >> level;
+    switch(level) {
+    case '1' :
+        return 1;
+        break;
+    case '2' :
+        return 2;
+        break;
+    default :
+        return -1;
+    }
+}
+
 Controller::Controller(Game& game, View& view) : game_ {game}, view_ {view} {}
 
 void Controller::start() {
@@ -126,6 +155,9 @@ void Controller::start() {
     Direction direction;
     int choice;
     view_.displayWelcome();
+    while(view_.askLevel() < 0) {
+        view_.askLevel();
+    }
     while(!game_.isEnd()) {
         // controller is not yet finished.. must be decomposed in multiple different method because to long
         while(game_.getState() != State::STARTED) {
@@ -133,14 +165,17 @@ void Controller::start() {
             game_.setState(State::BLUE_TURN);
             while(game_.getState() == State::BLUE_TURN) {
                 view_.displayBoard();
-                view_.DisplayRemainingPawns();
+                view_.displayRemainingPawns();
                 choice = view_.askPawn();
                 while(choice == -1 || !game_.isAvailable(choice)) {
-                    cout << "Please enter a number between 1 and 12 both included" << endl;
+                    cout << "Please enter a number between 1 and 12 both included"
+                            " or this pawn is no longer available" << endl;
                     choice = view_.askPawn();
                 }
+                game_.decrementPawnCount(choice);
                 position = view_.askPosition();
-                while(!game_.isInside(position) || !(position.getX() <= 3)) {
+                while(!game_.isInside(position) || !(position.getX() <= 3)
+                      || game_.isPawn(position)) {
                     cout << "Please enter a valid position" << endl;
                     position = view_.askPosition();
                 }
@@ -152,12 +187,13 @@ void Controller::start() {
             game_.initPawns();
             while(game_.getState() == State::RED_TURN) {
                 view_.displayBoard();
-                view_.DisplayRemainingPawns();
+                view_.displayRemainingPawns();
                 choice = view_.askPawn();
                 while(choice == -1 || !game_.isAvailable(choice)) {
                     cout << "Please enter a number between 1 and 12 both included" << endl;
                     choice = view_.askPawn();
                 }
+                game_.decrementPawnCount(choice);
                 position = view_.askPosition();
                 while(!game_.isInside(position) || !(position.getX() >= 6)) {
                     cout << "Please enter a valid position" << endl;

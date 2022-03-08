@@ -34,7 +34,7 @@ public:
     /**
      * @brief DisplayRemainingPawns displays the remaining pawns.
      */
-    void DisplayRemainingPawns();
+    void displayRemainingPawns();
     /**
      * @brief askPosition asks to the current player a position.
      * @return the position that the player has given
@@ -50,6 +50,11 @@ public:
      * @return the index of the chosen pawn
      */
     int askPawn();
+    /**
+     * @brief askLevel asks the level of the game.
+     * @return zero for normal, one for easy else negative number
+     */
+    int askLevel();
 };
 
 /**
@@ -77,6 +82,9 @@ public:
      * @brief start starts the game.
      */
     void start();
+private:
+    void initLevel();
+    void initBoard();
 };
 
 #endif // TUI_H

@@ -1,4 +1,5 @@
 #include "Game.h"
+#include <iostream>
 
 Game::Game() {
     state_ = State::NOT_STARTED;
@@ -141,10 +142,12 @@ bool Game::isAvailable(int pawn) {
 }
 
 bool Game::isAllPawnsPlaced() {
-    for(auto const&[key, value] : pawns_) {
-        if(value != 0) {
+    auto it = pawns_.begin();
+    while(it != pawns_.end()) {
+        if(it->second > 0) {
             return false;
         }
+        it++;
     }
     return true;
 }
@@ -158,6 +161,9 @@ void Game::addPawn(int pawn, Color color, Position position) {
 }
 
 void Game::initPawns() {
+    if(!pawns_.empty()) {
+        pawns_.clear();
+    }
     pawns_.insert({Role::MARSHAL, 1});
     pawns_.insert({Role::GENERAL, 1});
     pawns_.insert({Role::COLONEL, 2});
@@ -174,6 +180,59 @@ void Game::initPawns() {
 
 map<Role, int> Game::getRemainingPawns() {
     return pawns_;
+}
+
+void Game::decrementPawnCount(int index) {
+    switch(index) {
+    case 1: {
+        pawns_.at(Role::MARSHAL) = pawns_.at(Role::MARSHAL) - 1;
+        break;
+    }
+    case 2: {
+        pawns_.at(Role::GENERAL) = pawns_.at(Role::GENERAL) - 1;
+        break;
+    }
+    case 3: {
+        pawns_.at(Role::COLONEL) = pawns_.at(Role::COLONEL) - 1;
+        break;
+    }
+    case 4: {
+        pawns_.at(Role::MAJOR) = pawns_.at(Role::MAJOR) - 1;
+        break;
+    }
+    case 5: {
+        pawns_.at(Role::COMMANDER) = pawns_.at(Role::COMMANDER) - 1;
+        break;
+    }
+    case 6: {
+        pawns_.at(Role::LIEUTENANT) = pawns_.at(Role::LIEUTENANT) - 1;
+        break;
+    }
+    case 7: {
+        pawns_.at(Role::SERGEANT) = pawns_.at(Role::SERGEANT) - 1;
+        break;
+    }
+    case 8: {
+        pawns_.at(Role::MINESWEEPER) = pawns_.at(Role::MINESWEEPER) - 1;
+        break;
+    }
+    case 9: {
+        pawns_.at(Role::SCOUT) = pawns_.at(Role::SCOUT) - 1;
+        break;
+    }
+    case 10: {
+        pawns_.at(Role::SPY) = pawns_.at(Role::SPY) - 1;
+        break;
+    }
+    case 11: {
+        pawns_.at(Role::FLAG) = pawns_.at(Role::FLAG) - 1;
+        break;
+    }
+    case 12: {
+        pawns_.at(Role::BOMB) = pawns_.at(Role::BOMB) - 1;
+        break;
+    }
+    }
 }
 
 /*
