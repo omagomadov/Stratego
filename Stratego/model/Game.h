@@ -28,6 +28,10 @@ class Game {
      */
     Color currentPlayer_;
     /**
+     * @brief level //todo
+     */
+    int level_;
+    /**
      * @brief pawns_ contains the pawns.
      */
     map<Role, int> pawns_;
@@ -52,6 +56,11 @@ public:
      * @return the current player
      */
     Color getCurrentPlayer();
+    /**
+     * @brief getLevel //todo
+     * @return
+     */
+    int getLevel();
     /**
      * @brief isInside checks if the given position in parameter is inside the board.
      * @param position the position
@@ -111,6 +120,16 @@ public:
      * @param state the state
      */
     void setState(State state);
+    /**
+     * @brief setLevel //todo
+     * @param level
+     */
+    void setLevel(int level);
+    /**
+     * @brief setCurrentPlayer //todo
+     * @param color
+     */
+    void setCurrentPlayer(Color color);
     /**
      * @brief initPawns initializes the pawns possible.
      */

@@ -20,17 +20,33 @@ void View::displayBoard() {
         printf("%3d", row + 1);
         for(unsigned col = 0; col < game_.getPawns().size(); col++) {
             if(game_.getPawns()[row][col].has_value()) {
-                switch(game_.getPawns()[row][col]->getRole()) {
-                case FLAG :
-                    printf("%3s", "F");
-                    break;
-                case BOMB :
-                    printf("%3s", "B");
-                    break;
-                default:
-                    //cout << " " << game_.getPawns()[row][col]->getRole() << " ";
-                    printf("%3d", game_.getPawns()[row][col]->getRole());
-                    break;
+                if(game_.getLevel() == 1) {
+                    switch(game_.getPawns()[row][col]->getRole()) {
+                    case FLAG :
+                        printf("%3s", "F");
+                        break;
+                    case BOMB :
+                        printf("%3s", "B");
+                        break;
+                    default:
+                        printf("%3d", game_.getPawns()[row][col]->getRole());
+                        break;
+                    }
+                } else {
+                    if(game_.getPawns()[row][col]->getColor() == game_.getCurrentPlayer()
+                            || game_.getPawns()[row][col]->isVisible()) {
+                        switch(game_.getPawns()[row][col]->getRole()) {
+                        case FLAG :
+                            printf("%3s", "F");
+                            break;
+                        case BOMB :
+                            printf("%3s", "B");
+                            break;
+                        default:
+                            printf("%3d", game_.getPawns()[row][col]->getRole());
+                            break;
+                        }
+                    }
                 }
             } else if(game_.isWater(row, col)) {
                 printf("%3s", "x");
@@ -133,8 +149,8 @@ int View::askPawn() {
 int View::askLevel() {
     char level = 0;
     cout << "Which level do you want :" << endl;
-    cout << "[1] Normal\n"
-            "[2] Easy" << endl;
+    cout << "[1] Easy\n"
+            "[2] Normal" << endl;
     cin >> level;
     switch(level) {
     case '1' :
@@ -154,15 +170,19 @@ void Controller::start() {
     Position position;
     Direction direction;
     int choice;
+    int level;
     view_.displayWelcome();
-    while(view_.askLevel() < 0) {
-        view_.askLevel();
+    level = view_.askLevel();
+    while(level < 0) {
+        level = view_.askLevel();
     }
+    game_.setLevel(level);
     while(!game_.isEnd()) {
         // controller is not yet finished.. must be decomposed in multiple different method because to long
         while(game_.getState() != State::STARTED) {
             game_.initPawns();
             game_.setState(State::BLUE_TURN);
+            game_.setCurrentPlayer(Color::BLUE);
             while(game_.getState() == State::BLUE_TURN) {
                 view_.displayBoard();
                 view_.displayRemainingPawns();
@@ -185,6 +205,7 @@ void Controller::start() {
                 }
             }
             game_.initPawns();
+            game_.setCurrentPlayer(Color::RED);
             while(game_.getState() == State::RED_TURN) {
                 view_.displayBoard();
                 view_.displayRemainingPawns();

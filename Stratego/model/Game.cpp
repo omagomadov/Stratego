@@ -1,5 +1,4 @@
 #include "Game.h"
-#include <iostream>
 
 Game::Game() {
     state_ = State::NOT_STARTED;
@@ -15,6 +14,10 @@ State Game::getState() {
 
 Color Game::getCurrentPlayer() {
     return currentPlayer_;
+}
+
+int Game::getLevel() {
+    return level_;
 }
 
 bool Game::isInside(Position position) {
@@ -154,6 +157,14 @@ bool Game::isAllPawnsPlaced() {
 
 void Game::setState(State state) {
     state_ = state;
+}
+
+void Game::setLevel(int level) {
+    level_ = level;
+}
+
+void Game::setCurrentPlayer(Color color) {
+    currentPlayer_ = color;
 }
 
 void Game::addPawn(int pawn, Color color, Position position) {
