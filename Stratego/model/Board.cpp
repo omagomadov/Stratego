@@ -35,73 +35,8 @@ bool Board::isInside(Position position) {
     return true;
 }
 
-void Board::addPawn(int pawn, Color color, Position position) {
-    if(isInside(position)) {
-        if(!pawns_[position.getX()][position.getY()]->isValide()) {
-            switch(pawn) {
-            case 1: {
-                Pawn chosenPawn {Role::MARSHAL, color, position, true};
-                pawns_[position.getX()][position.getY()] = chosenPawn;
-                break;
-            }
-            case 2: {
-                Pawn chosenPawn {Role::GENERAL, color, position, true};
-                pawns_[position.getX()][position.getY()] = chosenPawn;
-                break;
-            }
-            case 3: {
-                Pawn chosenPawn {Role::COLONEL, color, position, true};
-                pawns_[position.getX()][position.getY()] = chosenPawn;
-                break;
-            }
-            case 4: {
-                Pawn chosenPawn {Role::MAJOR, color, position, true};
-                pawns_[position.getX()][position.getY()] = chosenPawn;
-                break;
-            }
-            case 5: {
-                Pawn chosenPawn {Role::COMMANDER, color, position, true};
-                pawns_[position.getX()][position.getY()] = chosenPawn;
-                break;
-            }
-            case 6: {
-                Pawn chosenPawn {Role::LIEUTENANT, color, position, true};
-                pawns_[position.getX()][position.getY()] = chosenPawn;
-                break;
-            }
-            case 7: {
-                Pawn chosenPawn {Role::SERGEANT, color, position, true};
-                pawns_[position.getX()][position.getY()] = chosenPawn;
-                break;
-            }
-            case 8: {
-                Pawn chosenPawn {Role::MINESWEEPER, color, position, true};
-                pawns_[position.getX()][position.getY()] = chosenPawn;
-                break;
-            }
-            case 9: {
-                Pawn chosenPawn {Role::SCOUT, color, position, true};
-                pawns_[position.getX()][position.getY()] = chosenPawn;
-                break;
-            }
-            case 10: {
-                Pawn chosenPawn {Role::SPY, color, position, true};
-                pawns_[position.getX()][position.getY()] = chosenPawn;
-                break;
-            }
-            case 11: {
-                Pawn chosenPawn {Role::FLAG, color, position, false};
-                pawns_[position.getX()][position.getY()] = chosenPawn;
-                break;
-            }
-            case 12: {
-                Pawn chosenPawn {Role::BOMB, color, position, false};
-                pawns_[position.getX()][position.getY()] = chosenPawn;
-                break;
-            }
-            }
-        }
-    }
+void Board::addPawn(Pawn& pawn, Position position) {
+    pawns_[position.getX()][position.getY()] = pawn;
 }
 
 bool Board::isEmpty(Position position, Direction direction) {

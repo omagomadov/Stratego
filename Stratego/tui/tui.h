@@ -83,8 +83,7 @@ public:
      */
     void start();
 private:
-    void initLevel();
-    void initBoard();
+    void initialize(int choice, Role role, Position position, array<Role, 12> roles);
 };
 
 #endif // TUI_H

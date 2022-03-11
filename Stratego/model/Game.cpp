@@ -34,13 +34,22 @@ bool Game::isEnd() {
         }
     }
     if(flags < 2) {
-        return false;
+        return true;
     }
-    return true;
+    return false;
 }
 
 bool Game::isPawn(Position position) {
     return board_.getPawns()[position.getX()][position.getY()]->isValide();
+}
+
+bool Game::isPawnSameColor(Position position) {
+    if(isInside(position)) {
+        if(board_.getPawns()[position.getX()][position.getY()]->getColor() == currentPlayer_) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void Game::move(Position& position, Direction direction) {
@@ -78,70 +87,8 @@ bool Game::isWater(int row, int col) {
     return board_.isWater(row, col);
 }
 
-bool Game::isAvailable(int pawn) {
-    switch(pawn) {
-    case 1:
-        if(pawns_[Role::MARSHAL] == 0) {
-            return false;
-        }
-        break;
-    case 2:
-        if(pawns_[Role::GENERAL] == 0) {
-            return false;
-        }
-        break;
-    case 3:
-        if(pawns_[Role::COLONEL] == 0) {
-            return false;
-        }
-        break;
-    case 4:
-        if(pawns_[Role::MAJOR] == 0) {
-            return false;
-        }
-        break;
-    case 5:
-        if(pawns_[Role::COMMANDER] == 0) {
-            return false;
-        }
-        break;
-    case 6:
-        if(pawns_[Role::LIEUTENANT] == 0) {
-            return false;
-        }
-        break;
-    case 7:
-        if(pawns_[Role::SERGEANT] == 0) {
-            return false;
-        }
-        break;
-    case 8:
-        if(pawns_[Role::MINESWEEPER] == 0) {
-            return false;
-        }
-        break;
-    case 9:
-        if(pawns_[Role::SCOUT] == 0) {
-            return false;
-        }
-        break;
-    case 10:
-        if(pawns_[Role::SPY] == 0) {
-            return false;
-        }
-        break;
-    case 11:
-        if(pawns_[Role::FLAG] == 0) {
-            return false;
-        }
-        break;
-    case 12:
-        if(pawns_[Role::BOMB] == 0) {
-            return false;
-        }
-        break;
-    }
-    return true;
+bool Game::isAvailable(Role role) {
+    return pawns_[role] != 0;
 }
 
 bool Game::isAllPawnsPlaced() {
@@ -167,8 +114,8 @@ void Game::setCurrentPlayer(Color color) {
     currentPlayer_ = color;
 }
 
-void Game::addPawn(int pawn, Color color, Position position) {
-    board_.addPawn(pawn, color, position);
+void Game::addPawn(Pawn& pawn, Position position) {
+    board_.addPawn(pawn, position);
 }
 
 void Game::initPawns() {
@@ -193,56 +140,18 @@ map<Role, int> Game::getRemainingPawns() {
     return pawns_;
 }
 
-void Game::decrementPawnCount(int index) {
-    switch(index) {
-    case 1: {
-        pawns_.at(Role::MARSHAL) = pawns_.at(Role::MARSHAL) - 1;
+void Game::decrementPawnCount(Role role) {
+    pawns_[role] = pawns_[role] - 1;
+}
+
+void Game::nextPlayer() {
+    switch(currentPlayer_) {
+    case Color::BLUE :
+        currentPlayer_ = Color::RED;
         break;
-    }
-    case 2: {
-        pawns_.at(Role::GENERAL) = pawns_.at(Role::GENERAL) - 1;
+    case Color::RED :
+        currentPlayer_ = Color::BLUE;
         break;
-    }
-    case 3: {
-        pawns_.at(Role::COLONEL) = pawns_.at(Role::COLONEL) - 1;
-        break;
-    }
-    case 4: {
-        pawns_.at(Role::MAJOR) = pawns_.at(Role::MAJOR) - 1;
-        break;
-    }
-    case 5: {
-        pawns_.at(Role::COMMANDER) = pawns_.at(Role::COMMANDER) - 1;
-        break;
-    }
-    case 6: {
-        pawns_.at(Role::LIEUTENANT) = pawns_.at(Role::LIEUTENANT) - 1;
-        break;
-    }
-    case 7: {
-        pawns_.at(Role::SERGEANT) = pawns_.at(Role::SERGEANT) - 1;
-        break;
-    }
-    case 8: {
-        pawns_.at(Role::MINESWEEPER) = pawns_.at(Role::MINESWEEPER) - 1;
-        break;
-    }
-    case 9: {
-        pawns_.at(Role::SCOUT) = pawns_.at(Role::SCOUT) - 1;
-        break;
-    }
-    case 10: {
-        pawns_.at(Role::SPY) = pawns_.at(Role::SPY) - 1;
-        break;
-    }
-    case 11: {
-        pawns_.at(Role::FLAG) = pawns_.at(Role::FLAG) - 1;
-        break;
-    }
-    case 12: {
-        pawns_.at(Role::BOMB) = pawns_.at(Role::BOMB) - 1;
-        break;
-    }
     }
 }
 

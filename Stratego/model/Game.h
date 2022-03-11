@@ -79,6 +79,12 @@ public:
      */
     bool isPawn(Position position);
     /**
+     * @brief isPawnSameColor //todo
+     * @param position
+     * @return
+     */
+    bool isPawnSameColor(Position position);
+    /**
      * @brief move moves the pawn at the position given in parameter to the direction given in parameter.
      * @param position the position
      * @param direction the direction
@@ -89,7 +95,7 @@ public:
      * @param pawn the pawn
      * @param position the position
      */
-    void addPawn(int pawn, Color color, Position position);
+    void addPawn(Pawn& pawn, Position position);
     /**
      * @brief isEmpty checks if there is a pawn at the given position in parameter.
      * @param position the position
@@ -109,7 +115,7 @@ public:
      * @param pawn the pawn
      * @return true if there is a pawn avalaible else false
      */
-    bool isAvailable(int pawn);
+    bool isAvailable(Role role);
     /**
      * @brief isAllPawnsPlaced checks if all pawns are placed on the board.
      * @return true if all pawns are placed on the board else false
@@ -144,7 +150,8 @@ public:
      * @param file the file
      * @param color the color
      */
-    void decrementPawnCount(int index);
+    void decrementPawnCount(Role role);
+    void nextPlayer();
     void fillBoard(string file, Color color);
 };
 
