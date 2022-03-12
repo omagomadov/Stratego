@@ -59,6 +59,7 @@ public:
      * @return zero for normal, one for easy else negative number
      */
     int askLevel();
+    int askBoardInitialization();
 };
 
 /**

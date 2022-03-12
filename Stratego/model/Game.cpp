@@ -1,4 +1,5 @@
 #include "Game.h"
+#include <fstream>
 
 Game::Game() {
     state_ = State::NOT_STARTED;
@@ -155,9 +156,7 @@ void Game::nextPlayer() {
     }
 }
 
-/*
 void Game::fillBoard(string file, Color color) {
-    // todo
+    //todo
 }
-*/
 

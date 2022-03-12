@@ -131,8 +131,22 @@ Position View::askPosition() {
     cout << "Enter the position of your pawn" << endl;
     cout << "Row : ";
     cin >> row;
+    while(cin.fail()) {
+        cin.clear();
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        cout << "Please enter a number" << endl;
+        cout << "Row : ";
+        cin >> row;
+    }
     cout << "Column : ";
     cin >> col;
+    while(cin.fail()) {
+        cin.clear();
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        cout << "Please enter a number" << endl;
+        cout << "Column : ";
+        cin >> col;
+    }
     Position pos {row, col};
     return pos;
 }
@@ -157,48 +171,60 @@ int View::askPawn() {
     int pawn;
     cout << "Which pawn do you want to set :" << endl;
     cin >> pawn;
-    if(pawn < 1 || pawn > 12) {
+    while(pawn < 1 || pawn > 12 || cin.fail()) {
+        cin.clear();
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         return -1;
     }
     return pawn;
 }
 
 int View::askLevel() {
-    char level = 0;
+    int level = 0;
     cout << "Which level do you want :" << endl;
     cout << "[1] Easy\n"
             "[2] Normal" << endl;
     cin >> level;
-    switch(level) {
-    case '1' :
-        return 1;
-        break;
-    case '2' :
-        return 2;
-        break;
-    default :
-        return -1;
+    while(level <= 0 || level >= 3 || cin.fail()) {
+        cin.clear();
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        cout << "Please enter a number between 1 and 2 included" << endl;
+        cout << "[1] Easy\n"
+                "[2] Normal" << endl;
+        cin >> level;
     }
+    return level;
+}
+
+int View::askBoardInitialization() {
+    int choice;
+    cout << "Which type of initialization do want to do ?" << endl;
+    cout << "[1] Manual" << endl;
+    cout << "[2] File" << endl;
+    cin >> choice;
+    while(choice <= 0 || choice >= 3|| cin.fail()) {
+        cin.clear();
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        cout << "Please enter a number between 1 and 2 included" << endl;
+        cout << "[1] Manual" << endl;
+        cout << "[2] File" << endl;
+        cin >> choice;
+    }
+    return choice;
 }
 
 Controller::Controller(Game& game, View& view) : game_ {game}, view_ {view} {}
 
 void Controller::start() {
-    // initialize variables
-    int choice = 0, level = 0;
-    Role role = Role::FLAG;
+    int choice = 0;
+    Direction direction;
+    Position position;
+    Role role = Role::BOMB;
     array<Role, 12> roles {Role::SPY, Role::SCOUT, Role::MINESWEEPER, Role::SERGEANT, Role::LIEUTENANT, Role::COMMANDER,
                 Role::MAJOR, Role::COLONEL, Role::GENERAL, Role::MARSHAL, Role::FLAG, Role::BOMB};
-    Direction direction = Direction::FORWARD;
-    Position position;
-
     view_.displayWelcome();
-    level = view_.askLevel();
-    while(level < 0) {
-        level = view_.askLevel();
-    }
-    game_.setLevel(level);
-
+    view_.askBoardInitialization();
+    game_.setLevel(view_.askLevel());
     blue_init(choice, role, position, roles);
     red_init(choice, role, position, roles);
     play(position, direction);
