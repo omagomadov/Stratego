@@ -46,6 +46,12 @@ void View::displayBoard() {
                             printf("%3d", game_.getPawns()[row][col]->getRole());
                             break;
                         }
+                    } else {
+                        if(game_.getCurrentPlayer() == Color::BLUE) {
+                            printf("%3s", "R");
+                        } else {
+                            printf("%3s", "B");
+                        }
                     }
                 }
             } else if(game_.isWater(row, col)) {
@@ -109,6 +115,17 @@ void View::displayRemainingPawns() {
     cout << "#################################" << endl;
 }
 
+void View::displayCurrentPlayer() {
+    switch(game_.getCurrentPlayer()) {
+    case Color::BLUE :
+        cout << "Current player is blue" << endl;
+        break;
+    case Color::RED :
+        cout << "Current player is red" << endl;
+        break;
+    }
+}
+
 Position View::askPosition() {
     int row, col;
     cout << "Enter the position of your pawn" << endl;
@@ -170,10 +187,10 @@ void Controller::start() {
     // initialize variables
     int choice = 0, level = 0;
     Role role = Role::FLAG;
-    Position position;
     array<Role, 12> roles {Role::SPY, Role::SCOUT, Role::MINESWEEPER, Role::SERGEANT, Role::LIEUTENANT, Role::COMMANDER,
                 Role::MAJOR, Role::COLONEL, Role::GENERAL, Role::MARSHAL, Role::FLAG, Role::BOMB};
-    Direction direction;
+    Direction direction = Direction::FORWARD;
+    Position position;
 
     view_.displayWelcome();
     level = view_.askLevel();
@@ -182,10 +199,15 @@ void Controller::start() {
     }
     game_.setLevel(level);
 
-    // Each player initialize their own camps
-    initialize(choice, role, position, roles);
+    blue_init(choice, role, position, roles);
+    red_init(choice, role, position, roles);
+    play(position, direction);
+}
 
+void Controller::play(Position& position, Direction& direction) {
     while(!game_.isEnd()) {
+        view_.displayCurrentPlayer();
+        view_.displayBoard();
         // player X chose his pawn
         cout << "Choose your pawn" << endl;
         position = view_.askPosition();
@@ -223,13 +245,49 @@ void Controller::start() {
         // switch to next player
         game_.nextPlayer();
     }
-    // method in construction. . .
-    // method not yet finished. . .
 }
 
-void Controller::initialize(int choice, Role role, Position position, array<Role, 12> roles) {
+void Controller::red_init(int choice, Role role, Position position, array<Role, 12> roles) {
+    game_.initPawns();
+    game_.setCurrentPlayer(Color::RED);
+    while(game_.getState() == State::RED_TURN) {
+        view_.displayBoard();
+        view_.displayRemainingPawns();
+        choice = view_.askPawn();
+        while(true) {
+            if(choice != -1) {
+                role = roles.at(choice - 1);
+                if(game_.isAvailable(role)) {
+                    // if pawn number is correct and the pawn is available
+                    break;
+                } else {
+                    cout << "Maximum number of this pawn is placed" << endl;
+                }
+            } else {
+                cout << "Please enter a number between 1 and 12 both included" << endl;
+            }
+            choice = view_.askPawn();
+        }
+        role = roles.at(choice - 1);
+        game_.decrementPawnCount(role);
+        position = view_.askPosition();
+        while(!game_.isInside(position) || !(position.getX() >= 6)
+              || game_.isPawn(position)) {
+            cout << "Please enter a valid position" << endl;
+            position = view_.askPosition();
+        }
+        Pawn pawn {role, Color::RED, position, true};
+        game_.addPawn(pawn, position);
+        if(game_.isAllPawnsPlaced()) {
+            game_.setState(State::STARTED);
+        }
+    }
+}
+
+void Controller::blue_init(int choice, Role role, Position position, array<Role, 12> roles) {
     game_.initPawns();
     game_.setState(State::BLUE_TURN);
+    game_.setCurrentPlayer(Color::BLUE);
     while(game_.getState() == State::BLUE_TURN) {
         view_.displayBoard();
         view_.displayRemainingPawns();
@@ -262,39 +320,4 @@ void Controller::initialize(int choice, Role role, Position position, array<Role
             game_.setState(State::RED_TURN);
         }
     }
-    game_.initPawns();
-    game_.setCurrentPlayer(Color::RED);
-    while(game_.getState() == State::RED_TURN) {
-        view_.displayBoard();
-        view_.displayRemainingPawns();
-        choice = view_.askPawn();
-        while(true) {
-            if(choice != -1) {
-                role = roles.at(choice - 1);
-                if(game_.isAvailable(role)) {
-                    // if pawn number is correct and the pawn is available
-                    break;
-                } else {
-                    cout << "Maximum number of this pawn is placed" << endl;
-                }
-            } else {
-                cout << "Please enter a number between 1 and 12 both included" << endl;
-            }
-            choice = view_.askPawn();
-        }
-        role = roles.at(choice - 1);
-        game_.decrementPawnCount(role);
-        position = view_.askPosition();
-        while(!game_.isInside(position) || !(position.getX() >= 6)
-              || game_.isPawn(position)) {
-            cout << "Please enter a valid position" << endl;
-            position = view_.askPosition();
-        }
-        Pawn pawn {role, Color::BLUE, position, true};
-        game_.addPawn(pawn, position);
-        if(game_.isAllPawnsPlaced()) {
-            game_.setState(State::STARTED);
-        }
-    }
 }
-

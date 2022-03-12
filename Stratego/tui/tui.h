@@ -36,6 +36,10 @@ public:
      */
     void displayRemainingPawns();
     /**
+     * @brief displayCurrentPlayer displays the current player.
+     */
+    void displayCurrentPlayer();
+    /**
      * @brief askPosition asks to the current player a position.
      * @return the position that the player has given
      */
@@ -83,7 +87,9 @@ public:
      */
     void start();
 private:
-    void initialize(int choice, Role role, Position position, array<Role, 12> roles);
+    void play(Position& position, Direction& direction);
+    void red_init(int choice, Role role, Position position, array<Role, 12> roles);
+    void blue_init(int choice, Role role, Position position, array<Role, 12> roles);
 };
 
 #endif // TUI_H

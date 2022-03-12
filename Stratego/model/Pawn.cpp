@@ -1,7 +1,7 @@
 #include "Pawn.h"
 
 Pawn::Pawn(Role role, Color color, Position position, bool movable) : role_ {role}, color_ {color},
-    position_ {position}, movable_ {movable}, valide_ {true} {}
+    position_ {position}, movable_ {movable}, visible_ {false}, valide_ {true} {}
 
 Role Pawn::getRole() {
     return role_;
