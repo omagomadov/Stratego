@@ -59,7 +59,16 @@ public:
      * @return zero for normal, one for easy else negative number
      */
     int askLevel();
+    /**
+     * @brief askBoardInitialization asks wich type of initialization of the board.
+     * @return 1 if it is manual else 2 if is is from file
+     */
     int askBoardInitialization();
+    /**
+     * @brief askFileName asks the name of the file.
+     * @return the name of the file
+     */
+    string askFileName();
 };
 
 /**
@@ -88,9 +97,44 @@ public:
      */
     void start();
 private:
+    /**
+     * @brief play plays the game.
+     * @param position the position
+     * @param direction the direction
+     */
     void play(Position& position, Direction& direction);
-    void red_init(int choice, Role role, Position position, array<Role, 12> roles);
-    void blue_init(int choice, Role role, Position position, array<Role, 12> roles);
+    /**
+     * @brief initPlayers initializes the players. Each player can choose to
+     * create manually a board or use a file
+     * @param choice the choice
+     * @param role the role
+     * @param position the position
+     * @param roles the roles
+     */
+    void initPlayers(int choice, Role role, Position position, array<Role, 12> roles);
+    /**
+     * @brief initRedBoard initializes the board of the red player.
+     * @param choice the choice
+     * @param role the role
+     * @param position the position
+     * @param roles the roles
+     */
+    void initRedBoard(int choice, Role role, Position position, array<Role, 12> roles);
+    /**
+     * @brief initBlueBoard initializes the board of the blue player.
+     * @param choice the choice
+     * @param role the role
+     * @param position the position
+     * @param roles the roles
+     */
+    void initBlueBoard(int choice, Role role, Position position, array<Role, 12> roles);
+    /**
+     * @brief analyseFile analyzes the contents of the file.
+     * Checks if the file contains valid information
+     * @param name the name of the file
+     * @return true if the content of file is valid else false
+     */
+    bool analyseFile(string name);
 };
 
 #endif // TUI_H

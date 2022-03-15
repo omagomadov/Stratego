@@ -1,5 +1,7 @@
 #include "Game.h"
 #include <fstream>
+#include <iostream>
+#include <vector>
 
 Game::Game() {
     state_ = State::NOT_STARTED;
@@ -157,6 +159,102 @@ void Game::nextPlayer() {
 }
 
 void Game::fillBoard(string file, Color color) {
-    //todo
+    fstream stream;
+    stream.open(file);
+    // read file while not eof
+    while(!stream.eof()) {
+        // check color of pawn
+        if(color == Color::BLUE) {
+            int row = 0, col = 0;
+            // read each line delimited with ' '
+            for (string line; getline(stream, line, ' '); ) {
+                // check if the col is lower than 10
+                if(col > 9) {
+                    col = 0;
+                    row++;
+                }
+                // if letter is size 3 ==> which mean that it have taken the '/r/n'
+                if(line.size() == 3) {
+                    // take the first letter at position 0 and create a pawn
+                    addPawn(string(1, line.at(0)), Position{row,col}, color);
+                    col++;
+                    if(col > 9) {
+                        col = 0;
+                        row++;
+                    }
+                    // take the second letter at position 2 and create pawn
+                    addPawn(string(1, line.at(2)), Position{row,col}, color);
+                } else {
+                    // if not letter with size 3.. it's ok just take his letter and create pawn
+                    addPawn(line, Position{row, col}, color);
+                }
+                col++;
+            }
+        } else {
+            int row = 9, col = 0;
+            // read each line delimited with ' '
+            for (string line; getline(stream, line, ' '); ) {
+                // check if the col is lower than 10
+                if(col > 9) {
+                    col = 0;
+                    row--;
+                }
+                // if letter is size 3 ==> which mean that it have taken the '/r/n'
+                if(line.size() == 3) {
+                    // take the first letter at position 0 and create a pawn
+                    addPawn(string(1, line.at(0)), Position{row,col}, color);
+                    col++;
+                    if(col > 9) {
+                        col = 0;
+                        row--;
+                    }
+                    // take the second letter at position 2 and create pawn
+                    addPawn(string(1, line.at(2)), Position{row,col}, color);
+                } else {
+                    // if not letter with size 3.. it's ok just take his letter and create pawn
+                    addPawn(line, Position{row, col}, color);
+                }
+                col++;
+            }
+        }
+    }
+}
+
+void Game::addPawn(string role, Position position, Color color) {
+    if(retrieveRole(role) == Role::FLAG || retrieveRole(role) == Role::BOMB) {
+        Pawn pawn {retrieveRole(role), color, position, false};
+        addPawn(pawn, position);
+    } else {
+        Pawn pawn {retrieveRole(role), color, position, true};
+        addPawn(pawn, position);
+    }
+}
+
+Role Game::retrieveRole(string role) {
+    if(role == "10") {
+        return Role::MARSHAL;
+    } else if(role == "9") {
+        return Role::GENERAL;
+    } else if(role == "8") {
+        return Role::COLONEL;
+    } else if(role == "7") {
+        return Role::MAJOR;
+    } else if(role == "6") {
+        return Role::COMMANDER;
+    } else if(role == "5") {
+        return Role::LIEUTENANT;
+    } else if(role == "4") {
+        return Role::SERGEANT;
+    } else if(role == "3") {
+        return Role::MINESWEEPER;
+    } else if(role == "2") {
+        return Role::SCOUT;
+    } else if(role == "1") {
+        return Role::SPY;
+    } else if(role == "F") {
+        return Role::FLAG;
+    } else {
+        return Role::BOMB;
+    }
 }
 

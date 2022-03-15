@@ -150,9 +150,30 @@ public:
      * @param file the file
      * @param color the color
      */
-    void decrementPawnCount(Role role);
-    void nextPlayer();
     void fillBoard(string file, Color color);
+    /**
+     * @brief decrementPawnCount decrements counter of the pawn with the role given in paramater
+     * @param role the role
+     */
+    void decrementPawnCount(Role role);
+    /**
+     * @brief nextPlayer switchs to next player.
+     */
+    void nextPlayer();
+private:
+    /**
+     * @brief addPawn adds a pawn on the board with the given position in parameter.
+     * @param role the role
+     * @param position the position
+     * @param color the color
+     */
+    void addPawn(string role, Position position, Color color);
+    /**
+     * @brief retrieveRole retrieves the role enum from a string.
+     * @param role the role
+     * @return the role
+     */
+    Role retrieveRole(string role);
 };
 
 #endif // GAME_H
