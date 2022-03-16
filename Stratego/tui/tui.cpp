@@ -465,6 +465,12 @@ bool Controller::analyseFile(string name) {
             count++;
         }
     }
+
+    if(count == 0) {
+        file.close();
+        return false;
+    }
+
     file.close();
     return true;
 }
