@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <map>
+#include <limits>
 #include <unistd.h>
 #include "tui.h"
 

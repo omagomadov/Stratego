@@ -56,6 +56,8 @@ bool Game::isPawnSameColor(Position position) {
 }
 
 bool Game::isPawnSameColor(Position position, Direction direction) {
+    // store bool who indicate that the box is empty at position + direction
+    bool emptyBox = isEmpty(position, direction);
     // move -> direction
     switch(direction) {
     case Direction::FORWARD :
@@ -73,7 +75,9 @@ bool Game::isPawnSameColor(Position position, Direction direction) {
     }
 
     if(isInside(position)) {
-        if(isEmpty(position, direction)) {
+        cout << board_.getPawns()[position.getX()][position.getY()]->isValide() << endl;
+        if(!emptyBox) {
+            cout << "there is a pawn at" << position.getX() << " : " << position.getY() << endl;
             if(board_.getPawns()[position.getX()][position.getY()]->getColor() == currentPlayer_) {
                 return true;
             }
