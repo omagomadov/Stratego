@@ -79,11 +79,17 @@ public:
      */
     bool isPawn(Position position);
     /**
-     * @brief isPawnSameColor //todo
-     * @param position
-     * @return
+     * @brief isPawnSameColor checks if the pawn at this position is equal to the color of the current player.
+     * @param position the position
+     * @return true if the pawn at this position is equal to the color of the current player.
      */
     bool isPawnSameColor(Position position);
+    /**
+     * @brief isPawnSameColor checks if the pawn at this position is equal to the color of the current player.
+     * @param position the position
+     * @param direction the direction
+     * @return true if the pawn at this position is equal to the color of the current player.
+     */
     bool isPawnSameColor(Position position, Direction direction);
     /**
      * @brief move moves the pawn at the position given in parameter to the direction given in parameter.
@@ -203,6 +209,12 @@ private:
      * @return true if the pawn is higher than the enemy else false
      */
     bool battle(Role pawn, Role enemy);
+    /**
+     * @brief bothSameRole check if the pawn and the enemy pawn given in parameter has equal role.
+     * @param pawn the pawn
+     * @param enemy the pawn
+     * @return true if the pawn and the enemy pawn has equal role else false
+     */
     bool bothSameRole(Role pawn, Role enemy);
 };
 

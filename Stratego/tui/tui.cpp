@@ -22,7 +22,7 @@ void View::displayBoard() {
     }
     cout << endl;
     for(unsigned row = 0; row < game_.getPawns().size(); row++) {
-        printf("%3d", row + 1);
+        printf("%3u", row + 1);
         for(unsigned col = 0; col < game_.getPawns().size(); col++) {
             if(game_.getPawns()[row][col].has_value()) {
                 if(game_.getLevel() == 1) {
@@ -68,6 +68,13 @@ void View::displayBoard() {
         cout << endl;
     }
     cout << " " << endl;
+}
+
+void View::displayBattle() {
+    cout << "############ BATTLE ! ############" << endl;
+    displayBoard();
+    cout << "##################################" << endl;
+    sleep(2);
 }
 
 void View::displayPlayer() {
@@ -125,6 +132,7 @@ void View::displayRemainingPawns() {
 
 Position View::askPosition() {
     int row, col;
+    cout << "Choose your pawn" << endl;
     cout << "Enter the position of your pawn" << endl;
     cout << "Row : ";
     cin >> row;
@@ -150,6 +158,7 @@ Position View::askPosition() {
 
 Direction View::askDirection() {
     string direction;
+    cout << "Where do you want to move this pawn" << endl;
     cout << "Enter the direction of your pawn :" << endl;
     cout << "F -> Forward | B -> Backward | L -> Left | R -> Right" << endl;
     cin >> direction;
@@ -226,9 +235,13 @@ void Controller::start() {
     Role role = Role::BOMB;
     array<Role, 12> roles {Role::SPY, Role::SCOUT, Role::MINESWEEPER, Role::SERGEANT, Role::LIEUTENANT, Role::COMMANDER,
                 Role::MAJOR, Role::COLONEL, Role::GENERAL, Role::MARSHAL, Role::FLAG, Role::BOMB};
+    // Display welcome message
     view_.displayWelcome();
+    // Ask the level (easy or normal)
     game_.setLevel(view_.askLevel());
+    // Initialize each players board (each user choose if he want initialize manually or with file)
     initPlayers(choice, role, position, roles);
+    // Launch the game
     play(position, direction);
 }
 
@@ -236,47 +249,24 @@ void Controller::play(Position& position, Direction& direction) {
     while(game_.getState() == State::STARTED) {
         view_.displayPlayer();
         view_.displayBoard();
-        // player X chose his pawn
-        cout << "Choose your pawn" << endl;
+        // Ask position
         position = view_.askPosition();
-        while(true) {
-            // Check if the position is inside
-            if(game_.isInside(position)) {
-                // Checks if the there is a pawn at this position
-                if(game_.isPawn(position)) {
-                    // Checks if the selected pawn is your pawn (pawn color == current player color)
-                    if(game_.isPawnSameColor(position)) {
-                        if(game_.isMovablePawn(position)) {
-                            break;
-                        } else {
-                            cout << "This pawn is not movable" << endl;
-                        }
-                    } else {
-                        cout << "Not your pawn" << endl;
-                    }
-                } else {
-                    cout << "No pawn at this position" << endl;
-                }
-            } else {
-                cout << "Position outside the board" << endl;
-            }
+        // Ask while is correct
+        while(!checkPosition(position)) {
             position = view_.askPosition();
         }
-        // player X chose where to move his pawn
-        cout << "Where do you want to move this pawn" << endl;
+
         direction = view_.askDirection();
         // Ask while pawn go nowhere or on water
-        while(game_.isWater(position, direction)
-              || game_.isPawnSameColor(position, direction)) {
+        while(!checkDirection(position, direction)) {
             cout << "Pawn can't attack his teammate or go on the water" << endl;
             direction = view_.askDirection();
         }
+
         // check if there is a enemy
         if(game_.isEnemy(position, direction, game_.getCurrentPlayer())) {
-            cout << "############ BATTLE ! ############" << endl;
-            view_.displayBoard();
-            cout << "##################################" << endl;
-            sleep(2);
+            // display the board with the pawn of the enemy visible
+            view_.displayBattle();
         }
         // move his pawn
         game_.move(position, direction);
@@ -475,5 +465,36 @@ bool Controller::analyseFile(string name) {
     }
 
     file.close();
+    return true;
+}
+
+bool Controller::checkPosition(Position position) {
+    // Check if the position is inside
+    if(game_.isInside(position)) {
+        // Checks if the there is a pawn at this position
+        if(game_.isPawn(position)) {
+            // Checks if the selected pawn is your pawn (pawn color == current player color)
+            if(game_.isPawnSameColor(position)) {
+                if(game_.isMovablePawn(position)) {
+                    return true;
+                } else {
+                    cout << "This pawn is not movable" << endl;
+                }
+            } else {
+                cout << "Not your pawn" << endl;
+            }
+        } else {
+            cout << "No pawn at this position" << endl;
+        }
+    } else {
+        cout << "Position outside the board" << endl;
+    }
+    return false;
+}
+
+bool Controller::checkDirection(Position position, Direction direction) {
+    if(game_.isWater(position, direction) || game_.isPawnSameColor(position, direction)) {
+        return false;
+    }
     return true;
 }

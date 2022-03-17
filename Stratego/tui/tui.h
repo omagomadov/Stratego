@@ -24,9 +24,13 @@ public:
      */
     void displayWelcome();
     /**
-     * @brief displayBoard displays the board of the game on the terminale.
+     * @brief displayBoard displays the board of the game.
      */
     void displayBoard();
+    /**
+     * @brief displayBattle displays the board of the game when a battle occure.
+     */
+    void displayBattle();
     /**
      * @brief displayPlayer displays the current player of the game on the terminale.
      */
@@ -131,6 +135,19 @@ private:
      * @return true if the content of file is valid else false
      */
     bool analyseFile(string name);
+    /**
+     * @brief checkPosition checks if the position respects the rules.
+     * @param position the position
+     * @return true if the position is valid else false
+     */
+    bool checkPosition(Position position);
+    /**
+     * @brief checkDirection checks if the direction respects the rules.
+     * @param position the position
+     * @param direction the direction
+     * @return true if the direction is valid else false
+     */
+    bool checkDirection(Position position, Direction direction);
 };
 
 #endif // TUI_H

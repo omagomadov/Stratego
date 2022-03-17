@@ -75,9 +75,7 @@ bool Game::isPawnSameColor(Position position, Direction direction) {
     }
 
     if(isInside(position)) {
-        cout << board_.getPawns()[position.getX()][position.getY()]->isValide() << endl;
         if(!emptyBox) {
-            cout << "there is a pawn at" << position.getX() << " : " << position.getY() << endl;
             if(board_.getPawns()[position.getX()][position.getY()]->getColor() == currentPlayer_) {
                 return true;
             }
@@ -320,7 +318,7 @@ void Game::fillBoard(string file, Color color) {
     }
 }
 
-void Game::addPawn(string role, Position position, Color color) {
+void Game::addPawn(const string role, Position position, Color color) {
     if(retrieveRole(role) == Role::FLAG || retrieveRole(role) == Role::BOMB) {
         Pawn pawn {retrieveRole(role), color, position, false};
         addPawn(pawn, position);
@@ -330,7 +328,7 @@ void Game::addPawn(string role, Position position, Color color) {
     }
 }
 
-Role Game::retrieveRole(string role) {
+Role Game::retrieveRole(const string role) {
     if(role == "10") {
         return Role::MARSHAL;
     } else if(role == "9") {
