@@ -84,6 +84,7 @@ public:
      * @return
      */
     bool isPawnSameColor(Position position);
+    bool isPawnSameColor(Position position, Direction direction);
     /**
      * @brief move moves the pawn at the position given in parameter to the direction given in parameter.
      * @param position the position
@@ -110,6 +111,13 @@ public:
      * @return true if there is water at this position else false
      */
     bool isWater(int row, int col);
+    /**
+     * @brief isWater checks if there is a water at the given position with the direction.
+     * @param position the position
+     * @param direction the direction
+     * @return true if there is water at this position else false
+     */
+    bool isWater(Position position, Direction direction);
     /**
      * @brief isAvailable checks if there is a pawn avalaible to place.
      * @param pawn the pawn
@@ -160,6 +168,20 @@ public:
      * @brief nextPlayer switchs to next player.
      */
     void nextPlayer();
+    /**
+     * @brief isEnemy checks if there is a enemy.
+     * @param position the position
+     * @param direction the direction
+     * @param color the color
+     * @return
+     */
+    bool isEnemy(Position position, Direction direction, Color color);
+    /**
+     * @brief isMovablePawn checks if the pawn at the given position is movable.
+     * @param position the position
+     * @return true if the pawn is movable else false
+     */
+    bool isMovablePawn(Position position);
 private:
     /**
      * @brief addPawn adds a pawn on the board with the given position in parameter.
@@ -174,6 +196,14 @@ private:
      * @return the role
      */
     Role retrieveRole(string role);
+    /**
+     * @brief battle compares 2 roles.
+     * @param pawn the role
+     * @param enemy the role
+     * @return true if the pawn is higher than the enemy else false
+     */
+    bool battle(Role pawn, Role enemy);
+    bool bothSameRole(Role pawn, Role enemy);
 };
 
 #endif // GAME_H

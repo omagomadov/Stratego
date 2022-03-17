@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <map>
+#include <unistd.h>
 #include "tui.h"
 
 View::View(Game& game) : game_ {game} {}
@@ -13,6 +14,7 @@ void View::displayWelcome() {
 }
 
 void View::displayBoard() {
+    cout << " " << endl;
     printf("%3s", " ");
     for(unsigned i = 0; i < game_.getPawns().size(); i++) {
         printf("%3c", ('A' + i));
@@ -64,11 +66,14 @@ void View::displayBoard() {
         }
         cout << endl;
     }
+    cout << " " << endl;
 }
 
 void View::displayPlayer() {
+    cout << "==============================" << endl;
     cout << "Current player is "
          << (game_.getCurrentPlayer() ? "blue" : "red") << endl;
+    cout << "==============================" << endl;
 }
 
 void View::displayRemainingPawns() {
@@ -115,17 +120,6 @@ void View::displayRemainingPawns() {
         }
     }
     cout << "#################################" << endl;
-}
-
-void View::displayCurrentPlayer() {
-    switch(game_.getCurrentPlayer()) {
-    case Color::BLUE :
-        cout << "Current player is blue" << endl;
-        break;
-    case Color::RED :
-        cout << "Current player is red" << endl;
-        break;
-    }
 }
 
 Position View::askPosition() {
@@ -238,21 +232,24 @@ void Controller::start() {
 }
 
 void Controller::play(Position& position, Direction& direction) {
-    cout << "i'm in play" << endl;
     while(game_.getState() == State::STARTED) {
-        view_.displayCurrentPlayer();
+        view_.displayPlayer();
         view_.displayBoard();
         // player X chose his pawn
         cout << "Choose your pawn" << endl;
         position = view_.askPosition();
         while(true) {
+            // Check if the position is inside
             if(game_.isInside(position)) {
+                // Checks if the there is a pawn at this position
                 if(game_.isPawn(position)) {
+                    // Checks if the selected pawn is your pawn (pawn color == current player color)
                     if(game_.isPawnSameColor(position)) {
-                        // is the position is inside the board
-                        // is the pawn at this position is really a pawn
-                        // is the pawn is your pawn => then break
-                        break;
+                        if(game_.isMovablePawn(position)) {
+                            break;
+                        } else {
+                            cout << "This pawn is not movable" << endl;
+                        }
                     } else {
                         cout << "Not your pawn" << endl;
                     }
@@ -264,16 +261,22 @@ void Controller::play(Position& position, Direction& direction) {
             }
             position = view_.askPosition();
         }
-
         // player X chose where to move his pawn
         cout << "Where do you want to move this pawn" << endl;
         direction = view_.askDirection();
-        while(!game_.isEmpty(position, direction)
-              || game_.isWater(position.getX(), position.getY())) {
-            cout << "Pawn goes outside the board or pawn can't go there!" << endl;
+        // Ask while pawn go nowhere or on water
+        while(game_.isWater(position, direction)
+              || game_.isPawnSameColor(position, direction)) {
+            cout << "Pawn can't attack his teammate or go on the water" << endl;
             direction = view_.askDirection();
         }
-
+        // check if there is a enemy
+        if(game_.isEnemy(position, direction, game_.getCurrentPlayer())) {
+            cout << "############ BATTLE ! ############" << endl;
+            view_.displayBoard();
+            cout << "##################################" << endl;
+            sleep(2);
+        }
         // move his pawn
         game_.move(position, direction);
         // switch to next player
@@ -287,7 +290,7 @@ void Controller::initPlayers(int choice, Role role, Position position, array<Rol
     game_.setCurrentPlayer(Color::BLUE);
 
     // Player blue choose -> manual or file
-    view_.displayCurrentPlayer();
+    view_.displayPlayer();
     while(true) {
         choice = view_.askBoardInitialization();
         if(choice == 1) {
@@ -316,7 +319,7 @@ void Controller::initPlayers(int choice, Role role, Position position, array<Rol
     game_.nextPlayer();
 
     // Player red choose -> manual or file
-    view_.displayCurrentPlayer();
+    view_.displayPlayer();
     while(true) {
         choice = view_.askBoardInitialization();
         if(choice == 1) {
@@ -335,7 +338,6 @@ void Controller::initPlayers(int choice, Role role, Position position, array<Rol
                 } else {
                     game_.fillBoard(name, game_.getCurrentPlayer());
                     game_.setState(State::STARTED);
-                    cout << "started" << endl;
                     break;
                 }
             } else {
@@ -349,7 +351,7 @@ void Controller::initRedBoard(int choice, Role role, Position position, array<Ro
     game_.initPawns();
     game_.setCurrentPlayer(Color::RED);
     while(game_.getState() == State::RED_TURN) {
-        view_.displayCurrentPlayer();
+        view_.displayPlayer();
         view_.displayBoard();
         view_.displayRemainingPawns();
         choice = view_.askPawn();

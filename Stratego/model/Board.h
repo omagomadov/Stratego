@@ -65,11 +65,20 @@ public:
      */
     bool isWater(int row, int col);
     /**
+     * @brief isWater checks if there is a water at the position.
+     * @param position the position
+     * @param direction the direction
+     * @return true if there is water at this position else false
+     */
+    bool isWater(Position position, Direction direction);
+    /**
      * @brief setPawn sets a pawn at the given position on the board.
      * @param pawn the pawn
      * @param position the position
      */
     void setPawn(optional<Pawn> pawn, Position position);
+    void setVisible(int row, int column, bool visible);
+    void setPosition(int row, int col);
 };
 
 #endif // BOARD_H

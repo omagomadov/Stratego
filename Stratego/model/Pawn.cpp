@@ -31,6 +31,11 @@ void Pawn::setVisible(bool visible) {
     visible_ = visible;
 }
 
+void Pawn::setPosition(int row, int col) {
+    position_.setX(row);
+    position_.setY(col);
+}
+
 ostream& operator<<(ostream& out, Pawn obj) {
     return out << "("
                << "role : "
