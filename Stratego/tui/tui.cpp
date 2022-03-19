@@ -59,7 +59,7 @@ void View::displayBoard() {
                         }
                     }
                 }
-            } else if(game_.isWater(row, col)) {
+            } else if(game_.isWater(Position {(int)row, (int)col})) {
                 printf("%3s", "x");
             } else {
                 printf("%3s", ".");
@@ -130,35 +130,72 @@ void View::displayRemainingPawns() {
     cout << "#################################" << endl;
 }
 
+void View::displayWinner() {
+    cout << "==============================" << endl;
+    cout << "The winner is "
+         << (game_.getCurrentPlayer() ? "blue" :  "red") << endl;
+    cout << "==============================" << endl;
+}
+
 Position View::askPosition() {
     int row, col;
-    cout << "Choose your pawn" << endl;
+    char letter;
+    cout << ">> Choose your pawn" << endl;
     cout << "Enter the position of your pawn" << endl;
     cout << "Row : ";
     cin >> row;
     while(cin.fail()) {
         cin.clear();
         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        cout << "Please enter a number" << endl;
+        cout << "[!] Please enter a number" << endl;
         cout << "Row : ";
         cin >> row;
     }
     cout << "Column : ";
-    cin >> col;
-    while(cin.fail()) {
-        cin.clear();
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        cout << "Please enter a number" << endl;
-        cout << "Column : ";
-        cin >> col;
+    cin >> letter;
+    switch(letter) {
+    case 'A':
+        col = 1;
+        break;
+    case 'B':
+        col = 2;
+        break;
+    case 'C':
+        col = 3;
+        break;
+    case 'D':
+        col = 4;
+        break;
+    case 'E':
+        col = 5;
+        break;
+    case 'F':
+        col = 6;
+        break;
+    case 'G':
+        col = 7;
+        break;
+    case 'H':
+        col = 8;
+        break;
+    case 'I':
+        col = 9;
+        break;
+    case 'J':
+        col = 10;
+        break;
+
+    default:
+        col= -1;
+        break;
     }
-    Position pos {row, col};
+    Position pos {row - 1, col - 1};
     return pos;
 }
 
 Direction View::askDirection() {
     string direction;
-    cout << "Where do you want to move this pawn" << endl;
+    cout << ">> Where do you want to move this pawn" << endl;
     cout << "Enter the direction of your pawn :" << endl;
     cout << "F -> Forward | B -> Backward | L -> Left | R -> Right" << endl;
     cin >> direction;
@@ -175,7 +212,7 @@ Direction View::askDirection() {
 
 int View::askPawn() {
     int pawn;
-    cout << "Which pawn do you want to set :" << endl;
+    cout << ">> Which pawn do you want to set :" << endl;
     cin >> pawn;
     while(pawn < 1 || pawn > 12 || cin.fail()) {
         cin.clear();
@@ -187,14 +224,14 @@ int View::askPawn() {
 
 int View::askLevel() {
     int level = 0;
-    cout << "Which level do you want :" << endl;
+    cout << ">> Which level do you want :" << endl;
     cout << "[1] Easy\n"
             "[2] Normal" << endl;
     cin >> level;
     while(level <= 0 || level >= 3 || cin.fail()) {
         cin.clear();
         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        cout << "Please enter a number between 1 and 2 included" << endl;
+        cout << "[!] Please enter a number between 1 and 2 included" << endl;
         cout << "[1] Easy\n"
                 "[2] Normal" << endl;
         cin >> level;
@@ -204,14 +241,14 @@ int View::askLevel() {
 
 int View::askBoardInitialization() {
     int choice;
-    cout << "Which type of initialization do you want to do?" << endl;
+    cout << ">> Which type of initialization do you want to do?" << endl;
     cout << "[1] Manual" << endl;
     cout << "[2] File" << endl;
     cin >> choice;
     while(choice <= 0 || choice >= 3 || cin.fail()) {
         cin.clear();
         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        cout << "Please enter a number between 1 and 2 included" << endl;
+        cout << "[!] Please enter a number between 1 and 2 included" << endl;
         cout << "[1] Manual" << endl;
         cout << "[2] File" << endl;
         cin >> choice;
@@ -219,9 +256,22 @@ int View::askBoardInitialization() {
     return choice;
 }
 
+int View::askMovement() {
+    int moves;
+    cout << ">> How much moves do you want to do?" << endl;
+    cin >> moves;
+    while(cin.fail()) {
+        cin.clear();
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        cout << "[!] Please enter only numbers" << endl;
+        cin >> moves;
+    }
+    return moves;
+}
+
 string View::askFileName() {
     string file;
-    cout << "What is the name of the file?" << endl;
+    cout << ">> What is the name of the file?" << endl;
     cin >> file;
     return file;
 }
@@ -255,31 +305,50 @@ void Controller::play(Position& position, Direction& direction) {
         while(!checkPosition(position)) {
             position = view_.askPosition();
         }
-
+        // Ask direction
         direction = view_.askDirection();
         // Ask while pawn go nowhere or on water
         while(!checkDirection(position, direction)) {
-            cout << "Pawn can't attack his teammate or go on the water" << endl;
+            cout << "[!] Pawn can't attack his teammate or go on the water" << endl;
             direction = view_.askDirection();
         }
-
-        // check if there is a enemy
-        if(game_.isEnemy(position, direction, game_.getCurrentPlayer())) {
-            // display the board with the pawn of the enemy visible
-            view_.displayBattle();
+        if(game_.getRole(position) == Role::SCOUT) {
+            int movement = view_.askMovement();
+            while(movement > 0 && game_.isInside(position, direction)
+                  && !game_.isPawn(position, direction)) {
+                game_.move(position, direction);
+                movement--;
+            }
+            if(game_.isEnemy(position, direction, game_.getCurrentPlayer())) {
+                // display the board with the pawn of the enemy visible
+                view_.displayBattle();
+                // start battle
+                game_.battle(position, direction);
+            }
+        } else {
+            // check if there is a enemy
+            if(game_.isEnemy(position, direction, game_.getCurrentPlayer())) {
+                // display the board with the pawn of the enemy visible
+                view_.displayBattle();
+                // start battle
+                game_.battle(position, direction);
+            } else {
+                // move his pawn
+                game_.move(position, direction);
+            }
         }
-        // move his pawn
-        game_.move(position, direction);
-        // switch to next player
-        game_.nextPlayer();
+        if(game_.getState() != State::ENDED) {
+            // switch to next player
+            game_.nextPlayer();
+        }
     }
+    view_.displayWinner();
 }
 
 void Controller::initPlayers(int choice, Role role, Position position, array<Role, 12> roles) {
     fstream file;
     string name;
     game_.setCurrentPlayer(Color::BLUE);
-
     // Player blue choose -> manual or file
     view_.displayPlayer();
     while(true) {
@@ -308,7 +377,6 @@ void Controller::initPlayers(int choice, Role role, Position position, array<Rol
         }
     }
     game_.nextPlayer();
-
     // Player red choose -> manual or file
     view_.displayPlayer();
     while(true) {
@@ -429,7 +497,6 @@ bool Controller::analyseFile(string name) {
     pawns.insert({"10", 1});
     pawns.insert({"B", 6});
     pawns.insert({"F", 1});
-
     file.open(name);
     string acceptedPawns {"1 2 3 4 5 6 7 8 9 10 B F"};
     while(!file.eof()) {
@@ -458,12 +525,11 @@ bool Controller::analyseFile(string name) {
             count++;
         }
     }
-
+    // if count => 0. That mean that there is no pawn
     if(count == 0) {
         file.close();
         return false;
     }
-
     file.close();
     return true;
 }
@@ -476,18 +542,22 @@ bool Controller::checkPosition(Position position) {
             // Checks if the selected pawn is your pawn (pawn color == current player color)
             if(game_.isPawnSameColor(position)) {
                 if(game_.isMovablePawn(position)) {
-                    return true;
+                    if(!game_.isAlone(position)) {
+                        return true;
+                    } else {
+                        cout << "[!] This pawn can't move because he has no exit" << endl;
+                    }
                 } else {
-                    cout << "This pawn is not movable" << endl;
+                    cout << "[!] This pawn is not movable" << endl;
                 }
             } else {
-                cout << "Not your pawn" << endl;
+                cout << "[!] Not your pawn" << endl;
             }
         } else {
-            cout << "No pawn at this position" << endl;
+            cout << "[!] No pawn at this position" << endl;
         }
     } else {
-        cout << "Position outside the board" << endl;
+        cout << "[!] Position outside the board" << endl;
     }
     return false;
 }

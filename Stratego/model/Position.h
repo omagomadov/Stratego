@@ -20,13 +20,13 @@ class Position {
     int y_;
 
 public:
+    Position() = default;
     /**
      * @brief Position constructor of Position.
      * @param x the x
      * @param y the y
      */
     Position(int x, int y);
-    Position() = default;
     /**
      * @brief getX getter of x.
      * @return the abscissa

@@ -23,27 +23,58 @@ int Game::getLevel() {
     return level_;
 }
 
+Role Game::getRole(Position position) {
+    return board_.getRole(position);
+}
+
 bool Game::isInside(Position position) {
     return board_.isInside(position);
 }
 
-bool Game::isEnd() {
-    int flags = 0;
-    for(unsigned row = 0; row < board_.getPawns().size(); row++) {
-        for(unsigned col = 0; col < board_.getPawns()[row].size(); col++) {
-            if(board_.getPawns()[row][col]->getRole() == Role::FLAG) {
-                flags++;
-            }
-        }
+bool Game::isInside(Position position, Direction direction) {
+    switch(direction) {
+    case Direction::FORWARD :
+        position.setX(position.getX() - 1);
+        break;
+    case Direction::LEFT :
+        position.setY(position.getY() - 1);
+        break;
+    case Direction::RIGHT :
+        position.setY(position.getY() + 1);
+        break;
+    case Direction::BACKWARD :
+        position.setX(position.getX() + 1);
+        break;
     }
-    if(flags < 2) {
-        return true;
+    return board_.isInside(position);
+}
+
+bool Game::isPawn(Position position) {
+    if(isInside(position)) {
+        return board_.getPawns()[position.getX()][position.getY()]->isValide();
     }
     return false;
 }
 
-bool Game::isPawn(Position position) {
-    return board_.getPawns()[position.getX()][position.getY()]->isValide();
+bool Game::isPawn(Position position, Direction direction) {
+    switch(direction) {
+    case Direction::FORWARD :
+        position.setX(position.getX() - 1);
+        break;
+    case Direction::LEFT :
+        position.setY(position.getY() - 1);
+        break;
+    case Direction::RIGHT :
+        position.setY(position.getY() + 1);
+        break;
+    case Direction::BACKWARD :
+        position.setX(position.getX() + 1);
+        break;
+    }
+    if(isInside(position)) {
+        return board_.getPawns()[position.getX()][position.getY()]->isValide();
+    }
+    return false;
 }
 
 bool Game::isPawnSameColor(Position position) {
@@ -73,7 +104,6 @@ bool Game::isPawnSameColor(Position position, Direction direction) {
         position.setX(position.getX() + 1);
         break;
     }
-
     if(isInside(position)) {
         if(!emptyBox) {
             if(board_.getPawns()[position.getX()][position.getY()]->getColor() == currentPlayer_) {
@@ -84,94 +114,37 @@ bool Game::isPawnSameColor(Position position, Direction direction) {
     return false;
 }
 
+bool Game::isAlone(Position position) {
+    return board_.isAlone(position);
+}
+
 void Game::move(Position& position, Direction direction) {
     optional<Pawn> empty;
     optional<Pawn> pawn = board_.getPawns()[position.getX()][position.getY()];
-    optional<Pawn> enemy;
     switch(direction) {
     case Direction::FORWARD :
-        if(isEnemy(position, direction, currentPlayer_)) {
-            enemy = board_.getPawns()[position.getX() - 1][position.getY()];
-            if(bothSameRole(pawn->getRole(), enemy->getRole())) {
-                board_.setPawn(empty, pawn->getPosition());
-                board_.setPawn(empty, enemy->getPosition());
-            } else if(battle(pawn->getRole(), enemy->getRole())) {
-                board_.setPawn(empty, position);
-                position.setX(position.getX() - 1);
-                board_.setPawn(pawn, position);
-            } else {
-                board_.setVisible(position.getX() - 1, position.getY(), false);
-                board_.setPawn(empty, position);
-            }
-        } else {
-            board_.setPawn(empty, position);
-            position.setX(position.getX() - 1);
-            board_.setPawn(pawn, position);
-            board_.setPosition(position.getX(), position.getY());
-        }
+        board_.setPawn(empty, position);
+        position.setX(position.getX() - 1);
+        board_.setPawn(pawn, position);
+        board_.setPosition(position.getX(), position.getY());
         break;
     case Direction::LEFT :
-        if(isEnemy(position, direction, currentPlayer_)) {
-            enemy = board_.getPawns()[position.getX()][position.getY() - 1];
-            if(bothSameRole(pawn->getRole(), enemy->getRole())) {
-                board_.setPawn(empty, pawn->getPosition());
-                board_.setPawn(empty, enemy->getPosition());
-            } else if(battle(pawn->getRole(), enemy->getRole())) {
-                board_.setPawn(empty, position);
-                position.setY(position.getY() - 1);
-                board_.setPawn(pawn, position);
-            } else {
-                board_.setVisible(position.getX(), position.getY() - 1, false);
-                board_.setPawn(empty, position);
-            }
-        } else {
-            board_.setPawn(empty, position);
-            position.setY(position.getY() - 1);
-            board_.setPawn(pawn, position);
-            board_.setPosition(position.getX(), position.getY());
-        }
+        board_.setPawn(empty, position);
+        position.setY(position.getY() - 1);
+        board_.setPawn(pawn, position);
+        board_.setPosition(position.getX(), position.getY());
         break;
     case Direction::RIGHT :
-        if(isEnemy(position, direction, currentPlayer_)) {
-            enemy = board_.getPawns()[position.getX()][position.getY() + 1];
-            if(bothSameRole(pawn->getRole(), enemy->getRole())) {
-                board_.setPawn(empty, pawn->getPosition());
-                board_.setPawn(empty, enemy->getPosition());
-            } else if(battle(pawn->getRole(), enemy->getRole())) {
-                board_.setPawn(empty, position);
-                position.setY(position.getY() + 1);
-                board_.setPawn(pawn, position);
-            } else {
-                board_.setVisible(position.getX(), position.getY() + 1, false);
-                board_.setPawn(empty, position);
-            }
-        } else {
-            board_.setPawn(empty, position);
-            position.setY(position.getY() + 1);
-            board_.setPawn(pawn, position);
-            board_.setPosition(position.getX(), position.getY());
-        }
+        board_.setPawn(empty, position);
+        position.setY(position.getY() + 1);
+        board_.setPawn(pawn, position);
+        board_.setPosition(position.getX(), position.getY());
         break;
     case Direction::BACKWARD :
-        if(isEnemy(position, direction, currentPlayer_)) {
-            enemy = board_.getPawns()[position.getX() + 1][position.getY()];
-            if(bothSameRole(pawn->getRole(), enemy->getRole())) {
-                board_.setPawn(empty, pawn->getPosition());
-                board_.setPawn(empty, enemy->getPosition());
-            } else if(battle(pawn->getRole(), enemy->getRole())) {
-                board_.setPawn(empty, position);
-                position.setX(position.getX() + 1);
-                board_.setPawn(pawn, position);
-            } else {
-                board_.setVisible(position.getX() + 1, position.getY(), false);
-                board_.setPawn(empty, position);
-            }
-        } else {
-            board_.setPawn(empty, position);
-            position.setX(position.getX() + 1);
-            board_.setPawn(pawn, position);
-            board_.setPosition(position.getX(), position.getY());
-        }
+        board_.setPawn(empty, position);
+        position.setX(position.getX() + 1);
+        board_.setPawn(pawn, position);
+        board_.setPosition(position.getX(), position.getY());
         break;
     }
 }
@@ -180,12 +153,12 @@ bool Game::isEmpty(Position position, Direction direction) {
     return board_.isEmpty(position, direction);
 }
 
-bool Game::isWater(int row, int col) {
-    return board_.isWater(row, col);
-}
-
 bool Game::isWater(Position position, Direction direction) {
     return board_.isWater(position, direction);
+}
+
+bool Game::isWater(Position position) {
+    return board_.isWater(position.getX(), position.getY());
 }
 
 bool Game::isAvailable(Role role) {
@@ -329,30 +302,44 @@ void Game::addPawn(const string role, Position position, Color color) {
 }
 
 Role Game::retrieveRole(const string role) {
-    if(role == "10") {
-        return Role::MARSHAL;
-    } else if(role == "9") {
-        return Role::GENERAL;
-    } else if(role == "8") {
-        return Role::COLONEL;
-    } else if(role == "7") {
-        return Role::MAJOR;
-    } else if(role == "6") {
-        return Role::COMMANDER;
-    } else if(role == "5") {
-        return Role::LIEUTENANT;
-    } else if(role == "4") {
-        return Role::SERGEANT;
-    } else if(role == "3") {
-        return Role::MINESWEEPER;
-    } else if(role == "2") {
-        return Role::SCOUT;
-    } else if(role == "1") {
+    switch(atoi(role.c_str())) {
+    case 1 :
         return Role::SPY;
-    } else if(role == "F") {
-        return Role::FLAG;
-    } else {
-        return Role::BOMB;
+        break;
+    case 2 :
+        return Role::SCOUT;
+        break;
+    case 3 :
+        return Role::MINESWEEPER;
+        break;
+    case 4 :
+        return Role::SERGEANT;
+        break;
+    case 5 :
+        return Role::LIEUTENANT;
+        break;
+    case 6 :
+        return Role::COMMANDER;
+        break;
+    case 7 :
+        return Role::MAJOR;
+        break;
+    case 8 :
+        return Role::COLONEL;
+        break;
+    case 9 :
+        return Role::GENERAL;
+        break;
+    case 10 :
+        return Role::MARSHAL;
+        break;
+    default:
+        if(role == "F") {
+            return Role::FLAG;
+        } else {
+            return Role::BOMB;
+        }
+        break;
     }
 }
 
@@ -372,7 +359,6 @@ bool Game::isEnemy(Position position, Direction direction, Color color) {
         position.setX(position.getX() + 1);
         break;
     }
-
     // check if new position is inside
     if(isInside(position)) {
         // check if at the new position there is a pawn valide
@@ -393,21 +379,81 @@ bool Game::isMovablePawn(Position position) {
     return board_.getPawns()[position.getX()][position.getY()]->isMovable();
 }
 
-bool Game::battle(Role pawn, Role enemy) {
-    if(pawn == Role::SPY && enemy == Role::MARSHAL) {
+bool Game::compare(Role pawn, Role enemy) {
+    if(enemy == Role::FLAG) {
+        setState(State::ENDED);
         return true;
-    } else if(enemy == Role::FLAG) {
+    } else if(pawn == Role::MINESWEEPER && enemy == Role::BOMB) {
         return true;
-    }else if(pawn == Role::MINESWEEPER && enemy == Role::BOMB) {
+    } else if(pawn == Role::SPY && enemy == Role::MARSHAL) {
         return true;
-    } else if(pawn > enemy) {
-        return true;
-    } else {
+    } else if(enemy == Role::BOMB) {
         return false;
     }
+    return pawn > enemy;
 }
 
 bool Game::bothSameRole(Role pawn,Role enemy) {
     return pawn == enemy;
+}
+
+void Game::battle(Position position, Direction direction) {
+    optional<Pawn> empty;
+    optional<Pawn> pawn = board_.getPawns()[position.getX()][position.getY()];
+    optional<Pawn> enemy;
+    switch(direction) {
+    case Direction::FORWARD :
+        enemy = board_.getPawns()[position.getX() - 1][position.getY()];
+        if(bothSameRole(pawn->getRole(), enemy->getRole())) {
+            board_.setPawn(empty, pawn->getPosition());
+            board_.setPawn(empty, enemy->getPosition());
+        } else if(compare(pawn->getRole(), enemy->getRole())) {
+            board_.setPawn(empty, enemy->getPosition());
+            move(position, direction);
+        } else {
+            board_.setPawn(empty, pawn->getPosition());
+            board_.setVisible(position.getX() - 1, position.getY(), false);
+        }
+        break;
+    case Direction::BACKWARD :
+        enemy = board_.getPawns()[position.getX() + 1][position.getY()];
+        if(bothSameRole(pawn->getRole(), enemy->getRole())) {
+            board_.setPawn(empty, pawn->getPosition());
+            board_.setPawn(empty, enemy->getPosition());
+        } else if(compare(pawn->getRole(), enemy->getRole())) {
+            board_.setPawn(empty, enemy->getPosition());
+            move(position, direction);
+        } else {
+            board_.setPawn(empty, pawn->getPosition());
+            board_.setVisible(position.getX() + 1, position.getY(), false);
+        }
+        break;
+    case Direction::LEFT :
+        enemy = board_.getPawns()[position.getX()][position.getY() - 1];
+        if(bothSameRole(pawn->getRole(), enemy->getRole())) {
+            board_.setPawn(empty, pawn->getPosition());
+            board_.setPawn(empty, enemy->getPosition());
+        } else if(compare(pawn->getRole(), enemy->getRole())) {
+            board_.setPawn(empty, enemy->getPosition());
+            move(position, direction);
+        } else {
+            board_.setPawn(empty, pawn->getPosition());
+            board_.setVisible(position.getX(), position.getY() - 1, false);
+        }
+        break;
+    case Direction::RIGHT :
+        enemy = board_.getPawns()[position.getX()][position.getY() + 1];
+        if(bothSameRole(pawn->getRole(), enemy->getRole())) {
+            board_.setPawn(empty, pawn->getPosition());
+            board_.setPawn(empty, enemy->getPosition());
+        } else if(compare(pawn->getRole(), enemy->getRole())) {
+            board_.setPawn(empty, enemy->getPosition());
+            move(position, direction);
+        } else {
+            board_.setPawn(empty, pawn->getPosition());
+            board_.setVisible(position.getX(), position.getY() + 1, false);
+        }
+        break;
+    }
 }
 

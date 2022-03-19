@@ -46,10 +46,11 @@ public:
      */
     void addPawn(Pawn& pawn, Position position);
     /**
-     * @brief getWater gives the position of the water on the board.
-     * @return the vector of position
+     * @brief getRole Gives the role of the pawn  at the given position in parameter.
+     * @param position the position
+     * @return the role of the pawn at the position
      */
-    vector<Position> getWater();
+    Role getRole(Position position);
     /**
      * @brief isEmpty checks if there is a pawn at the given position in parameter.
      * @param position the position
@@ -65,6 +66,12 @@ public:
      */
     bool isWater(int row, int col);
     /**
+     * @brief isAlone
+     * @param positon
+     * @return  TODO
+     */
+    bool isAlone(Position position);
+    /**
      * @brief isWater checks if there is a water at the position.
      * @param position the position
      * @param direction the direction
@@ -77,7 +84,25 @@ public:
      * @param position the position
      */
     void setPawn(optional<Pawn> pawn, Position position);
+    /**
+     * @brief setVisible sets the attribute visible with the boolean given in parameter.
+     * @param row the row
+     * @param column the column
+     * @param visible the visibility
+     */
     void setVisible(int row, int column, bool visible);
+    /**
+     * @brief setValide
+     * @param row
+     * @param column
+     * @param visible TODO
+     */
+    void setValide(int row, int column, bool visible);
+    /**
+     * @brief setPosition sets the position at the given position
+     * @param row the row
+     * @param col the column
+     */
     void setPosition(int row, int col);
 };
 

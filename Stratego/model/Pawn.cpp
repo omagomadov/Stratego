@@ -31,6 +31,10 @@ void Pawn::setVisible(bool visible) {
     visible_ = visible;
 }
 
+void Pawn::setValide(bool valide) {
+    valide_ = valide;
+}
+
 void Pawn::setPosition(int row, int col) {
     position_.setX(row);
     position_.setY(col);

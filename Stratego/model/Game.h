@@ -14,7 +14,6 @@ using namespace std;
  * @brief The Game class represents the game.
  */
 class Game {
-
     /**
      * @brief board_ represents the board of the game.
      */
@@ -62,22 +61,37 @@ public:
      */
     int getLevel();
     /**
+     * @brief getRole returns the role of the paw at the position.
+     * @param position the position
+     * @return the role of the position
+     */
+    Role getRole(Position position);
+    /**
      * @brief isInside checks if the given position in parameter is inside the board.
      * @param position the position
      * @return true if the position is inside the board else false
      */
     bool isInside(Position position);
     /**
-     * @brief isEnd checks if the game is ended. Checks if one of the flag is captured
-     * @return true if the game is ended else false
+     * @brief isInside checks if the given position in parameter is inside the board.
+     * @param position the position
+     * @param direction the direction
+     * @return true if the position is inside the board else false
      */
-    bool isEnd();
+    bool isInside(Position position, Direction direction);
     /**
      * @brief isPawn checks if there is a pawn at the given position in parameter.
      * @param position the positon
      * @return true if there is a pawn at the given position else false
      */
     bool isPawn(Position position);
+    /**
+     * @brief isPawn checks if there is a pawn at the given position in parameter.
+     * @param position the position
+     * @param direction the direction
+     * @return true if there is a pawn at the given position else false
+     */
+    bool isPawn(Position position, Direction direction);
     /**
      * @brief isPawnSameColor checks if the pawn at this position is equal to the color of the current player.
      * @param position the position
@@ -116,7 +130,7 @@ public:
      * @param col the column
      * @return true if there is water at this position else false
      */
-    bool isWater(int row, int col);
+    bool isWater(Position position);
     /**
      * @brief isWater checks if there is a water at the given position with the direction.
      * @param position the position
@@ -124,6 +138,7 @@ public:
      * @return true if there is water at this position else false
      */
     bool isWater(Position position, Direction direction);
+    bool isAlone(Position position);
     /**
      * @brief isAvailable checks if there is a pawn avalaible to place.
      * @param pawn the pawn
@@ -188,6 +203,12 @@ public:
      * @return true if the pawn is movable else false
      */
     bool isMovablePawn(Position position);
+    /**
+     * @brief battle makes battle.
+     * @param position the position
+     * @param direction the direction
+     */
+    void battle(Position position, Direction direction);
 private:
     /**
      * @brief addPawn adds a pawn on the board with the given position in parameter.
@@ -201,14 +222,7 @@ private:
      * @param role the role
      * @return the role
      */
-    Role retrieveRole(string role);
-    /**
-     * @brief battle compares 2 roles.
-     * @param pawn the role
-     * @param enemy the role
-     * @return true if the pawn is higher than the enemy else false
-     */
-    bool battle(Role pawn, Role enemy);
+    Role retrieveRole(const string role);
     /**
      * @brief bothSameRole check if the pawn and the enemy pawn given in parameter has equal role.
      * @param pawn the pawn
@@ -216,6 +230,13 @@ private:
      * @return true if the pawn and the enemy pawn has equal role else false
      */
     bool bothSameRole(Role pawn, Role enemy);
+    /**
+     * @brief compare compares 2 roles.
+     * @param pawn the role
+     * @param enemy the role
+     * @return true if the pawn is higher than the enemy else false
+     */
+    bool compare(Role pawn, Role enemy);
 };
 
 #endif // GAME_H

@@ -83,6 +83,7 @@ public:
      * @param visible the visibility
      */
     void setVisible(bool visible);
+    void setValide(bool valide);
     void setPosition(int row, int col);
     /**
      * @brief operator << overloaded operator <<.

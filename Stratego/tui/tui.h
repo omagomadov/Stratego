@@ -39,6 +39,7 @@ public:
      * @brief DisplayRemainingPawns displays the remaining pawns.
      */
     void displayRemainingPawns();
+    void displayWinner();
     /**
      * @brief askPosition asks to the current player a position.
      * @return the position that the player has given
@@ -61,9 +62,14 @@ public:
     int askLevel();
     /**
      * @brief askBoardInitialization asks wich type of initialization of the board.
-     * @return 1 if it is manual else 2 if is is from file
+     * @return 1 if it is manual else 2 if it is from file
      */
     int askBoardInitialization();
+    /**
+     * @brief askMovement asks number of movement of the pawn.
+     * @return the number of movement
+     */
+    int askMovement();
     /**
      * @brief askFileName asks the name of the file.
      * @return the name of the file
