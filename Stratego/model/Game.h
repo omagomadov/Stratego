@@ -165,6 +165,7 @@ public:
      * @param color
      */
     void setCurrentPlayer(Color color);
+    void setPosition(Position onBoard, Position newPos);
     /**
      * @brief initPawns initializes the pawns possible.
      */

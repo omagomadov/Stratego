@@ -83,9 +83,9 @@ bool Board::isAlone(Position position) {
     }
     // if the counter is equal to 0 that mean => he can't move
     if(count == 0) {
-        return true;
-    } else {
         return false;
+    } else {
+        return true;
     }
 }
 
@@ -167,6 +167,6 @@ void Board::setVisible(int row, int column, bool visible) {
     pawns_[row][column]->setVisible(visible);
 }
 
-void Board::setPosition(int row, int col) {
-    pawns_[row][col]->setPosition(row, col);
+void Board::setPosition(Position onBoard, Position newPos) {
+    pawns_[onBoard.getX()][onBoard.getY()]->setPosition(newPos.getX(), newPos.getY());
 }

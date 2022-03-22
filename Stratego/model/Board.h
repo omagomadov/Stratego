@@ -103,7 +103,7 @@ public:
      * @param row the row
      * @param col the column
      */
-    void setPosition(int row, int col);
+    void setPosition(Position onBoard, Position newPos);
 };
 
 #endif // BOARD_H

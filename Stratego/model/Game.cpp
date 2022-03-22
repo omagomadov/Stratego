@@ -126,25 +126,25 @@ void Game::move(Position& position, Direction direction) {
         board_.setPawn(empty, position);
         position.setX(position.getX() - 1);
         board_.setPawn(pawn, position);
-        board_.setPosition(position.getX(), position.getY());
+        board_.setPosition(position, position);
         break;
     case Direction::LEFT :
         board_.setPawn(empty, position);
         position.setY(position.getY() - 1);
         board_.setPawn(pawn, position);
-        board_.setPosition(position.getX(), position.getY());
+        board_.setPosition(position, position);
         break;
     case Direction::RIGHT :
         board_.setPawn(empty, position);
         position.setY(position.getY() + 1);
         board_.setPawn(pawn, position);
-        board_.setPosition(position.getX(), position.getY());
+        board_.setPosition(position, position);
         break;
     case Direction::BACKWARD :
         board_.setPawn(empty, position);
         position.setX(position.getX() + 1);
         board_.setPawn(pawn, position);
-        board_.setPosition(position.getX(), position.getY());
+        board_.setPosition(position, position);
         break;
     }
 }
@@ -186,6 +186,10 @@ void Game::setLevel(int level) {
 
 void Game::setCurrentPlayer(Color color) {
     currentPlayer_ = color;
+}
+
+void Game::setPosition(Position onBoard, Position newPos) {
+    board_.setPosition(onBoard, newPos);
 }
 
 void Game::addPawn(Pawn& pawn, Position position) {

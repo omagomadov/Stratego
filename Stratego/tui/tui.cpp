@@ -542,7 +542,7 @@ bool Controller::checkPosition(Position position) {
             // Checks if the selected pawn is your pawn (pawn color == current player color)
             if(game_.isPawnSameColor(position)) {
                 if(game_.isMovablePawn(position)) {
-                    if(!game_.isAlone(position)) {
+                    if(game_.isAlone(position)) {
                         return true;
                     } else {
                         cout << "[!] This pawn can't move because he has no exit" << endl;
