@@ -24,16 +24,32 @@ Le **Stratego** se joue à 2 joueurs (un joueur avec les pièces rouges, l'autre
     ├── Stratego.pro
     ├── Stratego.pro.user
     ├── config.pri
-    └── model
-        ├── Board.h
-        ├── Color.h
-        ├── Direction.h
-        ├── Game.h
-        ├── Pawn.h
-        ├── Position.h
-        ├── Role.h
-        ├── State.h
-        └── model.pro
+    ├── model
+    │   ├── Board.cpp
+    │   ├── Board.h
+    │   ├── Color.h
+    │   ├── Direction.h
+    │   ├── Game.cpp
+    │   ├── Game.h
+    │   ├── Pawn.cpp
+    │   ├── Pawn.h
+    │   ├── Position.cpp
+    │   ├── Position.h
+    │   ├── Role.h
+    │   ├── State.h
+    │   └── model.pro
+    ├── setup-board
+    │   └── default.txt
+    ├── tests
+    │   ├── Catch.h
+    │   ├── main.cpp
+    │   ├── model_test.cpp
+    │   └── tests.pro
+    └── tui
+        ├── main.cpp
+        ├── tui.cpp
+        ├── tui.h
+        └── tui.pro
 ```
 ---
 ## Estimation du temps
@@ -42,6 +58,8 @@ Le **Stratego** se joue à 2 joueurs (un joueur avec les pièces rouges, l'autre
 travail personnel : 6 heures<br>
 travail binôme : 10 heures<br>
 - Remise **console** :<br>
+travail personnel : 8 heures
+travail binôme : 70 heures
 /<br>
 - Remise **graphique**:<br>
 /<br>
