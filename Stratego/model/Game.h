@@ -192,6 +192,11 @@ public:
      * @param color the color
      */
     void fillBoard(string file, Color color);
+    /**
+     * @brief analyseFile analyses the file and checks if it is valide.
+     * @param file the name of the file
+     * @return true if the file is valide else false
+     */
     bool analyseFile(string file);
     /**
      * @brief decrementPawnCount decrements counter of the pawn with the role given in paramater

@@ -44,6 +44,10 @@ public:
      */
     void displayWinner();
     /**
+     * @brief displayEnd displays the a end message.
+     */
+    void displayEnd();
+    /**
      * @brief askPosition asks to the current player a position.
      * @return the position that the player has given
      */
@@ -137,13 +141,6 @@ private:
      * @param roles the roles
      */
     void initBlueBoard(int choice, Role role, Position position, array<Role, 12> roles);
-    /**
-     * @brief analyseFile analyzes the contents of the file.
-     * Checks if the file contains valid information
-     * @param name the name of the file
-     * @return true if the content of file is valid else false
-     */
-    //bool analyseFile(string name);
     /**
      * @brief checkPosition checks if the position respects the rules.
      * @param position the position

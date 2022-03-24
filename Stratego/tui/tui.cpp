@@ -137,6 +137,10 @@ void View::displayWinner() {
     cout << "==============================" << endl;
 }
 
+void View::displayEnd() {
+    cout << "The game is finished" << endl;
+}
+
 Position View::askPosition() {
     int row, col;
     char letter;
@@ -343,6 +347,7 @@ void Controller::play(Position& position, Direction& direction) {
         }
     }
     view_.displayWinner();
+    view_.displayEnd();
 }
 
 void Controller::initPlayers(int choice, Role role, Position position, array<Role, 12> roles) {
