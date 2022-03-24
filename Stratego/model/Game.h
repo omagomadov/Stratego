@@ -138,6 +138,11 @@ public:
      * @return true if there is water at this position else false
      */
     bool isWater(Position position, Direction direction);
+    /**
+     * @brief isAlone checks if the pawn at the position is surrounded.
+     * @param positon the position
+     * @return true if the pawn at the position is not surrounded else false
+     */
     bool isAlone(Position position);
     /**
      * @brief isAvailable checks if there is a pawn avalaible to place.
@@ -165,6 +170,12 @@ public:
      * @param color
      */
     void setCurrentPlayer(Color color);
+    /**
+     * @brief setPosition sets the attribute position of the pawn on the position 'onBoard' with the position
+     * given in parameter.
+     * @param row the row
+     * @param col the column
+     */
     void setPosition(Position onBoard, Position newPos);
     /**
      * @brief initPawns initializes the pawns possible.
@@ -181,6 +192,7 @@ public:
      * @param color the color
      */
     void fillBoard(string file, Color color);
+    bool analyseFile(string file);
     /**
      * @brief decrementPawnCount decrements counter of the pawn with the role given in paramater
      * @param role the role

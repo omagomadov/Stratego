@@ -55,29 +55,34 @@ bool Board::isAlone(Position position) {
     Position down {row - 1, column};
     Position left {row, column + 1};
     Position right {row, column - 1};
+    Color color = pawns_[row][column]->getColor();
     int count = 0;
     // check if neighbor (incremente), if neighbor is valid decremente
     if(isInside(up)) {
         count++;
-        if(pawns_[row + 1][column]->isValide() && isInside(up)) {
+        if(pawns_[row + 1][column]->isValide()
+                && pawns_[row + 1][column]->getColor() == color) {
             count--;
         }
     }
     if(isInside(down)) {
         count++;
-        if(pawns_[row - 1][column]->isValide() && isInside(down)) {
+        if(pawns_[row - 1][column]->isValide()
+                && pawns_[row - 1][column]->getColor() == color) {
             count--;
         }
     }
     if(isInside(left)) {
         count++;
-        if(pawns_[row][column + 1]->isValide() && isInside(left)) {
+        if(pawns_[row][column + 1]->isValide()
+                && pawns_[row][column + 1]->getColor() == color) {
             count--;
         }
     }
     if(isInside(right)) {
         count++;
-        if(pawns_[row][column - 1]->isValide() && isInside(right)) {
+        if(pawns_[row][column - 1]->isValide()
+                && pawns_[row][column - 1]->getColor() == color) {
             count--;
         }
     }

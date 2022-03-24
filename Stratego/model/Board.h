@@ -66,9 +66,9 @@ public:
      */
     bool isWater(int row, int col);
     /**
-     * @brief isAlone
-     * @param positon
-     * @return  TODO
+     * @brief isAlone checks if the pawn at the position is surrounded.
+     * @param positon the position
+     * @return true if the pawn at the position is not surrounded else false
      */
     bool isAlone(Position position);
     /**
@@ -92,14 +92,15 @@ public:
      */
     void setVisible(int row, int column, bool visible);
     /**
-     * @brief setValide
-     * @param row
-     * @param column
-     * @param visible TODO
+     * @brief setValide sets the attribute valide with the boolean given in parameter.
+     * @param row the row
+     * @param column the column
+     * @param valide the validity
      */
-    void setValide(int row, int column, bool visible);
+    void setValide(int row, int column, bool valide);
     /**
-     * @brief setPosition sets the position at the given position
+     * @brief setPosition sets the attribute position of the pawn on the position 'onBoard' with the position
+     * given in parameter.
      * @param row the row
      * @param col the column
      */

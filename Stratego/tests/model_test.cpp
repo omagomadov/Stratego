@@ -3,31 +3,33 @@
 #include <Game.h>
 #include <iostream>
 
-TEST_CASE("Test_model")
+TEST_CASE("test_isInside")
 {
-    SECTION("isInside_true")
+    SECTION("test_isInside_true")
     {
         Board board {};
         Position position {0,0};
         REQUIRE(board.isInside(position) == true);
     }
 
-    SECTION("isInside_false_row")
+    SECTION("test_isInside_false_row")
     {
         Board board {};
         Position position {-9,10};
         REQUIRE(board.isInside(position) == false);
     }
 
-    SECTION("isInside_false_column")
+    SECTION("test_isInside_false_column")
     {
         Board board {};
         Position position {9,-10};
         REQUIRE(board.isInside(position) == false);
     }
+}
 
-
-    SECTION("isEmpty_true_BACKWARD")
+TEST_CASE("test_isEmpty")
+{
+    SECTION("test_isEmpty_true_BACKWARD")
     {
         Board board {};
         Position position {0,0};
@@ -35,7 +37,7 @@ TEST_CASE("Test_model")
         REQUIRE(board.isEmpty(position, direction) == true);
     }
 
-    SECTION("isEmpty_true_FORWARD")
+    SECTION("test_isEmpty_true_FORWARD")
     {
         Board board {};
         Position position {1,0};
@@ -43,7 +45,7 @@ TEST_CASE("Test_model")
         REQUIRE(board.isEmpty(position, direction) == true);
     }
 
-    SECTION("isEmpty_true_LEFT")
+    SECTION("test_isEmpty_true_LEFT")
     {
         Board board {};
         Position position {1,1};
@@ -51,7 +53,7 @@ TEST_CASE("Test_model")
         REQUIRE(board.isEmpty(position, direction) == true);
     }
 
-    SECTION("isEmpty_true_RIGHT")
+    SECTION("test_isEmpty_true_RIGHT")
     {
         Board board {};
         Position position {1,1};
@@ -59,7 +61,7 @@ TEST_CASE("Test_model")
         REQUIRE(board.isEmpty(position, direction) == true);
     }
 
-    SECTION("isEmpty_false_BACKWARD")
+    SECTION("test_isEmpty_false_BACKWARD")
     {
         Board board {};
         Position position {0,0};
@@ -69,7 +71,7 @@ TEST_CASE("Test_model")
         REQUIRE(board.isEmpty(position, direction) == false);
     }
 
-    SECTION("isEmpty_false_FORWARD")
+    SECTION("test_isEmpty_false_FORWARD")
     {
         Board board {};
         Position position {1,0};
@@ -79,7 +81,7 @@ TEST_CASE("Test_model")
         REQUIRE(board.isEmpty(position, direction) == false);
     }
 
-    SECTION("isEmpty_false_LEFT")
+    SECTION("test_isEmpty_false_LEFT")
     {
         Board board {};
         Position position {1,1};
@@ -89,7 +91,7 @@ TEST_CASE("Test_model")
         REQUIRE(board.isEmpty(position, direction) == false);
     }
 
-    SECTION("isEmpty_false_RIGHT")
+    SECTION("test_isEmpty_false_RIGHT")
     {
         Board board {};
         Position position {1,0};
@@ -98,62 +100,68 @@ TEST_CASE("Test_model")
         board.addPawn(pawn, Position{1,1});
         REQUIRE(board.isEmpty(position, direction) == false);
     }
+}
 
-    SECTION("isWater_01_true")
+TEST_CASE("test_isWater")
+{
+    SECTION("test_isWater_01_true")
     {
         Board board {};
         REQUIRE(board.isWater(4,2) == true);
     }
 
-    SECTION("isWater_02_true")
+    SECTION("test_isWater_02_true")
     {
         Board board {};
         REQUIRE(board.isWater(5,2) == true);
     }
 
-    SECTION("isWater_03_true")
+    SECTION("test_isWater_03_true")
     {
         Board board {};
         REQUIRE(board.isWater(4,3) == true);
     }
 
-    SECTION("isWater_04_true")
+    SECTION("test_isWater_04_true")
     {
         Board board {};
         REQUIRE(board.isWater(5,3) == true);
     }
 
-    SECTION("isWater_01_true")
+    SECTION("test_isWater_05_true")
     {
         Board board {};
         REQUIRE(board.isWater(4,6) == true);
     }
 
-    SECTION("isWater_02_true")
+    SECTION("test_isWater_06_true")
     {
         Board board {};
         REQUIRE(board.isWater(4,7) == true);
     }
 
-    SECTION("isWater_03_true")
+    SECTION("test_isWater_07_true")
     {
         Board board {};
         REQUIRE(board.isWater(5,6) == true);
     }
 
-    SECTION("isWater_04_true")
+    SECTION("test_isWater_08_true")
     {
         Board board {};
         REQUIRE(board.isWater(5,7) == true);
     }
 
-    SECTION("isWater_can_not_move_1")
+    SECTION("test_isWater_can_not_move_1")
     {
         Board board {};
         REQUIRE(board.isWater(5,7) == true);
     }
+}
 
-    SECTION("isAlone_1_corner_false")
+TEST_CASE("test_isAlone")
+{
+    SECTION("test_isAlone_1_corner_false")
     {
         Board board {};
         Position test {0,0};
@@ -162,17 +170,19 @@ TEST_CASE("Test_model")
         Position second_pawn {1,0};
         Position third_pawn {1,1};
         // init pawn
+        Pawn pawn {Role::GENERAL, Color::BLUE, test, true};
         Pawn pawn_1 {Role::COLONEL, Color::BLUE, first_pawn, true};
         Pawn pawn_2 {Role::COMMANDER, Color::BLUE, second_pawn, true};
         Pawn pawn_3 {Role::GENERAL, Color::BLUE, third_pawn, true};
         // add pawns
+        board.addPawn(pawn, test);
         board.addPawn(pawn_1, first_pawn);
         board.addPawn(pawn_2, second_pawn);
         board.addPawn(pawn_3, third_pawn);
         REQUIRE(board.isAlone(test) == false);
     }
 
-    SECTION("isAlone_2_corner_false")
+    SECTION("test_isAlone_2_corner_false")
     {
         Board board {};
         Position test {9,0};
@@ -181,17 +191,19 @@ TEST_CASE("Test_model")
         Position second_pawn {8,1};
         Position third_pawn {9,1};
         // init pawn
+        Pawn pawn {Role::LIEUTENANT, Color::BLUE, test, true};
         Pawn pawn_1 {Role::COLONEL, Color::BLUE, first_pawn, true};
         Pawn pawn_2 {Role::COMMANDER, Color::BLUE, second_pawn, true};
         Pawn pawn_3 {Role::GENERAL, Color::BLUE, third_pawn, true};
         // add pawns
+        board.addPawn(pawn, test);
         board.addPawn(pawn_1, first_pawn);
         board.addPawn(pawn_2, second_pawn);
         board.addPawn(pawn_3, third_pawn);
         REQUIRE(board.isAlone(test) == false);
     }
 
-    SECTION("isAlone_3_corner_false")
+    SECTION("test_isAlone_3_corner_false")
     {
         Board board {};
         Position test {0,9};
@@ -200,17 +212,19 @@ TEST_CASE("Test_model")
         Position second_pawn {1,8};
         Position third_pawn {1,9};
         // init pawn
+        Pawn pawn {Role::LIEUTENANT, Color::BLUE, test, true};
         Pawn pawn_1 {Role::COLONEL, Color::BLUE, first_pawn, true};
         Pawn pawn_2 {Role::COMMANDER, Color::BLUE, second_pawn, true};
         Pawn pawn_3 {Role::GENERAL, Color::BLUE, third_pawn, true};
         // add pawns
+        board.addPawn(pawn, test);
         board.addPawn(pawn_1, first_pawn);
         board.addPawn(pawn_2, second_pawn);
         board.addPawn(pawn_3, third_pawn);
         REQUIRE(board.isAlone(test) == false);
     }
 
-    SECTION("isAlone_4_corner_false")
+    SECTION("test_isAlone_4_corner_false")
     {
         Board board {};
         Position test {9,9};
@@ -219,17 +233,19 @@ TEST_CASE("Test_model")
         Position second_pawn {8,8};
         Position third_pawn {8,9};
         // init pawn
+        Pawn pawn {Role::LIEUTENANT, Color::BLUE, test, true};
         Pawn pawn_1 {Role::COLONEL, Color::BLUE, first_pawn, true};
         Pawn pawn_2 {Role::COMMANDER, Color::BLUE, second_pawn, true};
         Pawn pawn_3 {Role::GENERAL, Color::BLUE, third_pawn, true};
         // add pawns
+        board.addPawn(pawn, test);
         board.addPawn(pawn_1, first_pawn);
         board.addPawn(pawn_2, second_pawn);
         board.addPawn(pawn_3, third_pawn);
         REQUIRE(board.isAlone(test) == false);
     }
 
-    SECTION("isAlone_5_true")
+    SECTION("test_isAlone_5_true")
     {
         Board board {};
         Position test {3,4};
@@ -238,17 +254,22 @@ TEST_CASE("Test_model")
         Position second_pawn {2,4};
         Position third_pawn {2,5};
         // init pawn
+        Pawn pawn {Role::MAJOR, Color::BLUE, test, true};
         Pawn pawn_1 {Role::COLONEL, Color::BLUE, first_pawn, true};
         Pawn pawn_2 {Role::COMMANDER, Color::BLUE, second_pawn, true};
         Pawn pawn_3 {Role::GENERAL, Color::BLUE, third_pawn, true};
         // add pawns
+        board.addPawn(pawn, test);
         board.addPawn(pawn_1, first_pawn);
         board.addPawn(pawn_2, second_pawn);
         board.addPawn(pawn_3, third_pawn);
         REQUIRE(board.isAlone(test) == true);
     }
+}
 
-    SECTION("addPawn_isValide_1")
+TEST_CASE("test_isValide")
+{
+    SECTION("test_addPawn_isValide_1")
     {
         Board board {};
         Position position {0,0};
@@ -257,14 +278,17 @@ TEST_CASE("Test_model")
         REQUIRE(board.getPawns()[0][0]->isValide() == true);
     }
 
-    SECTION("isValide_1")
+    SECTION("test_isValide_1")
     {
         Board board {};
         Position position {0,0};
         REQUIRE(board.getPawns()[0][0]->isValide() == false);
     }
+}
 
-    SECTION("isEnemy_true_FORWARD")
+TEST_CASE("test_isEnemy")
+{
+    SECTION("test_isEnemy_true_FORWARD")
     {
         Game game {};
         Color myColor = Color::RED;
@@ -275,7 +299,7 @@ TEST_CASE("Test_model")
         REQUIRE(game.isEnemy(myPosition, Direction::FORWARD, myColor) == true);
     }
 
-    SECTION("isEnemy_true_BACKWARD")
+    SECTION("test_isEnemy_true_BACKWARD")
     {
         Game game {};
         Color myColor = Color::BLUE;
@@ -286,7 +310,7 @@ TEST_CASE("Test_model")
         REQUIRE(game.isEnemy(myPosition, Direction::BACKWARD, myColor) == true);
     }
 
-    SECTION("isEnemy_true_LEFT")
+    SECTION("test_isEnemy_true_LEFT")
     {
         Game game {};
         Color myColor = Color::RED;
@@ -297,7 +321,7 @@ TEST_CASE("Test_model")
         REQUIRE(game.isEnemy(myPosition, Direction::LEFT, myColor) == true);
     }
 
-    SECTION("isEnemy_true_RIGHT")
+    SECTION("test_isEnemy_true_RIGHT")
     {
         Game game {};
         Color myColor = Color::BLUE;
@@ -308,7 +332,7 @@ TEST_CASE("Test_model")
         REQUIRE(game.isEnemy(myPosition, Direction::RIGHT, myColor) == true);
     }
 
-    SECTION("isEnemy_false_FORWARD")
+    SECTION("test_isEnemy_false_FORWARD")
     {
         Game game {};
         Color myColor = Color::BLUE;
@@ -319,7 +343,7 @@ TEST_CASE("Test_model")
         REQUIRE(game.isEnemy(myPosition, Direction::FORWARD, myColor) == false);
     }
 
-    SECTION("isEnemy_false_BACKWARD")
+    SECTION("test_isEnemy_false_BACKWARD")
     {
         Game game {};
         Color myColor = Color::RED;
@@ -330,7 +354,7 @@ TEST_CASE("Test_model")
         REQUIRE(game.isEnemy(myPosition, Direction::BACKWARD, myColor) == false);
     }
 
-    SECTION("isEnemy_false_LEFT")
+    SECTION("test_isEnemy_false_LEFT")
     {
         Game game {};
         Color myColor = Color::RED;
@@ -341,7 +365,7 @@ TEST_CASE("Test_model")
         REQUIRE(game.isEnemy(myPosition, Direction::LEFT, myColor) == false);
     }
 
-    SECTION("isEnemy_true_RIGHT")
+    SECTION("test_isEnemy_true_RIGHT")
     {
         Game game {};
         Color myColor = Color::RED;
@@ -351,8 +375,11 @@ TEST_CASE("Test_model")
         game.addPawn(enemy, enemyPosition);
         REQUIRE(game.isEnemy(myPosition, Direction::RIGHT, myColor) == false);
     }
+}
 
-    SECTION("move_FORWARD")
+TEST_CASE("test_move")
+{
+    SECTION("test_move_FORWARD")
     {
         Game game {};
         Position position {1,4};
@@ -364,7 +391,7 @@ TEST_CASE("Test_model")
         REQUIRE(expected == result);
     }
 
-    SECTION("move_BACKWARD")
+    SECTION("test_move_BACKWARD")
     {
         Game game {};
         Position position {1,4};
@@ -376,7 +403,7 @@ TEST_CASE("Test_model")
         REQUIRE(expected == result);
     }
 
-    SECTION("move_LEFT")
+    SECTION("test_move_LEFT")
     {
         Game game {};
         Position position {1,4};
@@ -388,7 +415,7 @@ TEST_CASE("Test_model")
         REQUIRE(expected == result);
     }
 
-    SECTION("move_RIGHT")
+    SECTION("test_move_RIGHT")
     {
         Game game {};
         Position position {1,4};
@@ -400,7 +427,28 @@ TEST_CASE("Test_model")
         REQUIRE(expected == result);
     }
 
-    SECTION("battle_BothSameRole")
+    SECTION("test_cant_move_BOMB")
+    {
+        Game game {};
+        Position bomb_pos {1,2};
+        Pawn bomb {Role::BOMB, Color::RED, bomb_pos, true};
+        game.addPawn(bomb, bomb_pos);
+        REQUIRE_THROWS(game.move(bomb_pos, Direction::FORWARD));
+    }
+
+    SECTION("test_cant_move_FLAG")
+    {
+        Game game {};
+        Position flag_pos {1,2};
+        Pawn bomb {Role::BOMB, Color::RED, flag_pos, true};
+        game.addPawn(bomb, flag_pos);
+        REQUIRE_THROWS(game.move(flag_pos, Direction::FORWARD));
+    }
+}
+
+TEST_CASE("test_battle")
+{
+    SECTION("test_battle_BothSameRole")
     {
         Game game {};
         Position pawn_position {3,3};
@@ -413,7 +461,7 @@ TEST_CASE("Test_model")
         REQUIRE(game.getPawns()[3][3]->isValide() == false);
     }
 
-    SECTION("battle_isHigher")
+    SECTION("test_battle_isHigher")
     {
         Game game {};
         Position pawn_position {3,3};
@@ -426,7 +474,7 @@ TEST_CASE("Test_model")
         REQUIRE(game.getPawns()[2][3]->isValide() == true);
     }
 
-    SECTION("battle_isLower")
+    SECTION("test_battle_isLower")
     {
         Game game {};
         Position pawn_position {3,3};
@@ -438,8 +486,11 @@ TEST_CASE("Test_model")
         game.battle(pawn_position, Direction::FORWARD);
         REQUIRE(game.getPawns()[3][3]->isValide() == false);
     }
+}
 
-    SECTION("nextPlayer_Blue")
+TEST_CASE("test_nextPlayer")
+{
+    SECTION("test_nextPlayer_Blue")
     {
         Game game {};
         game.setCurrentPlayer(Color::BLUE);
@@ -449,7 +500,7 @@ TEST_CASE("Test_model")
         REQUIRE(expected == result);
     }
 
-    SECTION("nextPlayer_Red")
+    SECTION("test_nextPlayer_Red")
     {
         Game game {};
         game.setCurrentPlayer(Color::RED);
@@ -458,8 +509,11 @@ TEST_CASE("Test_model")
         Color result = game.getCurrentPlayer();
         REQUIRE(expected == result);
     }
+}
 
-    SECTION("isPawnSameColor_true")
+TEST_CASE("test_isPawnSameColor")
+{
+    SECTION("test_isPawnSameColor_true")
     {
         Game game {};
         game.setCurrentPlayer(Color::RED);
@@ -471,7 +525,7 @@ TEST_CASE("Test_model")
         REQUIRE(expected == result);
     }
 
-    SECTION("isPawnSameColor_false")
+    SECTION("test_isPawnSameColor_false")
     {
         Game game {};
         game.setCurrentPlayer(Color::BLUE);

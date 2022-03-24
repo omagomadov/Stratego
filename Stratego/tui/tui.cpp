@@ -271,9 +271,9 @@ int View::askMovement() {
 
 string View::askFileName() {
     string file;
-    cout << ">> What is the name of the file?" << endl;
+    cout << ">> What is the name of the file? [or type default.txt]" << endl;
     cin >> file;
-    return file;
+    return "../../Stratego/setup-board/" + file;
 }
 
 Controller::Controller(Game& game, View& view) : game_ {game}, view_ {view} {}
@@ -363,7 +363,7 @@ void Controller::initPlayers(int choice, Role role, Position position, array<Rol
                 // I guarantee that FillBoard() receives a file that exists
                 file.close();
                 cout << "File successfully opened" << endl;
-                if(!analyseFile(name)) {
+                if(!game_.analyseFile(name)) {
                     cout << "An error occurs" << endl;
                     cout << "The file contains invalid data" << endl;
                 } else {
@@ -391,7 +391,7 @@ void Controller::initPlayers(int choice, Role role, Position position, array<Rol
                 // I guarantee that FillBoard() receives a file that exists
                 file.close();
                 cout << "File successfully opened" << endl;
-                if(!analyseFile(name)) {
+                if(!game_.analyseFile(name)) {
                     cout << "An error occurs" << endl;
                     cout << "The file contains invalid data" << endl;
                 } else {
@@ -479,59 +479,6 @@ void Controller::initBlueBoard(int choice, Role role, Position position, array<R
             game_.setState(State::RED_TURN);
         }
     }
-}
-
-bool Controller::analyseFile(string name) {
-    fstream file;
-    int count = 0;
-    map<string, int> pawns;
-    pawns.insert({"1", 1});
-    pawns.insert({"2", 8});
-    pawns.insert({"3", 5});
-    pawns.insert({"4", 4});
-    pawns.insert({"5", 4});
-    pawns.insert({"6", 4});
-    pawns.insert({"7", 3});
-    pawns.insert({"8", 2});
-    pawns.insert({"9", 1});
-    pawns.insert({"10", 1});
-    pawns.insert({"B", 6});
-    pawns.insert({"F", 1});
-    file.open(name);
-    string acceptedPawns {"1 2 3 4 5 6 7 8 9 10 B F"};
-    while(!file.eof()) {
-        // for each line delimited with ' '
-        for (string line; getline(file, line, ' '); ) {
-            // if value size is 2 and first char is not in accepted => have \r\n
-            if(line.size() == 3) {
-                if((acceptedPawns.find(line.at(0)) != string::npos) &&
-                        (acceptedPawns.find(line.at(2)) != string::npos)) {
-                    pawns[string(1, line.at(0))] = pawns[string(1, line.at(0))] - 1;
-                    pawns[string(1, line.at(2))] = pawns[string(1, line.at(2))] - 1;
-                } else {
-                    file.close();
-                    return false;
-                }
-            } else {
-                pawns[line] = pawns[line] - 1;
-                // return false immediately if a value is not a accepted pawn (avoid useless loop !)
-                // (or) maximum number of pawns exceeded
-                // (or) maximum (max. 40 pawns) number of pawns on the board exceeded
-                if(acceptedPawns.find(line) == string::npos || count > 40 || pawns[line] < 0) {
-                    file.close();
-                    return false;
-                }
-            }
-            count++;
-        }
-    }
-    // if count => 0. That mean that there is no pawn
-    if(count == 0) {
-        file.close();
-        return false;
-    }
-    file.close();
-    return true;
 }
 
 bool Controller::checkPosition(Position position) {

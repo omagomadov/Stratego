@@ -5,4 +5,5 @@ SUBDIRS += \
     tests \
     tui
 
-OTHER_FILES += config.pri
+OTHER_FILES += config.pri \
+               setup-board/default.txt

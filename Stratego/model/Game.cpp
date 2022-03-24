@@ -1,5 +1,6 @@
 #include "Game.h"
 #include <fstream>
+#include <stdexcept>
 #include <iostream>
 #include <vector>
 
@@ -121,6 +122,9 @@ bool Game::isAlone(Position position) {
 void Game::move(Position& position, Direction direction) {
     optional<Pawn> empty;
     optional<Pawn> pawn = board_.getPawns()[position.getX()][position.getY()];
+    if(getRole(position) == Role::BOMB || getRole(position) == Role::FLAG) {
+        throw invalid_argument("Pawn can't move");
+    }
     switch(direction) {
     case Direction::FORWARD :
         board_.setPawn(empty, position);
@@ -293,6 +297,59 @@ void Game::fillBoard(string file, Color color) {
             }
         }
     }
+}
+
+bool Game::analyseFile(string name) {
+    fstream file;
+    int count = 0;
+    map<string, int> pawns;
+    pawns.insert({"1", 1});
+    pawns.insert({"2", 8});
+    pawns.insert({"3", 5});
+    pawns.insert({"4", 4});
+    pawns.insert({"5", 4});
+    pawns.insert({"6", 4});
+    pawns.insert({"7", 3});
+    pawns.insert({"8", 2});
+    pawns.insert({"9", 1});
+    pawns.insert({"10", 1});
+    pawns.insert({"B", 6});
+    pawns.insert({"F", 1});
+    file.open(name);
+    string acceptedPawns {"1 2 3 4 5 6 7 8 9 10 B F"};
+    while(!file.eof()) {
+        // for each line delimited with ' '
+        for (string line; getline(file, line, ' '); ) {
+            // if value size is 2 and first char is not in accepted => have \r\n
+            if(line.size() == 3) {
+                if((acceptedPawns.find(line.at(0)) != string::npos) &&
+                        (acceptedPawns.find(line.at(2)) != string::npos)) {
+                    pawns[string(1, line.at(0))] = pawns[string(1, line.at(0))] - 1;
+                    pawns[string(1, line.at(2))] = pawns[string(1, line.at(2))] - 1;
+                } else {
+                    file.close();
+                    return false;
+                }
+            } else {
+                pawns[line] = pawns[line] - 1;
+                // return false immediately if a value is not a accepted pawn (avoid useless loop !)
+                // (or) maximum number of pawns exceeded
+                // (or) maximum (max. 40 pawns) number of pawns on the board exceeded
+                if(acceptedPawns.find(line) == string::npos || count > 40 || pawns[line] < 0) {
+                    file.close();
+                    return false;
+                }
+            }
+            count++;
+        }
+    }
+    // if count => 0. That mean that there is no pawn
+    if(count == 0) {
+        file.close();
+        return false;
+    }
+    file.close();
+    return true;
 }
 
 void Game::addPawn(const string role, Position position, Color color) {

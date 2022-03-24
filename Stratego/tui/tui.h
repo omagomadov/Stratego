@@ -39,6 +39,9 @@ public:
      * @brief DisplayRemainingPawns displays the remaining pawns.
      */
     void displayRemainingPawns();
+    /**
+     * @brief displayWinner displays the winner.
+     */
     void displayWinner();
     /**
      * @brief askPosition asks to the current player a position.
@@ -140,7 +143,7 @@ private:
      * @param name the name of the file
      * @return true if the content of file is valid else false
      */
-    bool analyseFile(string name);
+    //bool analyseFile(string name);
     /**
      * @brief checkPosition checks if the position respects the rules.
      * @param position the position
