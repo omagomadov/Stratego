@@ -323,7 +323,7 @@ void Controller::play(Position& position, Direction& direction) {
                 game_.move(position, direction);
                 movement--;
             }
-            if(game_.isEnemy(position, direction, game_.getCurrentPlayer())) {
+            if(movement != 0 && game_.isEnemy(position, direction, game_.getCurrentPlayer())) {
                 // display the board with the pawn of the enemy visible
                 view_.displayBattle();
                 // start battle

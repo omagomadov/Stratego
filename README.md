@@ -148,8 +148,7 @@ travail personnel : 6 heures<br>
 travail binôme : 10 heures<br>
 - Remise **console** :<br>
 travail personnel : 8 heures<br>
-travail binôme : 70 heures<br>
-/<br>
+travail binôme : 72 heures<br>
 - Remise **graphique**:<br>
 /<br>
 

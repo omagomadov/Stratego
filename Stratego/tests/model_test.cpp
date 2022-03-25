@@ -3,6 +3,78 @@
 #include <Game.h>
 #include <iostream>
 
+TEST_CASE("test_battle")
+{
+    SECTION("test_battle_BothSameRole")
+    {
+        Game game {};
+        Position pawn_position {3,3};
+        Position pawn_enemy {2,3};
+        Pawn pawn {Role::COMMANDER, Color::RED, pawn_position, true};
+        Pawn enemy {Role::COMMANDER, Color::BLUE, pawn_enemy, true};
+        game.addPawn(pawn, pawn_position);
+        game.addPawn(enemy, pawn_enemy);
+        game.battle(pawn_position, Direction::FORWARD);
+        REQUIRE(game.getPawns()[3][3]->isValide() == false);
+    }
+
+    SECTION("test_battle_isHigher")
+    {
+        Game game {};
+        Position pawn_position {3,3};
+        Position pawn_enemy {2,3};
+        Pawn pawn {Role::MARSHAL, Color::RED, pawn_position, true};
+        Pawn enemy {Role::GENERAL, Color::BLUE, pawn_enemy, true};
+        game.addPawn(pawn, pawn_position);
+        game.addPawn(enemy, pawn_enemy);
+        game.battle(pawn_position, Direction::FORWARD);
+        REQUIRE(game.getPawns()[2][3]->isValide() == true);
+    }
+
+    SECTION("test_battle_isLower")
+    {
+        Game game {};
+        Position pawn_position {3,3};
+        Position pawn_enemy {2,3};
+        Pawn pawn {Role::COMMANDER, Color::RED, pawn_position, true};
+        Pawn enemy {Role::MARSHAL, Color::BLUE, pawn_enemy, true};
+        game.addPawn(pawn, pawn_position);
+        game.addPawn(enemy, pawn_enemy);
+        game.battle(pawn_position, Direction::FORWARD);
+        REQUIRE(game.getPawns()[3][3]->isValide() == false);
+    }
+
+    SECTION("test_spy_win_against_marshal")
+    {
+        Game game {};
+        Position pos_spy {2,2};
+        Position pos_marshal {1,2};
+        Pawn spy {Role::SPY, Color::BLUE, pos_spy, true};
+        Pawn marshal {Role::MARSHAL, Color::RED, pos_marshal, true};
+        game.addPawn(spy, pos_spy);
+        game.addPawn(marshal, pos_marshal);
+        game.battle(pos_spy, Direction::FORWARD);
+        Role expected = Role::SPY;
+        Role result = game.getRole(pos_marshal);
+        REQUIRE(expected == result);
+    }
+
+    SECTION("test_minesweeper_win_against_bomb")
+    {
+        Game game {};
+        Position pos_minesweeper {2,2};
+        Position pos_bomb {1,2};
+        Pawn minesweeper {Role::MINESWEEPER, Color::BLUE, pos_minesweeper, true};
+        Pawn bomb {Role::BOMB, Color::RED, pos_bomb, false};
+        game.addPawn(minesweeper, pos_minesweeper);
+        game.addPawn(bomb, pos_bomb);
+        game.battle(pos_minesweeper, Direction::FORWARD);
+        Role expected = Role::MINESWEEPER;
+        Role result = game.getRole(pos_bomb);
+        REQUIRE(expected == result);
+    }
+}
+
 TEST_CASE("test_isInside")
 {
     SECTION("test_isInside_true")
@@ -443,48 +515,6 @@ TEST_CASE("test_move")
         Pawn bomb {Role::BOMB, Color::RED, flag_pos, true};
         game.addPawn(bomb, flag_pos);
         REQUIRE_THROWS(game.move(flag_pos, Direction::FORWARD));
-    }
-}
-
-TEST_CASE("test_battle")
-{
-    SECTION("test_battle_BothSameRole")
-    {
-        Game game {};
-        Position pawn_position {3,3};
-        Position pawn_enemy {2,3};
-        Pawn pawn {Role::COMMANDER, Color::RED, pawn_position, true};
-        Pawn enemy {Role::COMMANDER, Color::BLUE, pawn_enemy, true};
-        game.addPawn(pawn, pawn_position);
-        game.addPawn(enemy, pawn_enemy);
-        game.battle(pawn_position, Direction::FORWARD);
-        REQUIRE(game.getPawns()[3][3]->isValide() == false);
-    }
-
-    SECTION("test_battle_isHigher")
-    {
-        Game game {};
-        Position pawn_position {3,3};
-        Position pawn_enemy {2,3};
-        Pawn pawn {Role::MARSHAL, Color::RED, pawn_position, true};
-        Pawn enemy {Role::GENERAL, Color::BLUE, pawn_enemy, true};
-        game.addPawn(pawn, pawn_position);
-        game.addPawn(enemy, pawn_enemy);
-        game.battle(pawn_position, Direction::FORWARD);
-        REQUIRE(game.getPawns()[2][3]->isValide() == true);
-    }
-
-    SECTION("test_battle_isLower")
-    {
-        Game game {};
-        Position pawn_position {3,3};
-        Position pawn_enemy {2,3};
-        Pawn pawn {Role::COMMANDER, Color::RED, pawn_position, true};
-        Pawn enemy {Role::MARSHAL, Color::BLUE, pawn_enemy, true};
-        game.addPawn(pawn, pawn_position);
-        game.addPawn(enemy, pawn_enemy);
-        game.battle(pawn_position, Direction::FORWARD);
-        REQUIRE(game.getPawns()[3][3]->isValide() == false);
     }
 }
 
