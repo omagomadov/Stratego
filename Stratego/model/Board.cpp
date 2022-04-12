@@ -74,12 +74,6 @@ bool Board::isAlone(Position position) {
             count--;
         }
     }
-    // if the counter is equal to 0 that mean => he can't move
-    //    if(count == 0) {
-    //        return false;
-    //    } else {
-    //        return true;
-    //    }
     return count != 0;
 }
 
