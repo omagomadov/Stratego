@@ -3,6 +3,7 @@
 
 #include "Game.h"
 
+namespace stratego {
 /**
  * @brief The View class represents the class View.
  */
@@ -84,6 +85,9 @@ public:
     std::string askFileName();
 };
 
+}
+
+namespace stratego {
 /**
  * @brief The Controller class represents the class Controller.
  */
@@ -155,5 +159,7 @@ private:
      */
     bool checkDirection(stratego::Position position, Direction direction);
 };
+
+}
 
 #endif // TUI_H
