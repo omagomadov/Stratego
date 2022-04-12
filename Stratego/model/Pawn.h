@@ -6,8 +6,7 @@
 #include "Position.h"
 #include <ostream>
 
-using namespace std;
-
+namespace stratego {
 /**
  * @brief The Pawn class represents the pawn of the game.
  */
@@ -24,7 +23,7 @@ class Pawn {
     /**
      * @brief position_ represents the position of the pawn.
      */
-    Position position_;
+    stratego::Position position_;
     /**
      * @brief movable_ represents if the pawn is movable or not.
      */
@@ -47,7 +46,7 @@ public:
      * @param position the position
      * @param movable the movability
      */
-    Pawn(Role role, Color color, Position position, bool movable);
+    Pawn(Role role, Color color, stratego::Position position, bool movable);
     /**
      * @brief getRole getter of the role.
      * @return the role
@@ -62,7 +61,7 @@ public:
      * @brief getPosition getter of the position.
      * @return the position
      */
-    Position getPosition();
+    stratego::Position getPosition();
     /**
      * @brief isValide getter of valide.
      * @return the validity
@@ -100,7 +99,8 @@ public:
      * @param obj the pawn
      * @return reference of ostream
      */
-    friend ostream& operator<<(ostream& out, Pawn obj);
+    friend std::ostream& operator<<(std::ostream& out, stratego::Pawn obj);
 };
+}
 
 #endif // PAWN_H

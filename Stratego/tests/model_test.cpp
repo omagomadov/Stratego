@@ -3,6 +3,8 @@
 #include <Game.h>
 #include <iostream>
 
+using namespace stratego;
+
 TEST_CASE("test_battle")
 {
     SECTION("test_battle_BothSameRole")

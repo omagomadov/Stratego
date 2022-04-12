@@ -2,6 +2,7 @@
 #include "tui.h"
 
 using namespace std;
+using namespace stratego;
 
 int main()
 {

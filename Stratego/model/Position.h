@@ -3,8 +3,7 @@
 
 #include <ostream>
 
-using namespace std;
-
+namespace stratego {
 /**
  * @brief The Position class represents the position.
  */
@@ -57,7 +56,8 @@ public:
      * @param obj the pawn
      * @return reference of ostream
      */
-    friend ostream& operator<<(ostream& out, Position& obj);
+    friend std::ostream& operator<<(std::ostream& out, Position& obj);
 };
+}
 
 #endif // POSITION_H

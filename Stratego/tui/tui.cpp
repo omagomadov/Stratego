@@ -5,6 +5,9 @@
 #include <unistd.h>
 #include "tui.h"
 
+using namespace std;
+using namespace stratego;
+
 View::View(Game& game) : game_ {game} {}
 
 void View::displayWelcome() {
@@ -150,13 +153,16 @@ Position View::askPosition() {
     cin >> row;
     while(cin.fail()) {
         cin.clear();
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         cout << "[!] Please enter a number" << endl;
         cout << "Row : ";
         cin >> row;
     }
     cout << "Column : ";
     cin >> letter;
+    if(isalpha(letter)) {
+        letter = toupper(letter);
+    }
     switch(letter) {
     case 'A':
         col = 1;
@@ -198,19 +204,27 @@ Position View::askPosition() {
 }
 
 Direction View::askDirection() {
-    string direction;
+    char direction;
     cout << ">> Where do you want to move this pawn" << endl;
     cout << "Enter the direction of your pawn :" << endl;
     cout << "F -> Forward | B -> Backward | L -> Left | R -> Right" << endl;
     cin >> direction;
-    if(direction == "F") {
+    if(isalpha(direction)) {
+        direction = toupper(direction);
+    }
+    switch(direction) {
+    case 'F' :
         return Direction::FORWARD;
-    } else if(direction == "B") {
+        break;
+    case 'B' :
         return Direction::BACKWARD;
-    } else if(direction == "L") {
+        break;
+    case 'L' :
         return Direction::LEFT;
-    } else {
+        break;
+    default :
         return Direction::RIGHT;
+        break;
     }
 }
 
@@ -220,7 +234,7 @@ int View::askPawn() {
     cin >> pawn;
     while(pawn < 1 || pawn > 12 || cin.fail()) {
         cin.clear();
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         return -1;
     }
     return pawn;
@@ -234,7 +248,7 @@ int View::askLevel() {
     cin >> level;
     while(level <= 0 || level >= 3 || cin.fail()) {
         cin.clear();
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         cout << "[!] Please enter a number between 1 and 2 included" << endl;
         cout << "[1] Easy\n"
                 "[2] Normal" << endl;
@@ -251,7 +265,7 @@ int View::askBoardInitialization() {
     cin >> choice;
     while(choice <= 0 || choice >= 3 || cin.fail()) {
         cin.clear();
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         cout << "[!] Please enter a number between 1 and 2 included" << endl;
         cout << "[1] Manual" << endl;
         cout << "[2] File" << endl;
@@ -266,7 +280,7 @@ int View::askMovement() {
     cin >> moves;
     while(cin.fail()) {
         cin.clear();
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         cout << "[!] Please enter only numbers" << endl;
         cin >> moves;
     }

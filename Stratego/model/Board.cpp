@@ -1,32 +1,20 @@
 #include "Board.h"
 #include <iostream>
 
-Board::Board() {
-    Position water_pos1 {4,2};
-    water_.push_back(water_pos1);
-    water_pos1.setX(water_pos1.getX() + 1);
-    water_.push_back(water_pos1);
+using namespace std;
+using namespace stratego;
+
+Board::Board() : water_ {Position{4,2}, Position{5,2}, Position{4,3}, Position{5,3},
+                         Position{4,6}, Position{5,6}, Position{4,7}, Position{5,7}} {
     pawns_[4][2]->setValide(true);
     pawns_[4+1][2]->setValide(true);
 
-    Position water_pos2 {4,3};
-    water_.push_back(water_pos2);
-    water_pos2.setX(water_pos2.getX() + 1);
-    water_.push_back(water_pos2);
     pawns_[4][3]->setValide(true);
     pawns_[4+1][3]->setValide(true);
 
-    Position water_pos3 {4,6};
-    water_.push_back(water_pos3);
-    water_pos3.setX(water_pos3.getX() + 1);
-    water_.push_back(water_pos3);
     pawns_[4][6]->setValide(true);
     pawns_[4+1][6]->setValide(true);
 
-    Position water_pos4 {4,7};
-    water_.push_back(water_pos4);
-    water_pos4.setX(water_pos4.getX() + 1);
-    water_.push_back(water_pos4);
     pawns_[4][7]->setValide(true);
     pawns_[4+1][7]->setValide(true);
 }
@@ -87,11 +75,12 @@ bool Board::isAlone(Position position) {
         }
     }
     // if the counter is equal to 0 that mean => he can't move
-    if(count == 0) {
-        return false;
-    } else {
-        return true;
-    }
+    //    if(count == 0) {
+    //        return false;
+    //    } else {
+    //        return true;
+    //    }
+    return count != 0;
 }
 
 void Board::addPawn(Pawn& pawn, Position position) {

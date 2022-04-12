@@ -4,6 +4,9 @@
 #include <iostream>
 #include <vector>
 
+using namespace std;
+using namespace stratego;
+
 Game::Game() {
     state_ = State::NOT_STARTED;
 }

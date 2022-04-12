@@ -1,5 +1,8 @@
 #include "Position.h"
 
+using namespace std;
+using namespace stratego;
+
 Position::Position(int x, int y) : x_ {x}, y_ {y} {}
 
 int Position::getX() {
