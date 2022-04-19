@@ -34,7 +34,7 @@ public:
      * @brief View todo
      * @param parent
      */
-    explicit View(QWidget *parent = nullptr);
+    explicit View(Game game, Controller controller, QWidget *parent = nullptr);
     /**
      * @brief update todo
      */
