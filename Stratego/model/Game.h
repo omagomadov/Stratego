@@ -1,18 +1,21 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <array>
+#include <map>
+#include <set>
+
 #include "Board.h"
 #include "State.h"
 #include "Color.h"
 #include "Direction.h"
-#include <array>
-#include <map>
+#include "observable.h"
 
 namespace stratego {
 /**
  * @brief The Game class represents the game.
  */
-class Game {
+class Game : public Observable {
     /**
      * @brief board_ represents the board of the game.
      */
@@ -33,12 +36,30 @@ class Game {
      * @brief pawns_ contains the pawns.
      */
     std::map<Role, int> pawns_;
+    /**
+     * @brief observers_ //todo
+     */
+    std::set<Observer *> observers_;
 
 public:
     /**
      * @brief Game constructor of Game.
      */
     Game();
+    /**
+     * @brief addObserver //todo
+     * @param observer
+     */
+    void addObserver(Observer * observer) override;
+    /**
+     * @brief removeObserver //todo
+     * @param observer
+     */
+    void removeObserver(Observer * observer) override;
+    /**
+     * @brief notifyObserver //todo
+     */
+    void notifyObserver() override;
     /**
      * @brief getPawns getter of board.
      * @return the board

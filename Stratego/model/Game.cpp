@@ -1,14 +1,29 @@
-#include "Game.h"
 #include <fstream>
 #include <stdexcept>
 #include <iostream>
 #include <vector>
+
+#include "Game.h"
 
 using namespace std;
 using namespace stratego;
 
 Game::Game() {
     state_ = State::NOT_STARTED;
+}
+
+void Game::addObserver(Observer * observer) {
+    observers_.insert(observer);
+}
+
+void Game::removeObserver(Observer * observer) {
+    observers_.insert(observer);
+}
+
+void Game::notifyObserver() {
+    for(Observer * observer : observers_) {
+        observer->update();
+    }
 }
 
 array<array<optional<Pawn>, 10>, 10> Game::getPawns() {

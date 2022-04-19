@@ -26,7 +26,9 @@ HEADERS += \
     Pawn.h \
     Position.h \
     Role.h \
-    State.h
+    State.h \
+    observable.h \
+    observer.h
 
 # Default rules for deployment.
 unix {
