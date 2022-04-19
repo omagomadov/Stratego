@@ -8,6 +8,23 @@
 
 namespace stratego {
 /**
+ * @brief The Controller class todo
+ */
+class Controller {
+    /**
+     * @brief game_ todo
+     */
+    Game game_;
+public:
+    /**
+     * @brief Controller todo
+     * @param game_
+     */
+    Controller(Game game_);
+    ~Controller() = default;
+};
+
+/**
  * @brief The View class todo
  */
 class View : public QWidget, public Observer {
