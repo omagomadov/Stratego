@@ -3,15 +3,35 @@
 
 #include <QWidget>
 
+#include "observer.h"
+#include "Game.h"
+
 namespace stratego {
-class View : public QWidget
-{
+/**
+ * @brief The View class todo
+ */
+class View : public QWidget, public Observer {
     Q_OBJECT
 public:
+    /**
+     * @brief View todo
+     * @param parent
+     */
     explicit View(QWidget *parent = nullptr);
+    /**
+     * @brief update todo
+     */
+    void update() override;
 
-signals:
-
+private:
+    /**
+     * @brief game_ todo
+     */
+    Game game_;
+    /**
+     * @brief controller_ todo
+     */
+    Controller controller_;
 };
 }
 

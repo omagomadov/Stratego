@@ -2,6 +2,8 @@
 
 using namespace stratego;
 
-View::View(QWidget *parent): QWidget{parent} {
+View::View(QWidget *parent): QWidget{parent} {}
 
+void View::update() {
+    //todo
 }
