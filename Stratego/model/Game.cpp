@@ -17,7 +17,7 @@ void Game::addObserver(Observer * observer) {
 }
 
 void Game::removeObserver(Observer * observer) {
-    observers_.insert(observer);
+    observers_.erase(observer);
 }
 
 void Game::notifyObserver() {
