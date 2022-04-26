@@ -129,6 +129,7 @@ void QPawn::setSelectable(bool selectable) {
 
 QManualWindow::QManualWindow(Game &game, Color player, QWidget * parent)
     : QWidget {parent}, player_ {player}, game_ {game} {
+    placedPawns_ = 0;
     player_ = (game_.getState() == RED_TURN) ? RED : BLUE;
     QVBoxLayout * menu = new QVBoxLayout();
     QHBoxLayout * container = new QHBoxLayout();
@@ -154,14 +155,13 @@ QManualWindow::QManualWindow(Game &game, Color player, QWidget * parent)
 }
 
 void QManualWindow::addManualBoard() {
-    emit submit();
-    //    if(game_.getRemainingPawns().empty()) {
-    //        emit submit();
-    //    } else {
-    //        QMessageBox messageBox;
-    //        messageBox.critical(0,"Pawns not placed","The board must be completed");
-    //        messageBox.adjustSize();
-    //    }
+    if(placedPawns_ == 40) {
+        emit submit();
+    } else {
+        QMessageBox messageBox;
+        messageBox.critical(0,"Incomplete board","There are still pawns to place");
+        messageBox.adjustSize();
+    }
 }
 
 void QManualWindow::populatePawns(QGridLayout * pawns) {
@@ -196,6 +196,7 @@ void QManualWindow::populateSquare(QGridLayout * squares) {
 
 void QManualWindow::on_pawns(QPawn * pawn) {
     if(pawn->isSelectable()) {
+        placedPawns_ += 1;
         selectedPawn_ = pawn;
     }
 }
@@ -204,7 +205,6 @@ void QManualWindow::on_squares(Position position) {
     if(selectedPawn_ != nullptr) {
         QPawn * qpawn = new QPawn(selectedPawn_->getColor(), selectedPawn_->getRole(),
                                   position, this);
-        //cout << "Added at " << qpawn->getPosition().getX() << " : " << qpawn->getPosition().getY() << endl;
         qpawn->setSelectable(false);
         selectedPawn_->close();
         selectedPawn_ = nullptr;
@@ -316,6 +316,7 @@ void View::addChosen(QString value) {
     try {
         controller_.addFileBoard(value);
         if(game_.getState() == State::RED_TURN) {
+            fileWindow_->close();
             game_.setState(State::STARTED);
             //todo
         } else {
@@ -343,6 +344,7 @@ void View::addChosen(QString value) {
 
 void View::addManualBoard() {
     if(game_.getState() == State::RED_TURN) {
+        manualWindow_->close();
         game_.setState(State::STARTED);
         cout << "both board completed" << endl;
     } else {

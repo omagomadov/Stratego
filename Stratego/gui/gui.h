@@ -179,6 +179,10 @@ private:
      * @brief selectedPawn_
      */
     QPawn * selectedPawn_;
+    /**
+     * @brief placedPawns
+     */
+    int placedPawns_;
 };
 
 /**
