@@ -29,10 +29,27 @@ public:
      * @brief updateBoard
      */
     void updateBoard();
+    /**
+     * @brief initialize
+     */
+    void initialize();
+    /**
+     * @brief containsWater
+     * @param row
+     * @param column
+     * @return
+     */
+    bool containsWater(unsigned row, unsigned column);
     ~QBoard() = default;
 
 private:
+    /**
+     * @brief game_
+     */
     Game &game_;
+    /**
+     * @brief board_
+     */
     QGridLayout * board_;
 };
 

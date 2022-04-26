@@ -14,6 +14,7 @@ using namespace std;
 QBoard::QBoard(Game &game, QWidget * parent) : QWidget {parent}, game_ {game} {
     board_ = new QGridLayout();
     setLayout(board_);
+    initialize();
     updateBoard();
 }
 
@@ -26,6 +27,26 @@ void QBoard::updateBoard() {
         }
         cout << endl;
     }
+}
+
+void QBoard::initialize() {
+    QSquare * square;
+    for(unsigned row = 0; row < 10; row++) {
+        for(unsigned column = 0; column < 10; column++) {
+            if(containsWater(row, column)) {
+                square = new QSquare("water", Position(row,column));
+            } else {
+                square = new QSquare("grass", Position(row,column));
+            }
+            board_->addWidget(square, row, column);
+        }
+    }
+}
+
+bool QBoard::containsWater(unsigned row, unsigned column) {
+    return (row == 4 && column == 2) || (row == 4 && column == 3) || (row == 5 && column == 2)
+            || (row == 5 && column == 3) || (row == 4 && column == 6) || (row == 4 && column == 7)
+            || (row == 5 && column == 6) || (row == 5 && column == 7);
 }
 
 QSquare::QSquare(QString type, Position position, QWidget * parent)
