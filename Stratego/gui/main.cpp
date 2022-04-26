@@ -12,6 +12,5 @@ int main(int argc, char *argv[]) {
     Game game {};
     Controller controller {game};
     View view {game, controller};
-    view.show();
     app.exec();
 }

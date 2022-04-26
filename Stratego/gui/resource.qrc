@@ -1,0 +1,33 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resource/fonts/Kamryn.otf</file>
+        <file>resource/blue/bomb.png</file>
+        <file>resource/blue/captain.png</file>
+        <file>resource/blue/colonel.png</file>
+        <file>resource/blue/flag.png</file>
+        <file>resource/blue/general.png</file>
+        <file>resource/blue/hide.png</file>
+        <file>resource/blue/lieutenant.png</file>
+        <file>resource/blue/major.png</file>
+        <file>resource/blue/marshal.png</file>
+        <file>resource/blue/miner.png</file>
+        <file>resource/blue/scout.png</file>
+        <file>resource/blue/sergeant.png</file>
+        <file>resource/blue/spy.png</file>
+        <file>resource/red/bomb.png</file>
+        <file>resource/red/captain.png</file>
+        <file>resource/red/colonel.png</file>
+        <file>resource/red/flag.png</file>
+        <file>resource/red/general.png</file>
+        <file>resource/red/hide.png</file>
+        <file>resource/red/lieutenant.png</file>
+        <file>resource/red/major.png</file>
+        <file>resource/red/marshal.png</file>
+        <file>resource/red/miner.png</file>
+        <file>resource/red/scout.png</file>
+        <file>resource/red/sergeant.png</file>
+        <file>resource/red/spy.png</file>
+        <file>resource/texture/grass.png</file>
+        <file>resource/texture/water.png</file>
+    </qresource>
+</RCC>

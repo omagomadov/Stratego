@@ -25,3 +25,6 @@ HEADERS += \
     gui.h
 
 QT += widgets
+
+RESOURCES += \
+    resource.qrc
