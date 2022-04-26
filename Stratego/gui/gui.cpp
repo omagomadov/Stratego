@@ -11,6 +11,23 @@
 using namespace stratego;
 using namespace std;
 
+QBoard::QBoard(Game &game, QWidget * parent) : QWidget {parent}, game_ {game} {
+    board_ = new QGridLayout();
+    setLayout(board_);
+    updateBoard();
+}
+
+void QBoard::updateBoard() {
+    for(unsigned row = 0; row < game_.getPawns().size(); row++) {
+        for(unsigned column = 0; column < game_.getPawns()[row].size(); column++) {
+            optional<Pawn> pawn = game_.getPawns()[row][column];
+            QPawn * qpawn = new QPawn(pawn->getColor(), pawn->getRole(), pawn->getPosition());
+            board_->addWidget(qpawn, row, column);
+        }
+        cout << endl;
+    }
+}
+
 QSquare::QSquare(QString type, Position position, QWidget * parent)
     : QLabel {parent}, type_ {type}, position_ {position} {
     QString url = "://resource/texture/";
@@ -22,7 +39,7 @@ QSquare::QSquare(QString type, Position position, QWidget * parent)
         setPixmap(QPixmap(url));
     }
     setScaledContents(true);
-    setFixedSize(75,75);
+    setFixedSize(50,50);
 }
 
 void QSquare::mousePressEvent(QMouseEvent * event) {
@@ -39,7 +56,7 @@ QPawn::QPawn(Color color, Role role, Position position, QWidget * parent)
     } else {
         dressPawn(player, role);
     }
-    setFixedSize(75,75);
+    setFixedSize(50,50);
 }
 
 void QPawn::dressPawn(QString color, Role role) {
@@ -155,7 +172,7 @@ QManualWindow::QManualWindow(Game &game, Color player, QWidget * parent)
 }
 
 void QManualWindow::addManualBoard() {
-    if(placedPawns_ == 40) {
+    if(placedPawns_ >= 40) {
         emit submit();
     } else {
         QMessageBox messageBox;
@@ -182,8 +199,8 @@ void QManualWindow::populatePawns(QGridLayout * pawns) {
 }
 
 void QManualWindow::populateSquare(QGridLayout * squares) {
-    int row = player_ == RED ? 0 : 6;
-    int length = player_ == RED ? 4 : 10;
+    int row = player_ == BLUE ? 0 : 6;
+    int length = player_ == BLUE ? 4 : 10;
     while(row < length) {
         for(int column = 0; column < 10; column++) {
             QSquare * square = new QSquare("grass", Position(row, column), this);
@@ -211,7 +228,7 @@ void QManualWindow::on_squares(Position position) {
         game_.decrementPawnCount(qpawn->getRole());
         squares_->addWidget(qpawn, position.getX(), position.getY());
         Pawn pawn {qpawn->getRole(), qpawn->getColor(), qpawn->getPosition(), true};
-        game_.addPawn(pawn, position);
+        game_.addPawn(pawn, pawn.getPosition());
     } else {
         QMessageBox messageBox;
         messageBox.critical(0,"No pawn selected","No pawn was selected");
@@ -293,7 +310,6 @@ void QStartWindow::retrieveLevel() {
 View::View(Game &game, Controller &controller, QWidget *parent)
     : QWidget{parent}, game_{game}, controller_{controller} {
     window_= new QHBoxLayout();
-    //    controller_.nextState();
     displayStartWindow();
     show();
 }
@@ -318,7 +334,8 @@ void View::addChosen(QString value) {
         if(game_.getState() == State::RED_TURN) {
             fileWindow_->close();
             game_.setState(State::STARTED);
-            //todo
+            board_ = new QBoard(game_, this);
+            window_->addWidget(board_);
         } else {
             fileWindow_->close();
             try {
@@ -346,7 +363,8 @@ void View::addManualBoard() {
     if(game_.getState() == State::RED_TURN) {
         manualWindow_->close();
         game_.setState(State::STARTED);
-        cout << "both board completed" << endl;
+        board_ = new QBoard(game_, this);
+        window_->addWidget(board_);
     } else {
         manualWindow_->close();
         controller_.nextState();

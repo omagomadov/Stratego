@@ -13,20 +13,66 @@
 #include "Game.h"
 
 namespace stratego {
+/**
+ * @brief The QBoard class
+ */
+class QBoard : public QWidget {
+    Q_OBJECT
+public:
+    /**
+     * @brief QBoard
+     * @param game
+     * @param parent
+     */
+    explicit QBoard(Game &game, QWidget * parent = nullptr);
+    /**
+     * @brief updateBoard
+     */
+    void updateBoard();
+    ~QBoard() = default;
+
+private:
+    Game &game_;
+    QGridLayout * board_;
+};
+
+/**
+ * @brief The QSquare class
+ */
 class QSquare : public QLabel {
     Q_OBJECT
 public:
+    /**
+     * @brief QSquare
+     * @param type
+     * @param position
+     * @param parent
+     */
     explicit QSquare(QString type, Position position, QWidget * parent = nullptr);
     ~QSquare() = default;
 
 protected:
+    /**
+     * @brief mousePressEvent
+     * @param event
+     */
     void mousePressEvent(QMouseEvent * event);
 
 signals:
+    /**
+     * @brief clicked
+     * @param position
+     */
     void clicked(stratego::Position position);
 
 private:
+    /**
+     * @brief type_
+     */
     QString type_;
+    /**
+     * @brief position_
+     */
     Position position_;
 };
 
@@ -174,7 +220,7 @@ private:
     /**
      * @brief game_
      */
-    Game game_;
+    Game &game_;
     /**
      * @brief selectedPawn_
      */
@@ -424,6 +470,10 @@ private:
      * @brief manualWindow_ todo
      */
     QManualWindow * manualWindow_;
+    /**
+     * @brief board_
+     */
+    QBoard * board_;
 };
 }
 
