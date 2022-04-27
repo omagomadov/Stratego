@@ -405,9 +405,6 @@ void View::displayStartWindow() {
 
 void View::displayChooseWindow() {
     controller_.nextState();
-    //    QPalette palette = QPalette();
-    //    palette.setColor(QPalette::Window, QColor::fromRgb(45, 152, 218));
-    //    setPalette(palette);
     startWindow_->close();
     chooseWindow_ = new QChooseWindow(this);
     window_->addWidget(chooseWindow_);
