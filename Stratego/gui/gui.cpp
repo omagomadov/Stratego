@@ -13,6 +13,8 @@ using namespace std;
 
 QBoard::QBoard(Game &game, QWidget * parent) : QWidget {parent}, game_ {game} {
     board_ = new QGridLayout();
+    board_->setContentsMargins(0,0,0,0);
+    board_->setSpacing(1);
     setLayout(board_);
     initialize();
     updateBoard();
@@ -166,7 +168,7 @@ void QPawn::setSelectable(bool selectable) {
 }
 
 QManualWindow::QManualWindow(Game &game, Color player, QWidget * parent)
-    : QWidget {parent}, player_ {player}, game_ {game} {
+    : QWidget {parent}, player_ {player}, game_ {game}, selectedPawn_ {} {
     placedPawns_ = 0;
     player_ = (game_.getState() == RED_TURN) ? RED : BLUE;
     QVBoxLayout * menu = new QVBoxLayout();
@@ -180,6 +182,8 @@ QManualWindow::QManualWindow(Game &game, Color player, QWidget * parent)
     menu->addLayout(pawns_);
     squares_ = new QGridLayout();
     squares_->setAlignment(Qt::AlignCenter);
+    squares_->setContentsMargins(0,0,0,0);
+    squares_->setSpacing(1);
     populateSquare(squares_);
     menu->addLayout(squares_);
     submit_ = new QPushButton("Submit");
