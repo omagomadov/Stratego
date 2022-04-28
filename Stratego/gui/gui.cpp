@@ -525,6 +525,7 @@ void View::displayChooseWindow() {
     chooseWindow_ = new QChooseWindow(this);
     window_->addWidget(chooseWindow_);
     connect(chooseWindow_, SIGNAL(chosen(QString)), this, SLOT(option(QString)));
+    game_.nextPlayer();
 }
 
 void View::displayFileWindow() {
@@ -535,11 +536,11 @@ void View::displayFileWindow() {
 }
 
 void View::displayManualWindow() {
-    if(game_.getCurrentPlayer() == BLUE) {
-        game_.setCurrentPlayer(Color::RED);
-    } else {
-        game_.setCurrentPlayer(Color::RED);
-    }
+    //    if(game_.getCurrentPlayer() == BLUE) {
+    //        game_.setCurrentPlayer(Color::RED);
+    //    } else {
+    //        game_.setCurrentPlayer(Color::RED);
+    //    }
     chooseWindow_->close();
     manualWindow_ = new QManualWindow(game_, game_.getCurrentPlayer(), this);
     window_->addWidget(manualWindow_);
@@ -583,9 +584,11 @@ void Controller::nextState() {
         break;
     case BLUE_TURN :
         game_.setState(RED_TURN);
+        game_.setCurrentPlayer(RED);
         break;
     case RED_TURN :
         game_.setState(STARTED);
+        game_.setCurrentPlayer(BLUE);
         break;
     default:
         throw invalid_argument("Invalid state");
