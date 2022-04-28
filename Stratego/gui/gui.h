@@ -14,43 +14,40 @@
 
 namespace stratego {
 /**
- * @brief The QBoard class
+ * @brief The Controller class todo
  */
-class QBoard : public QWidget {
-    Q_OBJECT
-public:
+class Controller {
     /**
-     * @brief QBoard
-     * @param game
-     * @param parent
-     */
-    explicit QBoard(Game &game, QWidget * parent = nullptr);
-    /**
-     * @brief updateBoard
-     */
-    void updateBoard();
-    /**
-     * @brief initialize
-     */
-    void initialize();
-    /**
-     * @brief containsWater
-     * @param row
-     * @param column
-     * @return
-     */
-    bool containsWater(unsigned row, unsigned column);
-    ~QBoard() = default;
-
-private:
-    /**
-     * @brief game_
+     * @brief game_ todo
      */
     Game &game_;
+public:
     /**
-     * @brief board_
+     * @brief Controller todo
+     * @param game_
      */
-    QGridLayout * board_;
+    Controller(Game &game_);
+    /**
+     * @brief initLevel todo
+     * @param level
+     */
+    void addLevel(QString level);
+    /**
+     * @brief addChoose todo
+     * @param file
+     */
+    void addFileBoard(QString choose);
+    /**
+     * @brief nextState
+     */
+    void nextState();
+    /**
+     * @brief move
+     * @param position
+     * @param direction
+     */
+    void move(Position position, Direction direction);
+    ~Controller() = default;
 };
 
 /**
@@ -105,13 +102,18 @@ public:
      * @param role
      * @param parent
      */
-    explicit QPawn(Color color, Role role, Position position, QWidget * parent = nullptr);
+    explicit QPawn(Color color, Role role, Position position, bool hide, QWidget * parent = nullptr);
     /**
      * @brief dressPawn todo
      * @param color
      * @param role
      */
     void dressPawn(QString color, Role role);
+    /**
+     * @brief dressHidden
+     * @param color
+     */
+    void dressHidden(QString color);
     /**
      * @brief getColor
      * @return
@@ -170,6 +172,86 @@ private:
      * @brief selectable_
      */
     bool selectable_;
+    /**
+     * @brief hide_
+     */
+    bool hide_;
+};
+
+/**
+ * @brief The QBoard class
+ */
+class QBoard : public QWidget {
+    Q_OBJECT
+public:
+    /**
+     * @brief QBoard
+     * @param game
+     * @param parent
+     */
+    explicit QBoard(Controller &controller, Game &game, QWidget * parent = nullptr);
+    /**
+     * @brief updateBoard
+     */
+    void updateBoard();
+    /**
+     * @brief initialize
+     */
+    void initialize();
+    /**
+     * @brief containsWater
+     * @param row
+     * @param column
+     * @return
+     */
+    bool containsWater(unsigned row, unsigned column);
+    /**
+     * @brief isNeighbor
+     * @param first
+     * @param second
+     * @return
+     */
+    bool isNeighbor(Position first, Position second);
+    /**
+     * @brief deduceDirection
+     * @param first
+     * @param second
+     * @return
+     */
+    Direction deduceDirection(Position initial, Position next);
+    /**
+     * @brief clearBoard
+     */
+    void clearBoard();
+    ~QBoard() = default;
+
+private slots:
+    /**
+     * @brief clicked_on_pawn
+     */
+    void clicked_on_pawn(stratego::QPawn *);
+    /**
+     * @brief clicked_on_square
+     */
+    void clicked_on_square(stratego::Position);
+
+private:
+    /**
+     * @brief game_
+     */
+    Game &game_;
+    /**
+     * @brief controller_
+     */
+    Controller &controller_;
+    /**
+     * @brief board_
+     */
+    QGridLayout * board_;
+    /**
+     * @brief selectedPawn_
+     */
+    QPawn * selectedPawn_;
 };
 
 /**
@@ -372,37 +454,6 @@ private:
      * @brief start_ todo
      */
     QPushButton * start_;
-};
-
-/**
- * @brief The Controller class todo
- */
-class Controller {
-    /**
-     * @brief game_ todo
-     */
-    Game &game_;
-public:
-    /**
-     * @brief Controller todo
-     * @param game_
-     */
-    Controller(Game &game_);
-    /**
-     * @brief initLevel todo
-     * @param level
-     */
-    void addLevel(QString level);
-    /**
-     * @brief addChoose todo
-     * @param file
-     */
-    void addFileBoard(QString choose);
-    /**
-     * @brief nextState
-     */
-    void nextState();
-    ~Controller() = default;
 };
 
 /**

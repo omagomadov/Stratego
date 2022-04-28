@@ -11,7 +11,8 @@
 using namespace stratego;
 using namespace std;
 
-QBoard::QBoard(Game &game, QWidget * parent) : QWidget {parent}, game_ {game} {
+QBoard::QBoard(Controller &controller, Game &game, QWidget * parent)
+    : QWidget {parent}, game_ {game}, controller_ {controller}, selectedPawn_ {} {
     board_ = new QGridLayout();
     board_->setContentsMargins(0,0,0,0);
     board_->setSpacing(1);
@@ -20,14 +21,68 @@ QBoard::QBoard(Game &game, QWidget * parent) : QWidget {parent}, game_ {game} {
     updateBoard();
 }
 
+void QBoard::clicked_on_pawn(QPawn * pawn) {
+    if((pawn->getRole() != BOMB) && (pawn->getRole() != FLAG)) {
+        if(selectedPawn_ != nullptr) {
+            if(!isNeighbor(selectedPawn_->getPosition(), pawn->getPosition())) {
+                selectedPawn_ = nullptr;
+            } else {
+                if(game_.getCurrentPlayer() != pawn->getColor()) {
+                    Direction direction = deduceDirection(selectedPawn_->getPosition(), pawn->getPosition());
+                    controller_.move(selectedPawn_->getPosition(), direction);
+                } else {
+                    QMessageBox messageBox;
+                    messageBox.critical(0,"Can't move", "You can't attack your own pawn");
+                }
+                selectedPawn_ = nullptr;
+            }
+        } else {
+            if(game_.getCurrentPlayer() == pawn->getColor()) {
+                selectedPawn_ = pawn;
+            } else {
+                QMessageBox messageBox;
+                messageBox.critical(0,"Not your pawn", "You must choose your pawn");
+            }
+        }
+    } else {
+        QMessageBox messageBox;
+        messageBox.critical(0,"Not a movable pawn", "You can't move a flag or a bomb");
+    }
+}
+
+void QBoard::clicked_on_square(Position position) {
+    if(selectedPawn_ != nullptr) {
+        if(!isNeighbor(selectedPawn_->getPosition(), position) || game_.isWater(position)) {
+            selectedPawn_ = nullptr;
+        } else {
+            Direction direction = deduceDirection(selectedPawn_->getPosition(), position);
+            controller_.move(selectedPawn_->getPosition(), direction);
+            selectedPawn_ = nullptr;
+        }
+    }
+}
+
 void QBoard::updateBoard() {
+    bool hide = (game_.getLevel() == 1) ? false : true;
+    if(board_->count() != 0) {
+        clearBoard();
+        initialize();
+    }
     for(unsigned row = 0; row < game_.getPawns().size(); row++) {
         for(unsigned column = 0; column < game_.getPawns()[row].size(); column++) {
             optional<Pawn> pawn = game_.getPawns()[row][column];
-            QPawn * qpawn = new QPawn(pawn->getColor(), pawn->getRole(), pawn->getPosition());
-            board_->addWidget(qpawn, row, column);
+            if(pawn->isValide() && !game_.isWater(Position(row, column))) {
+                if(game_.getCurrentPlayer() == pawn->getColor()) {
+                    QPawn * qpawn = new QPawn(pawn->getColor(), pawn->getRole(), pawn->getPosition(), false);
+                    connect(qpawn, SIGNAL(clicked(stratego::QPawn*)), this, SLOT(clicked_on_pawn(stratego::QPawn*)));
+                    board_->addWidget(qpawn, row, column);
+                } else {
+                    QPawn * qpawn = new QPawn(pawn->getColor(), pawn->getRole(), pawn->getPosition(), hide);
+                    connect(qpawn, SIGNAL(clicked(stratego::QPawn*)), this, SLOT(clicked_on_pawn(stratego::QPawn*)));
+                    board_->addWidget(qpawn, row, column);
+                }
+            }
         }
-        cout << endl;
     }
 }
 
@@ -40,6 +95,7 @@ void QBoard::initialize() {
             } else {
                 square = new QSquare("grass", Position(row,column));
             }
+            connect(square, SIGNAL(clicked(stratego::Position)), this, SLOT(clicked_on_square(stratego::Position)));
             board_->addWidget(square, row, column);
         }
     }
@@ -49,6 +105,42 @@ bool QBoard::containsWater(unsigned row, unsigned column) {
     return (row == 4 && column == 2) || (row == 4 && column == 3) || (row == 5 && column == 2)
             || (row == 5 && column == 3) || (row == 4 && column == 6) || (row == 4 && column == 7)
             || (row == 5 && column == 6) || (row == 5 && column == 7);
+}
+
+Direction QBoard::deduceDirection(Position initial, Position next) {
+    Position pos {initial.getX(), initial.getY()};
+    Position up {pos.getX() - 1, pos.getY()};
+    Position right {pos.getX(), pos.getY() + 1};
+    Position left {pos.getX(), pos.getY() - 1};
+    Position down {pos.getX() + 1, pos.getY()};
+    if(next == up) {
+        return FORWARD;
+    } else if(next == down) {
+        return BACKWARD;
+    } else if(next == left) {
+        return LEFT;
+    } else {
+        return RIGHT;
+    }
+}
+
+bool QBoard::isNeighbor(Position first, Position second) {
+    Position up {first.getX() - 1, first.getY()};
+    Position right {first.getX(), first.getY() + 1};
+    Position left {first.getX(), first.getY() - 1};
+    Position down {first.getX() + 1, first.getY()};
+    return (second == up) || (second == right)
+            || (second == left) || (second == down);
+}
+
+void QBoard::clearBoard() {
+    QLayoutItem * item;
+    while(board_->count() != 0) {
+        item = board_->itemAt(0);
+        if(item->widget()) {
+            delete item->widget();
+        }
+    }
 }
 
 QSquare::QSquare(QString type, Position position, QWidget * parent)
@@ -70,14 +162,22 @@ void QSquare::mousePressEvent(QMouseEvent * event) {
     emit clicked(position_);
 }
 
-QPawn::QPawn(Color color, Role role, Position position, QWidget * parent)
-    : QLabel {parent}, color_ {color}, role_ {role}, position_ {position} {
+QPawn::QPawn(Color color, Role role, Position position, bool hide, QWidget * parent)
+    : QLabel {parent}, color_ {color}, role_ {role}, position_ {position}, hide_ {hide} {
     QString player = (color == BLUE) ? "blue" : "red";
     selectable_ = true;
     if(color == BLUE) {
-        dressPawn(player, role);
+        if(hide) {
+            dressHidden(player);
+        } else {
+            dressPawn(player, role);
+        }
     } else {
-        dressPawn(player, role);
+        if(hide) {
+            dressHidden(player);
+        } else {
+            dressPawn(player, role);
+        }
     }
     setFixedSize(50,50);
 }
@@ -135,6 +235,14 @@ void QPawn::dressPawn(QString color, Role role) {
         setPixmap(QPixmap(url));
         break;
     }
+    setScaledContents(true);
+}
+
+void QPawn::dressHidden(QString color) {
+    QString url = "://resource/";
+    url += color;
+    url += "/hide.png";
+    setPixmap(QPixmap(url));
     setScaledContents(true);
 }
 
@@ -214,7 +322,7 @@ void QManualWindow::populatePawns(QGridLayout * pawns) {
     for(index = mapPawn.begin(); index != mapPawn.end(); index++) {
         while(game_.isAvailable(index->first)) {
             game_.decrementPawnCount(index->first);
-            QPawn * pawn = new QPawn(player_, index->first, Position(0, column), this);
+            QPawn * pawn = new QPawn(player_, index->first, Position(0, column), false, this);
             pawns->addWidget(pawn, 0, column);
             connect(pawn, SIGNAL(clicked(stratego::QPawn*)), this, SLOT(on_pawns(stratego::QPawn*)));
         }
@@ -246,7 +354,7 @@ void QManualWindow::on_pawns(QPawn * pawn) {
 void QManualWindow::on_squares(Position position) {
     if(selectedPawn_ != nullptr) {
         QPawn * qpawn = new QPawn(selectedPawn_->getColor(), selectedPawn_->getRole(),
-                                  position, this);
+                                  position, false, this);
         qpawn->setSelectable(false);
         selectedPawn_->close();
         selectedPawn_ = nullptr;
@@ -334,6 +442,7 @@ void QStartWindow::retrieveLevel() {
 
 View::View(Game &game, Controller &controller, QWidget *parent)
     : QWidget{parent}, game_{game}, controller_{controller} {
+    game.addObserver(this);
     window_= new QHBoxLayout();
     displayStartWindow();
     show();
@@ -359,7 +468,7 @@ void View::addChosen(QString value) {
         if(game_.getState() == State::RED_TURN) {
             fileWindow_->close();
             game_.setState(State::STARTED);
-            board_ = new QBoard(game_, this);
+            board_ = new QBoard(controller_, game_, this);
             window_->addWidget(board_);
         } else {
             fileWindow_->close();
@@ -388,7 +497,7 @@ void View::addManualBoard() {
     if(game_.getState() == State::RED_TURN) {
         manualWindow_->close();
         game_.setState(State::STARTED);
-        board_ = new QBoard(game_, this);
+        board_ = new QBoard(controller_, game_, this);
         window_->addWidget(board_);
     } else {
         manualWindow_->close();
@@ -423,6 +532,11 @@ void View::displayFileWindow() {
 }
 
 void View::displayManualWindow() {
+    if(game_.getCurrentPlayer() == BLUE) {
+        game_.setCurrentPlayer(Color::RED);
+    } else {
+        game_.setCurrentPlayer(Color::RED);
+    }
     chooseWindow_->close();
     manualWindow_ = new QManualWindow(game_, game_.getCurrentPlayer(), this);
     window_->addWidget(manualWindow_);
@@ -430,7 +544,7 @@ void View::displayManualWindow() {
 }
 
 void View::update() {
-    //todo
+    board_->updateBoard();
 }
 
 Controller::Controller(Game &game) : game_ {game} {}
@@ -472,5 +586,15 @@ void Controller::nextState() {
         break;
     default:
         throw invalid_argument("Invalid state");
+    }
+}
+
+void Controller::move(Position position, Direction direction) {
+    if(game_.isEnemy(position, direction, game_.getCurrentPlayer())) {
+        game_.nextPlayer();
+        game_.battle(position, direction);
+    } else {
+        game_.nextPlayer();
+        game_.move(position, direction);
     }
 }

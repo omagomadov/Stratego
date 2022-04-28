@@ -169,6 +169,7 @@ void Game::move(Position& position, Direction direction) {
         board_.setPosition(position, position);
         break;
     }
+    notifyObserver();
 }
 
 bool Game::isEmpty(Position position, Direction direction) {
@@ -534,5 +535,6 @@ void Game::battle(Position position, Direction direction) {
         }
         break;
     }
+    notifyObserver();
 }
 
