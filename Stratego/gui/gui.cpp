@@ -179,6 +179,9 @@ QPawn::QPawn(Color color, Role role, Position position, bool hide, QWidget * par
             dressPawn(player, role);
         }
     }
+    if(!hide) {
+        setToolTip(to_string(static_cast<Role>(role)).c_str());
+    }
     setFixedSize(50,50);
 }
 
