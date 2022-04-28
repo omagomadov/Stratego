@@ -13,40 +13,55 @@ using namespace std;
 
 QBoard::QBoard(Controller &controller, Game &game, QWidget * parent)
     : QWidget {parent}, game_ {game}, controller_ {controller}, selectedPawn_ {} {
+    QVBoxLayout * container = new QVBoxLayout();
+    QWidget * board = new QWidget();
+    message_ = new QLabel();
+    message_->hide();
+    message_->setStyleSheet("color: red; "
+                            "font-size: 20px;");
+    message_->setAlignment(Qt::AlignCenter);
+    container->addWidget(message_);
     board_ = new QGridLayout();
     board_->setContentsMargins(0,0,0,0);
     board_->setSpacing(1);
-    setLayout(board_);
+    board->setLayout(board_);
+    container->addWidget(board);
+    setLayout(container);
     initialize();
     updateBoard();
 }
 
 void QBoard::clicked_on_pawn(QPawn * pawn) {
-    if((pawn->getRole() != BOMB) && (pawn->getRole() != FLAG)) {
-        if(selectedPawn_ != nullptr) {
-            if(!isNeighbor(selectedPawn_->getPosition(), pawn->getPosition())) {
+    if(message_->isVisible()) {
+        message_->hide();
+    }
+
+    if(selectedPawn_ != nullptr) {
+        if(selectedPawn_->getColor() != pawn->getColor()) {
+            if(isNeighbor(selectedPawn_->getPosition(), pawn->getPosition())) {
+                Direction direction = deduceDirection(selectedPawn_->getPosition(), pawn->getPosition());
+                controller_.move(selectedPawn_->getPosition(), direction);
                 selectedPawn_ = nullptr;
             } else {
-                if(game_.getCurrentPlayer() != pawn->getColor()) {
-                    Direction direction = deduceDirection(selectedPawn_->getPosition(), pawn->getPosition());
-                    controller_.move(selectedPawn_->getPosition(), direction);
-                } else {
-                    QMessageBox messageBox;
-                    messageBox.critical(0,"Can't move", "You can't attack your own pawn");
-                }
+                displayMessage("Pawn is not your neighbor");
                 selectedPawn_ = nullptr;
             }
         } else {
-            if(game_.getCurrentPlayer() == pawn->getColor()) {
-                selectedPawn_ = pawn;
-            } else {
-                QMessageBox messageBox;
-                messageBox.critical(0,"Not your pawn", "You must choose your pawn");
-            }
+            displayMessage("Can't attack your own pawn");
+            selectedPawn_ = nullptr;
         }
     } else {
-        QMessageBox messageBox;
-        messageBox.critical(0,"Not a movable pawn", "You can't move a flag or a bomb");
+        if(game_.getCurrentPlayer() == pawn->getColor()) {
+            if(pawn->getRole() != FLAG && pawn->getRole() != BOMB) {
+                selectedPawn_ = pawn;
+            } else {
+                displayMessage("Can't select BOMB or FLAG");
+                selectedPawn_ = nullptr;
+            }
+        } else {
+            displayMessage("Can't select enemy pawn");
+            selectedPawn_ = nullptr;
+        }
     }
 }
 
@@ -141,6 +156,11 @@ void QBoard::clearBoard() {
             delete item->widget();
         }
     }
+}
+
+void QBoard::displayMessage(QString message) {
+    message_->setText(message);
+    message_->show();
 }
 
 QSquare::QSquare(QString type, Position position, QWidget * parent)
@@ -536,11 +556,6 @@ void View::displayFileWindow() {
 }
 
 void View::displayManualWindow() {
-    //    if(game_.getCurrentPlayer() == BLUE) {
-    //        game_.setCurrentPlayer(Color::RED);
-    //    } else {
-    //        game_.setCurrentPlayer(Color::RED);
-    //    }
     chooseWindow_->close();
     manualWindow_ = new QManualWindow(game_, game_.getCurrentPlayer(), this);
     window_->addWidget(manualWindow_);

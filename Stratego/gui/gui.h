@@ -223,6 +223,11 @@ public:
      * @brief clearBoard
      */
     void clearBoard();
+    /**
+     * @brief displayError
+     * @param message
+     */
+    void displayMessage(QString message);
     ~QBoard() = default;
 
 private slots:
@@ -252,6 +257,10 @@ private:
      * @brief selectedPawn_
      */
     QPawn * selectedPawn_;
+    /**
+     * @brief message_
+     */
+    QLabel * message_;
 };
 
 /**
