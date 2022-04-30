@@ -545,7 +545,6 @@ void View::displayChooseWindow() {
     chooseWindow_ = new QChooseWindow(this);
     window_->addWidget(chooseWindow_);
     connect(chooseWindow_, SIGNAL(chosen(QString)), this, SLOT(option(QString)));
-    game_.nextPlayer();
 }
 
 void View::displayFileWindow() {
@@ -596,6 +595,7 @@ void Controller::nextState() {
     switch(game_.getState()) {
     case NOT_STARTED :
         game_.setState(BLUE_TURN);
+        game_.setCurrentPlayer(BLUE);
         break;
     case BLUE_TURN :
         game_.setState(RED_TURN);
