@@ -77,7 +77,7 @@ bool Board::isAlone(Position position) {
     return count != 0;
 }
 
-void Board::addPawn(Pawn& pawn, Position position) {
+void Board::addPawn(const Pawn& pawn, Position position) {
     pawns_[position.getX()][position.getY()] = pawn;
 }
 

@@ -43,7 +43,7 @@ public:
      * @param pawn the pawn
      * @param position the position
      */
-    void addPawn(stratego::Pawn& pawn, stratego::Position position);
+    void addPawn(const stratego::Pawn& pawn, stratego::Position position);
     /**
      * @brief getRole Gives the role of the pawn  at the given position in parameter.
      * @param position the position

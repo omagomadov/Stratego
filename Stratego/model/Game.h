@@ -260,7 +260,7 @@ private:
      * @param role the role
      * @return the role
      */
-    Role retrieveRole(const std::string role);
+    Role retrieveRole(const std::string &role);
     /**
      * @brief bothSameRole check if the pawn and the enemy pawn given in parameter has equal role.
      * @param pawn the pawn

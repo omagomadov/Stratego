@@ -4,7 +4,7 @@
 
 using namespace stratego;
 
-QSquare::QSquare(QString type, Position position, QWidget * parent)
+QSquare::QSquare(const QString &type, Position position, QWidget * parent)
     : QLabel {parent}, type_ {type}, position_ {position} {
     QString url = "://resource/texture/";
     if(type_ == "grass") {

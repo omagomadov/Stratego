@@ -33,12 +33,12 @@ public:
      * @brief initLevel todo
      * @param level
      */
-    void addLevel(QString level);
+    void addLevel(const QString &level);
     /**
      * @brief addChoose todo
      * @param file
      */
-    void addFileBoard(QString choose);
+    void addFileBoard(const QString &choose);
     /**
      * @brief nextState
      */
@@ -90,12 +90,12 @@ private slots:
      * @brief setLevel todo
      * @param level
      */
-    void addLevel(QString level);
+    void addLevel(const QString &level);
     /**
      * @brief addChosen todo
      * @param value
      */
-    void addChosen(QString value);
+    void addChosen(const QString &value);
     /**
      * @brief addManualBoard
      */
@@ -104,7 +104,7 @@ private slots:
      * @brief option todo
      * @param file
      */
-    void option(QString file);
+    void option(const QString &file);
 
 private:
     /**

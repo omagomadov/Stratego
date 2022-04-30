@@ -143,9 +143,8 @@ bool QBoard::isNeighbor(Position first, Position second) {
 }
 
 void QBoard::clearBoard() {
-    QLayoutItem * item;
     while(board_->count() != 0) {
-        item = board_->itemAt(0);
+        QLayoutItem * item = board_->itemAt(0);
         if(item->widget()) {
             delete item->widget();
         }

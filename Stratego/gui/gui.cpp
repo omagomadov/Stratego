@@ -18,7 +18,7 @@ using namespace std;
 
 QController::QController(Game &game) : game_ {game} {}
 
-void QController::addLevel(QString level) {
+void QController::addLevel(const QString &level) {
     if(level.toStdString() == "Easy") {
         game_.setLevel(1);
     } else {
@@ -26,7 +26,7 @@ void QController::addLevel(QString level) {
     }
 }
 
-void QController::addFileBoard(QString choose) {
+void QController::addFileBoard(const QString &choose) {
     string url = "../../Stratego/setup-board/" + choose.toStdString();
     fstream file;
     file.open(url);
@@ -79,12 +79,12 @@ QView::QView(Game &game, stratego::QController &controller, QWidget *parent)
     show();
 }
 
-void QView::addLevel(QString level) {
+void QView::addLevel(const QString &level) {
     controller_.addLevel(level);
     displayChooseWindow();
 }
 
-void QView::option(QString url) {
+void QView::option(const QString &url) {
     string choose = url.toStdString();
     if(choose == "Manual") {
         displayManualWindow();
@@ -93,7 +93,7 @@ void QView::option(QString url) {
     }
 }
 
-void QView::addChosen(QString value) {
+void QView::addChosen(const QString &value) {
     try {
         controller_.addFileBoard(value);
         if(game_.getState() == State::RED_TURN) {

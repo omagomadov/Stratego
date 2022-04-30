@@ -19,7 +19,7 @@ public:
      * @param position
      * @param parent
      */
-    explicit QSquare(QString type, Position position, QWidget * parent = nullptr);
+    explicit QSquare(const QString &, Position position, QWidget * parent = nullptr);
     ~QSquare() = default;
 
 protected:

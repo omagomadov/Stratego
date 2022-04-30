@@ -27,7 +27,7 @@ QPawn::QPawn(Color color, Role role, Position position, bool hide, QWidget * par
     setFixedSize(50,50);
 }
 
-void QPawn::dressPawn(QString color, Role role) {
+void QPawn::dressPawn(const QString &color, Role role) {
     QString url = "://resource/";
     url += color;
     switch(role) {
@@ -83,7 +83,7 @@ void QPawn::dressPawn(QString color, Role role) {
     setScaledContents(true);
 }
 
-void QPawn::dressHidden(QString color) {
+void QPawn::dressHidden(const QString &color) {
     QString url = "://resource/";
     url += color;
     url += "/hide.png";

@@ -50,7 +50,7 @@ void QManualWindow::populatePawns(QGridLayout * pawns) {
     map<Role, int> mapPawn = game_.getRemainingPawns();
     map<Role, int>::iterator index;
     int column = 0;
-    for(index = mapPawn.begin(); index != mapPawn.end(); index++) {
+    for(index = mapPawn.begin(); index != mapPawn.end(); ++index) {
         while(game_.isAvailable(index->first)) {
             game_.decrementPawnCount(index->first);
             QPawn * pawn = new QPawn(player_, index->first, Position(0, column), false, this);

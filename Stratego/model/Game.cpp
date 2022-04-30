@@ -8,7 +8,7 @@
 using namespace std;
 using namespace stratego;
 
-Game::Game() {
+Game::Game() : currentPlayer_ {BLUE}, level_ {0} {
     state_ = State::NOT_STARTED;
 }
 
@@ -381,7 +381,7 @@ void Game::addPawn(const string role, Position position, Color color) {
     }
 }
 
-Role Game::retrieveRole(const string role) {
+Role Game::retrieveRole(const string &role) {
     switch(atoi(role.c_str())) {
     case 1 :
         return Role::SPY;

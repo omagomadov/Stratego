@@ -24,12 +24,12 @@ public:
      * @param color
      * @param role
      */
-    void dressPawn(QString color, Role role);
+    void dressPawn(const QString &color, Role role);
     /**
      * @brief dressHidden
      * @param color
      */
-    void dressHidden(QString color);
+    void dressHidden(const QString &color);
     /**
      * @brief getColor
      * @return
