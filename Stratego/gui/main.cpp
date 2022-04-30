@@ -10,7 +10,7 @@ using namespace std;
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
     Game game {};
-    Controller controller {game};
-    View view {game, controller};
+    QController controller {game};
+    QView view {game, controller};
     app.exec();
 }

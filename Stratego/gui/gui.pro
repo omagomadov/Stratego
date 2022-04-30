@@ -6,7 +6,14 @@ include("../config.pri")
 
 SOURCES += \
         gui.cpp \
-        main.cpp
+        main.cpp \
+        qboard.cpp \
+        qchoosewindow.cpp \
+        qfilewindow.cpp \
+        qmanualwindow.cpp \
+        qpawn.cpp \
+        qsquare.cpp \
+        qstartwindow.cpp
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../model/release/ -lmodel
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../model/debug/ -lmodel
@@ -22,7 +29,14 @@ else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/
 else:unix:!macx: PRE_TARGETDEPS += $$OUT_PWD/../model/libmodel.a
 
 HEADERS += \
-    gui.h
+    gui.h \
+    qboard.h \
+    qchoosewindow.h \
+    qfilewindow.h \
+    qmanualwindow.h \
+    qpawn.h \
+    qsquare.h \
+    qstartwindow.h
 
 QT += widgets
 
