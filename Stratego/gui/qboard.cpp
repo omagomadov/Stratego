@@ -29,7 +29,6 @@ void QBoard::clicked_on_pawn(QPawn * pawn) {
     if(message_->isVisible()) {
         message_->hide();
     }
-
     if(selectedPawn_ != nullptr) {
         if(selectedPawn_->getColor() != pawn->getColor()) {
             if(isNeighbor(selectedPawn_->getPosition(), pawn->getPosition())) {
@@ -99,7 +98,7 @@ void QBoard::initialize() {
     QSquare * square;
     for(unsigned row = 0; row < 10; row++) {
         for(unsigned column = 0; column < 10; column++) {
-            if(containsWater(row, column)) {
+            if(game_.isWater(Position(row, column))) {
                 square = new QSquare("water", Position(row,column));
             } else {
                 square = new QSquare("grass", Position(row,column));
@@ -108,12 +107,6 @@ void QBoard::initialize() {
             board_->addWidget(square, row, column);
         }
     }
-}
-
-bool QBoard::containsWater(unsigned row, unsigned column) {
-    return (row == 4 && column == 2) || (row == 4 && column == 3) || (row == 5 && column == 2)
-            || (row == 5 && column == 3) || (row == 4 && column == 6) || (row == 4 && column == 7)
-            || (row == 5 && column == 6) || (row == 5 && column == 7);
 }
 
 Direction QBoard::deduceDirection(Position initial, Position next) {

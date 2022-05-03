@@ -247,6 +247,10 @@ public:
      * @param direction the direction
      */
     void battle(stratego::Position position, Direction direction);
+    /**
+     * @brief clear clears the board.
+     */
+    void clear();
 private:
     /**
      * @brief addPawn adds a pawn on the board with the given position in parameter.

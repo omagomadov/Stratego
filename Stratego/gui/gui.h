@@ -81,6 +81,10 @@ public:
      */
     void displayManualWindow();
     /**
+     * @brief displayWinner
+     */
+    void displayWinner();
+    /**
      * @brief update todo
      */
     void update() override;
@@ -105,6 +109,14 @@ private slots:
      * @param file
      */
     void option(const QString &file);
+    /**
+     * @brief reset
+     */
+    void reset();
+    /**
+     * @brief quit
+     */
+    void quit();
 
 private:
     /**
@@ -139,6 +151,10 @@ private:
      * @brief board_
      */
     stratego::QBoard * board_;
+    /**
+     * @brief winnerWindow_
+     */
+    QVBoxLayout * winnerWindow_;
 };
 
 #endif // GUI_H

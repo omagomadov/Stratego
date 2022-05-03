@@ -158,3 +158,12 @@ void Board::setVisible(int row, int column, bool visible) {
 void Board::setPosition(Position onBoard, Position newPos) {
     pawns_[onBoard.getX()][onBoard.getY()]->setPosition(newPos.getX(), newPos.getY());
 }
+
+void Board::clear() {
+//     pawns_ = array<array<optional<Pawn>, 10>, 10>();
+    for(unsigned row = 0; row < pawns_.size(); row++) {
+        for(unsigned column = 0; column < pawns_[row].size(); column++) {
+            pawns_[row][column] = optional<Pawn>();
+        }
+    }
+}

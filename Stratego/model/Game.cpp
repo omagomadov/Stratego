@@ -538,3 +538,7 @@ void Game::battle(Position position, Direction direction) {
     notifyObserver();
 }
 
+void Game::clear() {
+    board_.clear();
+}
+

@@ -139,6 +139,19 @@ void QView::addManualBoard() {
     }
 }
 
+void QView::reset() {
+    QLayoutItem* item;
+    while (( item = winnerWindow_->layout()->takeAt(0)) != NULL) {
+        (item->widget())->close();
+    }
+    delete item;
+    displayStartWindow();
+}
+
+void QView::quit() {
+    close();
+}
+
 void QView::displayStartWindow() {
     startWindow_ = new QStartWindow(this);
     window_->addWidget(startWindow_);
@@ -169,6 +182,39 @@ void QView::displayManualWindow() {
     connect(manualWindow_, SIGNAL(submit()), this, SLOT(addManualBoard()));
 }
 
+void QView::displayWinner() {
+    winnerWindow_ = new QVBoxLayout();
+    QLabel * message = new QLabel();
+    winnerWindow_->addWidget(message);
+    QPushButton * reset = new QPushButton();
+    reset->setText("Reset");
+    winnerWindow_->addWidget(reset);
+    QPushButton * quit = new QPushButton();
+    quit->setText("Quit");
+    winnerWindow_->addWidget(quit);
+
+    switch(game_.getCurrentPlayer()) {
+    case BLUE :
+        message->setText("Congratulations! The player RED won the game");
+        message->setStyleSheet("color: #c0392b");
+        break;
+    case RED :
+        message->setText("Congratulations! The player BLUE won the game");
+        message->setStyleSheet("color: #2980b9");
+        break;
+    }
+    window_->addLayout(winnerWindow_);
+    game_.setState(NOT_STARTED);
+    connect(reset, SIGNAL(clicked()), this, SLOT(reset()));
+    connect(quit, SIGNAL(clicked()), this, SLOT(quit()));
+}
+
 void QView::update() {
-    board_->updateBoard();
+    if(game_.getState() != ENDED) {
+        board_->updateBoard();
+    } else {
+        game_.clear();
+        board_->close();
+        displayWinner();
+    }
 }

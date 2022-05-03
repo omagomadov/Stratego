@@ -104,6 +104,10 @@ public:
      * @param col the column
      */
     void setPosition(stratego::Position onBoard, stratego::Position newPos);
+    /**
+     * @brief clear clears the board.
+     */
+    void clear();
 };
 }
 
