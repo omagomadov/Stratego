@@ -37,7 +37,7 @@ class Game : public Observable {
      */
     std::map<Role, int> pawns_;
     /**
-     * @brief observers_ //todo
+     * @brief observers_ the observers.
      */
     std::set<Observer *> observers_;
 
@@ -47,17 +47,17 @@ public:
      */
     Game();
     /**
-     * @brief addObserver //todo
-     * @param observer
+     * @brief addObserver adds a observer.
+     * @param observer the observer
      */
     void addObserver(Observer * observer) override;
     /**
-     * @brief removeObserver //todo
-     * @param observer
+     * @brief removeObserver removes a observer.
+     * @param observer the observer
      */
     void removeObserver(Observer * observer) override;
     /**
-     * @brief notifyObserver //todo
+     * @brief notifyObserver notifies the observers.
      */
     void notifyObserver() override;
     /**
@@ -76,8 +76,8 @@ public:
      */
     Color getCurrentPlayer();
     /**
-     * @brief getLevel //todo
-     * @return
+     * @brief getLevel getter of the level.
+     * @return the level
      */
     int getLevel();
     /**
@@ -181,13 +181,13 @@ public:
      */
     void setState(State state);
     /**
-     * @brief setLevel //todo
-     * @param level
+     * @brief setLevel setter of the level.
+     * @param level the level
      */
     void setLevel(int level);
     /**
-     * @brief setCurrentPlayer //todo
-     * @param color
+     * @brief setCurrentPlayer setter of the current player.
+     * @param color the color
      */
     void setCurrentPlayer(Color color);
     /**
@@ -248,19 +248,18 @@ public:
      */
     void battle(stratego::Position position, Direction direction);
     /**
-     * @brief canScoutMove
-     * @param pawn
-     * @param enemy
-     * @param direction
-     * @param moves
-     * @return
+     * @brief canScoutMove checks if the scout can move.
+     * @param pawn the pawn
+     * @param direction the direction
+     * @param moves the number of moves
+     * @return true if the scout can move else false
      */
     bool canScoutMove(Pawn pawn, Direction direction, int moves);
     /**
-     * @brief scoutMove
-     * @param position
-     * @param direction
-     * @param moves
+     * @brief scoutMove moves the scout.
+     * @param position the position
+     * @param direction the direction
+     * @param moves the number of moves.
      */
     void scoutMove(Position& position, Direction& direction, int moves);
     /**

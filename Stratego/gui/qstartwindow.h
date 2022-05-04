@@ -8,47 +8,47 @@
 
 namespace stratego {
 /**
- * @brief The QStartWindow class todo
+ * @brief The QStartWindow class represents the class QStartWindow.
  */
 class QStartWindow : public QWidget {
     Q_OBJECT
 public:
     /**
-     * @brief QStartWindow todo
+     * @brief QStartWindow constructor of QStartWindow.
      * @param parent
      */
     explicit QStartWindow(QWidget * parent = nullptr);
     /**
-     * @brief  todo
-     * @return
+     * @brief getLevel getter of the level.
+     * @return the level of the game
      */
     QString getLevel();
     ~QStartWindow() = default;
 
 signals:
     /**
-     * @brief started todo
-     * @param value
+     * @brief started gives the level chosen by the player.
+     * @param value the level
      */
     void started(QString value);
 
 private slots:
     /**
-     * @brief retrieveLevel todo
+     * @brief retrieveLevel slots when clicked on the button.
      */
     void retrieveLevel();
 
 private:
     /**
-     * @brief logo_ todo
+     * @brief logo_ the logo.
      */
     QLabel * logo_;
     /**
-     * @brief level_ todo
+     * @brief level_ the level.
      */
     QComboBox * level_;
     /**
-     * @brief start_ todo
+     * @brief start_ the button.
      */
     QPushButton * start_;
 };

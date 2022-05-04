@@ -16,37 +16,38 @@ class QStartWindow;
 class QBoard;
 
 /**
- * @brief The Controller class todo
+ * @brief The Controller class represents the class Controller.
  */
 class QController {
     /**
-     * @brief game_ todo
+     * @brief game_ the game.
      */
     Game &game_;
 public:
     /**
-     * @brief Controller todo
+     * @brief Controller constructor of Controller.
      * @param game_
      */
     QController(Game &game_);
     /**
-     * @brief initLevel todo
-     * @param level
+     * @brief addLevel adds the level for the game.
+     * @param level the level
      */
     void addLevel(const QString &level);
     /**
-     * @brief addChoose todo
-     * @param file
+     * @brief addFileBoard adds the path of the file for the game.
+     * @param choose the path of the file
      */
     void addFileBoard(const QString &choose);
     /**
-     * @brief nextState
+     * @brief nextState change the game state.
      */
     void nextState();
     /**
-     * @brief move
-     * @param position
-     * @param direction
+     * @brief move moves the pawn.
+     * @param position the position of the pawn
+     * @param direction the direction of the pawn
+     * @param moves the number of moves
      */
     void move(Position& position, Direction& direction, int moves = 0);
     ~QController() = default;
@@ -54,105 +55,105 @@ public:
 
 }
 /**
- * @brief The View class todo
+ * @brief The View class represents the class View.
  */
 class QView : public QWidget, public stratego::Observer {
     Q_OBJECT
 public:
     /**
-     * @brief View todo
+     * @brief View constructor of View.
      * @param parent
      */
     explicit QView(stratego::Game &game, stratego::QController &controller, QWidget *parent = nullptr);
     /**
-     * @brief displayStartWindow
+     * @brief displayStartWindow displays the start window.
      */
     void displayStartWindow();
     /**
-     * @brief displayChooseWindow todo
+     * @brief displayChooseWindow displays the choose window.
      */
     void displayChooseWindow();
     /**
-     * @brief displayFileWindow todo
+     * @brief displayFileWindow displays the file window.
      */
     void displayFileWindow();
     /**
-     * @brief displayManualWindow todo
+     * @brief displayManualWindow displays the manual window.
      */
     void displayManualWindow();
     /**
-     * @brief displayWinner
+     * @brief displayWinner displays the winner.
      */
     void displayWinner();
     /**
-     * @brief update todo
+     * @brief update updates the board.
      */
     void update() override;
 
 private slots:
     /**
-     * @brief setLevel todo
-     * @param level
+     * @brief setLevel slots when the player finished to set the level of the game.
+     * @param level the level
      */
     void addLevel(const QString &level);
     /**
-     * @brief addChosen todo
-     * @param value
+     * @brief addChosen slots when the player finished to set the type of initialization.
+     * @param value the choose option
      */
     void addChosen(const QString &value);
     /**
-     * @brief addManualBoard
+     * @brief addManualBoard slots when the player finished to place pawns.
      */
     void addManualBoard();
     /**
-     * @brief option todo
+     * @brief option slots when the player finished to set the path of the file.
      * @param file
      */
     void option(const QString &file);
     /**
-     * @brief reset
+     * @brief reset resets the game.
      */
     void reset();
     /**
-     * @brief quit
+     * @brief quit quits the game.
      */
     void quit();
 
 private:
     /**
-     * @brief game_ todo
+     * @brief game_ the game.
      */
     stratego::Game &game_;
     /**
-     * @brief controller_ todo
+     * @brief controller_ the controller.
      */
     stratego::QController &controller_;
     /**
-     * @brief startWindow_ todo
+     * @brief startWindow_ the start window.
      */
     stratego::QStartWindow * startWindow_;
     /**
-     * @brief window_ todo
+     * @brief window_ the main window.
      */
     QHBoxLayout * window_;
     /**
-     * @brief initWindow_ todo
+     * @brief initWindow_ the choose window.
      */
     stratego::QChooseWindow * chooseWindow_;
     /**
-     * @brief fileWindow_ todo
+     * @brief fileWindow_ the file window.
      */
     stratego::QFileWindow * fileWindow_;
     /**
-     * @brief manualWindow_ todo
+     * @brief manualWindow_ the manual window.
      */
     stratego::QManualWindow * manualWindow_;
     /**
-     * @brief board_
+     * @brief board_ the board.
      */
     stratego::QBoard * board_;
     /**
-     * @brief winnerWindow_
+     * @brief winnerWindow_ the winner window.
      */
     QVBoxLayout * winnerWindow_;
 };

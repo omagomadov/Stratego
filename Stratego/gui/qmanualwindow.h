@@ -12,77 +12,80 @@
 
 namespace stratego {
 /**
- * @brief The QManualWindow class todo
+ * @brief The QManualWindow class represents the class QManualWindow.
  */
 class QManualWindow : public QWidget {
     Q_OBJECT
 public:
     /**
-     * @brief QManualWindow todo
+     * @brief QManualWindow constructor of QManualWindow.
      * @param parent
      */
     explicit QManualWindow(Game &game, Color player, QWidget * parent = nullptr);
     /**
-     * @brief populatePawns
+     * @brief populatePawns adds pawns on the horizontale.
      */
     void populatePawns(QGridLayout * pawns);
     /**
-     * @brief populateSquare
+     * @brief populateSquare adds grass squares on the board.
      * @param squares
      */
     void populateSquare(QGridLayout * squares);
     ~QManualWindow() = default;
 
 signals:
+    /**
+     * @brief submit emited when clicked on the button.
+     */
     void submit();
 
 private slots:
     /**
-     * @brief on_pawns
-     * @param pawn
+     * @brief on_pawns slots when clicked on a pawn.
+     * @param pawn the pawn.
      */
     void on_pawns(stratego::QPawn * pawn);
     /**
-     * @brief on_squares
+     * @brief on_squares slots when clicked on a square.
      * @param position
      */
     void on_squares(stratego::Position position);
     /**
-     * @brief addManualBoard
+     * @brief addManualBoard adds the board.
      */
     void addManualBoard();
 
 private:
     /**
-     * @brief title_ todo
+     * @brief title_ the title.
      */
     QLabel * title_;
     /**
-     * @brief board_ todo
+     * @brief squares_ the squares.
      */
     QGridLayout * squares_;
     /**
-     * @brief pawns_ todo
+     * @brief pawns_ the pawns.
      */
     QGridLayout * pawns_;
     /**
-     * @brief button_ todo
+     * @brief button_ the button.
      */
     QPushButton * submit_;
     /**
-     * @brief player_ todo
+     * @brief player_ the current player color.
      */
     Color player_;
     /**
-     * @brief game_
+     * @brief game_ the game.
      */
     Game &game_;
     /**
-     * @brief selectedPawn_
+     * @brief selectedPawn_ the selected pawn.
      */
     QPawn * selectedPawn_;
     /**
-     * @brief placedPawns
+     * @brief placedPawns the number of placed pawns.
      */
     int placedPawns_;
 };

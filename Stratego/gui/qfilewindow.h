@@ -8,39 +8,46 @@
 
 namespace stratego {
 /**
- * @brief The QFileWindow class todo
+ * @brief The QFileWindow class represents the class QFileWindow.
  */
 class QFileWindow : public QWidget {
     Q_OBJECT
 public:
     /**
-     * @brief QFileWindow todo
+     * @brief QFileWindow constructor of QFileWindow.
      * @param parent
      */
     explicit QFileWindow(QWidget * parent = nullptr);
     ~QFileWindow() = default;
 
 signals:
+    /**
+     * @brief chosen gives the path given by the player.
+     * @param value the path of the file
+     */
     void chosen(QString value);
 
 private slots:
+    /**
+     * @brief retrieveChosen slots when clicked on the button.
+     */
     void retrieveChosen();
 
 private:
     /**
-     * @brief title_ todo
+     * @brief title_ the title.
      */
     QLabel * title_;
     /**
-     * @brief choose_ todo
+     * @brief choose_ the label.
      */
     QLabel * choose_;
     /**
-     * @brief file_ todo
+     * @brief file_ the line edit.
      */
     QLineEdit * file_;
     /**
-     * @brief submit_ todo
+     * @brief submit_ the button.
      */
     QPushButton * submit_;
 };
