@@ -52,6 +52,12 @@ public:
      */
     Direction deduceDirection(Position initial, Position next);
     /**
+     * @brief moveScout
+     * @param pawn
+     * @param enemy
+     */
+    void moveScout(Position position);
+    /**
      * @brief clearBoard
      */
     void clearBoard();

@@ -61,8 +61,13 @@ void QController::nextState() {
     }
 }
 
-void QController::move(Position position, Direction direction) {
-    if(game_.isEnemy(position, direction, game_.getCurrentPlayer())) {
+void QController::move(Position& position, Direction& direction, int moves) {
+    if(game_.getPawns()[position.getX()][position.getY()]->getRole() == SCOUT) {
+        if(moves < 0) {
+            moves = -moves;
+        }
+        game_.scoutMove(position, direction, moves);
+    }else if(game_.isEnemy(position, direction, game_.getCurrentPlayer())) {
         game_.nextPlayer();
         game_.battle(position, direction);
     } else {

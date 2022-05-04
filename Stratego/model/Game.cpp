@@ -538,6 +538,56 @@ void Game::battle(Position position, Direction direction) {
     notifyObserver();
 }
 
+bool Game::canScoutMove(Pawn pawn, Direction direction, int moves) {
+    int i = 1;
+    Position pos {pawn.getPosition().getX(), pawn.getPosition().getY()};
+    if(moves < 0) {
+        moves = -moves;
+    }
+
+    moves = moves - 1;
+    while(moves != 0) {
+        switch(direction) {
+        case FORWARD:
+            if(isWater(pos) || getPawns()[pos.getX() - i][pos.getY()]->isValide()) {
+                return false;
+            }
+            break;
+        case BACKWARD:
+            if(isWater(pos) || getPawns()[pos.getX() + i][pos.getY()]->isValide()) {
+                return false;
+            }
+            break;
+        case LEFT:
+            if(isWater(pos) || getPawns()[pos.getX()][pos.getY() - i]->isValide()) {
+                return false;
+            }
+            break;
+        case RIGHT:
+            if(isWater(pos) || getPawns()[pos.getX()][pos.getY() + i]->isValide()) {
+                return false;
+            }
+            break;
+        }
+        moves--;
+        i++;
+    }
+    return true;
+}
+
+void Game::scoutMove(Position& position, Direction& direction, int moves) {
+    while(moves != 0) {
+        if(isEnemy(position, direction, getCurrentPlayer())) {
+            battle(position, direction);
+        } else {
+            move(position, direction);
+        }
+        moves--;
+    }
+    nextPlayer();
+    notifyObserver();
+}
+
 void Game::clear() {
     board_.clear();
 }

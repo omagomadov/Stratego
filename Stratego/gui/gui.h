@@ -48,7 +48,7 @@ public:
      * @param position
      * @param direction
      */
-    void move(Position position, Direction direction);
+    void move(Position& position, Direction& direction, int moves = 0);
     ~QController() = default;
 };
 

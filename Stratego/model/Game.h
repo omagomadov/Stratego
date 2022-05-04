@@ -248,6 +248,22 @@ public:
      */
     void battle(stratego::Position position, Direction direction);
     /**
+     * @brief canScoutMove
+     * @param pawn
+     * @param enemy
+     * @param direction
+     * @param moves
+     * @return
+     */
+    bool canScoutMove(Pawn pawn, Direction direction, int moves);
+    /**
+     * @brief scoutMove
+     * @param position
+     * @param direction
+     * @param moves
+     */
+    void scoutMove(Position& position, Direction& direction, int moves);
+    /**
      * @brief clear clears the board.
      */
     void clear();

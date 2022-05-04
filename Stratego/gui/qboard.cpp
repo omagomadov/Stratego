@@ -1,6 +1,7 @@
 #include "qsquare.h"
 #include "qboard.h"
 #include "gui.h"
+#include <iostream>
 
 using namespace stratego;
 using namespace std;
@@ -31,13 +32,18 @@ void QBoard::clicked_on_pawn(QPawn * pawn) {
     }
     if(selectedPawn_ != nullptr) {
         if(selectedPawn_->getColor() != pawn->getColor()) {
-            if(isNeighbor(selectedPawn_->getPosition(), pawn->getPosition())) {
-                Direction direction = deduceDirection(selectedPawn_->getPosition(), pawn->getPosition());
-                controller_.move(selectedPawn_->getPosition(), direction);
-                selectedPawn_ = nullptr;
+            if(selectedPawn_->getRole() == SCOUT) {
+                moveScout(pawn->getPosition());
             } else {
-                displayMessage("Pawn is not your neighbor");
-                selectedPawn_ = nullptr;
+                if(isNeighbor(selectedPawn_->getPosition(), pawn->getPosition())) {
+                    Direction direction = deduceDirection(selectedPawn_->getPosition(), pawn->getPosition());
+                    Position pos {selectedPawn_->getPosition().getX(), selectedPawn_->getPosition().getY()};
+                    controller_.move(pos, direction);
+                    selectedPawn_ = nullptr;
+                } else {
+                    displayMessage("Pawn is not your neighbor");
+                    selectedPawn_ = nullptr;
+                }
             }
         } else {
             displayMessage("Can't attack your own pawn");
@@ -60,11 +66,14 @@ void QBoard::clicked_on_pawn(QPawn * pawn) {
 
 void QBoard::clicked_on_square(Position position) {
     if(selectedPawn_ != nullptr) {
-        if(!isNeighbor(selectedPawn_->getPosition(), position) || game_.isWater(position)) {
+        if(selectedPawn_->getRole() == SCOUT) {
+            moveScout(position);
+        } else if(!isNeighbor(selectedPawn_->getPosition(), position) || game_.isWater(position)) {
             selectedPawn_ = nullptr;
         } else {
             Direction direction = deduceDirection(selectedPawn_->getPosition(), position);
-            controller_.move(selectedPawn_->getPosition(), direction);
+            Position pos {selectedPawn_->getPosition().getX(), selectedPawn_->getPosition().getY()};
+            controller_.move(pos, direction);
             selectedPawn_ = nullptr;
         }
     }
@@ -123,6 +132,42 @@ Direction QBoard::deduceDirection(Position initial, Position next) {
         return LEFT;
     } else {
         return RIGHT;
+    }
+}
+
+void QBoard::moveScout(Position position) {
+    Position pos {selectedPawn_->getPosition().getX(), selectedPawn_->getPosition().getY()};
+    Pawn qpawn {selectedPawn_->getRole(), selectedPawn_->getColor(), selectedPawn_->getPosition(), true};
+    if(selectedPawn_->getPosition().getX() == position.getX()) {
+        int moves = selectedPawn_->getPosition().getY() - position.getY();
+        if(moves > 0) {
+            Direction direction = Direction::LEFT;
+            if(game_.canScoutMove(qpawn, direction, moves)) {
+                controller_.move(pos, direction, moves);
+            }
+        } else {
+            Direction direction = Direction::RIGHT;
+            if(game_.canScoutMove(qpawn, direction, moves)) {
+                controller_.move(pos, direction, moves);
+            }
+        }
+        selectedPawn_ = nullptr;
+    } else if(selectedPawn_->getPosition().getY() == position.getY()) {
+        int moves = selectedPawn_->getPosition().getX() - position.getX();
+        if(moves > 0) {
+            Direction direction = Direction::FORWARD;
+            if(game_.canScoutMove(qpawn, direction, moves)) {
+                controller_.move(pos, direction, moves);
+            }
+        } else {
+            Direction direction = Direction::BACKWARD;
+            if(game_.canScoutMove(qpawn, direction, moves)) {
+                controller_.move(pos, direction, moves);
+            }
+        }
+        selectedPawn_ = nullptr;
+    } else {
+        // error
     }
 }
 
