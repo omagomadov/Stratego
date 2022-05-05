@@ -1,5 +1,6 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QSizePolicy>
 
 #include "qfilewindow.h"
 
@@ -16,6 +17,7 @@ QFileWindow::QFileWindow(QWidget * parent) : QWidget {parent} {
     middle->addWidget(choose_);
     file_ = new QLineEdit("default.txt");
     file_->setMinimumSize(100,20);
+    file_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
     middle->addWidget(file_);
     container->setLayout(middle);
     menu->addWidget(container);

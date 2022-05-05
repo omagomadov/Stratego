@@ -67,10 +67,11 @@ void QBoard::clicked_on_pawn(QPawn * pawn) {
 
 void QBoard::clicked_on_square(Position position) {
     if(selectedPawn_ != nullptr) {
-        if(selectedPawn_->getRole() == SCOUT) {
-            moveScout(position);
-        } else if(!isNeighbor(selectedPawn_->getPosition(), position) || game_.isWater(position)) {
+        if((!isNeighbor(selectedPawn_->getPosition(), position) && (selectedPawn_->getRole() != SCOUT))
+                || game_.isWater(position)) {
             selectedPawn_ = nullptr;
+        } else if(selectedPawn_->getRole() == SCOUT) {
+            moveScout(position);
         } else {
             Direction direction = deduceDirection(selectedPawn_->getPosition(), position);
             Position pos {selectedPawn_->getPosition().getX(), selectedPawn_->getPosition().getY()};
