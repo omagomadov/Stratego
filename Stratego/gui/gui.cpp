@@ -206,12 +206,14 @@ void QView::displayWinner() {
     // if the flag is caught and the currentPlayer is RED -> it mean that the BLUE caught the flag
     case RED :
         message->setText("Congratulations! The player BLUE won the game");
-        message->setStyleSheet("color: #2980b9");
+        message->setStyleSheet("color: #2980b9;"
+                               "font-size: 25px;");
         break;
-    // the same for BLUE
+        // the same for BLUE
     case BLUE :
         message->setText("Congratulations! The player RED won the game");
-        message->setStyleSheet("color: #c0392b");
+        message->setStyleSheet("color: #c0392b;"
+                               "font-size: 25px;");
         break;
     }
     window_->addLayout(winnerWindow_);

@@ -7,6 +7,7 @@ using namespace stratego;
 QStartWindow::QStartWindow(QWidget * parent) : QWidget {parent} {
     QVBoxLayout * menu = new QVBoxLayout();
     logo_ = new QLabel("Stratego");
+    logo_->setStyleSheet("font-size: 25px");
     logo_->setAlignment(Qt::AlignCenter);
     menu->addWidget(logo_);
     level_ = new QComboBox();
