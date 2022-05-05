@@ -575,16 +575,15 @@ bool Game::canScoutMove(Pawn pawn, Direction direction, int moves) {
     return true;
 }
 
-void Game::scoutMove(Position& position, Direction& direction, int moves) {
+void Game::scoutMove(Position& position, Direction& direction, Color player, int moves) {
     while(moves != 0) {
-        if(isEnemy(position, direction, getCurrentPlayer())) {
+        if(isEnemy(position, direction, player)) {
             battle(position, direction);
         } else {
             move(position, direction);
         }
         moves--;
     }
-    nextPlayer();
     notifyObserver();
 }
 

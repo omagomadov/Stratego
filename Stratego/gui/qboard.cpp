@@ -140,8 +140,11 @@ Direction QBoard::deduceDirection(Position initial, Position next) {
 void QBoard::moveScout(Position position) {
     Position pos {selectedPawn_->getPosition().getX(), selectedPawn_->getPosition().getY()};
     Pawn qpawn {selectedPawn_->getRole(), selectedPawn_->getColor(), selectedPawn_->getPosition(), true};
+    // if the both pawns are in the same X axis
     if(selectedPawn_->getPosition().getX() == position.getX()) {
+        // deduces the distance between both
         int moves = selectedPawn_->getPosition().getY() - position.getY();
+        // if positive value -> mean that it is left else right
         if(moves > 0) {
             Direction direction = Direction::LEFT;
             if(game_.canScoutMove(qpawn, direction, moves)) {
@@ -154,8 +157,11 @@ void QBoard::moveScout(Position position) {
             }
         }
         selectedPawn_ = nullptr;
+        // if the both pawns are in the same Y axis
     } else if(selectedPawn_->getPosition().getY() == position.getY()) {
+        // deduces the distance between both
         int moves = selectedPawn_->getPosition().getX() - position.getX();
+        // if positive value -> mean that it is forward else backward
         if(moves > 0) {
             Direction direction = Direction::FORWARD;
             if(game_.canScoutMove(qpawn, direction, moves)) {

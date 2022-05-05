@@ -259,9 +259,10 @@ public:
      * @brief scoutMove moves the scout.
      * @param position the position
      * @param direction the direction
+     * @param player the color
      * @param moves the number of moves.
      */
-    void scoutMove(Position& position, Direction& direction, int moves);
+    void scoutMove(Position& position, Direction& direction, Color player, int moves);
     /**
      * @brief clear clears the board.
      */

@@ -62,16 +62,16 @@ void QController::nextState() {
 }
 
 void QController::move(Position& position, Direction& direction, int moves) {
+    Color player = game_.getCurrentPlayer();
+    game_.nextPlayer();
     if(game_.getPawns()[position.getX()][position.getY()]->getRole() == SCOUT) {
         if(moves < 0) {
             moves = -moves;
         }
-        game_.scoutMove(position, direction, moves);
-    }else if(game_.isEnemy(position, direction, game_.getCurrentPlayer())) {
-        game_.nextPlayer();
+        game_.scoutMove(position, direction, player, moves);
+    }else if(game_.isEnemy(position, direction, player)) {
         game_.battle(position, direction);
     } else {
-        game_.nextPlayer();
         game_.move(position, direction);
     }
 }
@@ -202,13 +202,16 @@ void QView::displayWinner() {
     winnerWindow_->addWidget(quit);
 
     switch(game_.getCurrentPlayer()) {
-    case BLUE :
-        message->setText("Congratulations! The player RED won the game");
-        message->setStyleSheet("color: #c0392b");
-        break;
+    // RED because when a flag is caught by BLUE -> nextPlayer() is called.
+    // if the flag is caught and the currentPlayer is RED -> it mean that the BLUE caught the flag
     case RED :
         message->setText("Congratulations! The player BLUE won the game");
         message->setStyleSheet("color: #2980b9");
+        break;
+    // the same for BLUE
+    case BLUE :
+        message->setText("Congratulations! The player RED won the game");
+        message->setStyleSheet("color: #c0392b");
         break;
     }
     window_->addLayout(winnerWindow_);
@@ -219,10 +222,14 @@ void QView::displayWinner() {
 
 void QView::update() {
     if(game_.getState() != ENDED) {
+        // if the game is still in progress -> update the graphical board
         board_->updateBoard();
     } else {
+        // when the game is ended -> clean the board
         game_.clear();
+        // close the graphical board
         board_->close();
+        // and display who is the winner
         displayWinner();
     }
 }
