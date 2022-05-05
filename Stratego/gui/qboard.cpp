@@ -167,7 +167,7 @@ void QBoard::moveScout(Position position) {
         }
         selectedPawn_ = nullptr;
     } else {
-        // error
+        displayMessage("Scout can't go there");
     }
 }
 
