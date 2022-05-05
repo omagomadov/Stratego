@@ -11,7 +11,7 @@ QBoard::QBoard(QController &controller, Game &game, QWidget * parent)
     QVBoxLayout * container = new QVBoxLayout();
     QWidget * board = new QWidget();
     message_ = new QLabel();
-    message_->hide();
+    message_->setText("");
     message_->setStyleSheet("color: red; "
                             "font-size: 20px;");
     message_->setAlignment(Qt::AlignCenter);
@@ -24,11 +24,12 @@ QBoard::QBoard(QController &controller, Game &game, QWidget * parent)
     setLayout(container);
     initialize();
     updateBoard();
+    parent->setWindowTitle("Play");
 }
 
 void QBoard::clicked_on_pawn(QPawn * pawn) {
     if(message_->isVisible()) {
-        message_->hide();
+        message_->setText("");
     }
     if(selectedPawn_ != nullptr) {
         if(selectedPawn_->getColor() != pawn->getColor()) {

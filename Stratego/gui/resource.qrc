@@ -29,5 +29,6 @@
         <file>resource/red/spy.png</file>
         <file>resource/texture/grass.png</file>
         <file>resource/texture/water.png</file>
+        <file>resource/icon/icon.png</file>
     </qresource>
 </RCC>

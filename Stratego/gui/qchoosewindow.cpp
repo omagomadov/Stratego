@@ -24,6 +24,7 @@ QChooseWindow::QChooseWindow(QWidget * parent) : QWidget {parent} {
     menu->addWidget(submit_);
     setLayout(menu);
     adjustSize();
+    parent->setWindowTitle("Choose initialize option");
     connect(submit_, SIGNAL(clicked()), this, SLOT(retrieveChosen()));
 }
 

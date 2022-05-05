@@ -81,6 +81,9 @@ QView::QView(Game &game, stratego::QController &controller, QWidget *parent)
     game.addObserver(this);
     window_= new QHBoxLayout();
     displayStartWindow();
+    setWindowIcon(QIcon("://resource/icon/icon.png"));
+    setWindowTitle("Welcome on Stratego");
+    setWindowState(Qt::WindowMaximized);
     show();
 }
 

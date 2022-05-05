@@ -33,6 +33,7 @@ QManualWindow::QManualWindow(Game &game, Color player, QWidget * parent)
     menu->addLayout(container);
     setLayout(menu);
     adjustSize();
+    parent->setWindowTitle("Initializing the game board manually");
 }
 
 void QManualWindow::addManualBoard() {

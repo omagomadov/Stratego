@@ -23,6 +23,7 @@ QFileWindow::QFileWindow(QWidget * parent) : QWidget {parent} {
     menu->addWidget(submit_);
     setLayout(menu);
     adjustSize();
+    parent->setWindowTitle("Initializing the game board with a file");
     connect(submit_, SIGNAL(clicked()), this, SLOT(retrieveChosen()));
 }
 
