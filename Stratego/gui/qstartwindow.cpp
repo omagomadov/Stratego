@@ -1,4 +1,5 @@
 #include <QVBoxLayout>
+#include <QFontDatabase>
 
 #include "qstartwindow.h"
 #include "gui.h"
@@ -8,7 +9,9 @@ using namespace stratego;
 QStartWindow::QStartWindow(QWidget * parent) : QWidget {parent} {
     QVBoxLayout * menu = new QVBoxLayout();
     logo_ = new QLabel("Stratego");
-    logo_->setStyleSheet("font-size: 25px");
+    QFontDatabase::addApplicationFont(("://resource/fonts/Quisand.otf"));
+    QFont font ("Quicksand", 50, QFont::Bold);
+    logo_->setFont(font);
     logo_->setAlignment(Qt::AlignCenter);
     menu->addWidget(logo_);
     level_ = new QComboBox();

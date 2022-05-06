@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
+	<file>resource/fonts/Quicksand.otf</file>
         <file>resource/blue/bomb.png</file>
         <file>resource/blue/captain.png</file>
         <file>resource/blue/colonel.png</file>
