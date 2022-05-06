@@ -113,6 +113,62 @@ The game is finished
     ├── Stratego.pro
     ├── Stratego.pro.user
     ├── config.pri
+    ├── gui
+    │   ├── gui.cpp
+    │   ├── gui.h
+    │   ├── gui.pro
+    │   ├── main.cpp
+    │   ├── qboard.cpp
+    │   ├── qboard.h
+    │   ├── qchoosewindow.cpp
+    │   ├── qchoosewindow.h
+    │   ├── qfilewindow.cpp
+    │   ├── qfilewindow.h
+    │   ├── qmanualwindow.cpp
+    │   ├── qmanualwindow.h
+    │   ├── qpawn.cpp
+    │   ├── qpawn.h
+    │   ├── qsquare.cpp
+    │   ├── qsquare.h
+    │   ├── qstartwindow.cpp
+    │   ├── qstartwindow.h
+    │   ├── resource
+    │   │   ├── blue
+    │   │   │   ├── bomb.png
+    │   │   │   ├── captain.png
+    │   │   │   ├── colonel.png
+    │   │   │   ├── flag.png
+    │   │   │   ├── general.png
+    │   │   │   ├── hide.png
+    │   │   │   ├── lieutenant.png
+    │   │   │   ├── major.png
+    │   │   │   ├── marshal.png
+    │   │   │   ├── miner.png
+    │   │   │   ├── scout.png
+    │   │   │   ├── sergeant.png
+    │   │   │   └── spy.png
+    │   │   ├── fonts
+    │   │   │   └── Quicksand.otf
+    │   │   ├── icon
+    │   │   │   └── icon.png
+    │   │   ├── red
+    │   │   │   ├── bomb.png
+    │   │   │   ├── captain.png
+    │   │   │   ├── colonel.png
+    │   │   │   ├── flag.png
+    │   │   │   ├── general.png
+    │   │   │   ├── hide.png
+    │   │   │   ├── lieutenant.png
+    │   │   │   ├── major.png
+    │   │   │   ├── marshal.png
+    │   │   │   ├── miner.png
+    │   │   │   ├── scout.png
+    │   │   │   ├── sergeant.png
+    │   │   │   └── spy.png
+    │   │   └── texture
+    │   │       ├── grass.png
+    │   │       └── water.png
+    │   └── resource.qrc
     ├── model
     │   ├── Board.cpp
     │   ├── Board.h
@@ -126,7 +182,9 @@ The game is finished
     │   ├── Position.h
     │   ├── Role.h
     │   ├── State.h
-    │   └── model.pro
+    │   ├── model.pro
+    │   ├── observable.h
+    │   └── observer.h
     ├── setup-board
     │   └── default.txt
     ├── tests
@@ -143,14 +201,15 @@ The game is finished
 ---
 ## Estimation du temps
 
-- Remise **Modélisation** :<br>
+- Remise **modélisation** :<br>
 travail personnel : 6 heures<br>
 travail binôme : 10 heures<br>
 - Remise **console** :<br>
 travail personnel : 8 heures<br>
 travail binôme : 72 heures<br>
 - Remise **graphique**:<br>
-/<br>
+travail personnel : 10 heures<br>
+travail binôme : 40 heures
 
 ---
 ## Les technologies utilisées 
