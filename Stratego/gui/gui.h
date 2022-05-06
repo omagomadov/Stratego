@@ -86,6 +86,10 @@ public:
      */
     void displayWinner();
     /**
+     * @brief addBackgroundColor
+     */
+    void addBackgroundColor();
+    /**
      * @brief update updates the board.
      */
     void update() override;

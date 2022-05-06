@@ -25,6 +25,7 @@ QBoard::QBoard(QController &controller, Game &game, QWidget * parent)
     initialize();
     updateBoard();
     parent->setWindowTitle("Play");
+    static_cast<QView *>(parent)->addBackgroundColor();
 }
 
 void QBoard::clicked_on_pawn(QPawn * pawn) {

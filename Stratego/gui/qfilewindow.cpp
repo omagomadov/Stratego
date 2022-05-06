@@ -3,6 +3,7 @@
 #include <QSizePolicy>
 
 #include "qfilewindow.h"
+#include "gui.h"
 
 using namespace stratego;
 
@@ -11,6 +12,7 @@ QFileWindow::QFileWindow(QWidget * parent) : QWidget {parent} {
     QWidget * container = new QWidget();
     QHBoxLayout * middle = new QHBoxLayout();
     title_ = new QLabel("Initializiation from file");
+    title_->setStyleSheet("font-size: 20px");
     title_->setAlignment(Qt::AlignCenter);
     menu->addWidget(title_);
     choose_ = new QLabel("The name of the file : ");
@@ -26,6 +28,7 @@ QFileWindow::QFileWindow(QWidget * parent) : QWidget {parent} {
     setLayout(menu);
     adjustSize();
     parent->setWindowTitle("Initializing the game board with a file");
+    static_cast<QView *>(parent)->addBackgroundColor();
     connect(submit_, SIGNAL(clicked()), this, SLOT(retrieveChosen()));
 }
 

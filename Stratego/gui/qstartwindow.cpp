@@ -1,6 +1,7 @@
 #include <QVBoxLayout>
 
 #include "qstartwindow.h"
+#include "gui.h"
 
 using namespace stratego;
 
@@ -18,6 +19,7 @@ QStartWindow::QStartWindow(QWidget * parent) : QWidget {parent} {
     menu->addWidget(start_);
     setLayout(menu);
     adjustSize();
+    static_cast<QView *>(parent)->addBackgroundColor();
     connect(start_, SIGNAL(clicked()), this, SLOT(retrieveLevel()));
 }
 

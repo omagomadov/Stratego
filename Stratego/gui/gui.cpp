@@ -222,6 +222,24 @@ void QView::displayWinner() {
     connect(quit, SIGNAL(clicked()), this, SLOT(quit()));
 }
 
+void QView::addBackgroundColor() {
+    QPalette palette = QPalette();
+    switch(game_.getState()) {
+    case RED_TURN :
+        palette.setColor(QPalette::Window, QColor::fromRgb(192, 57, 43));
+        setPalette(palette);
+        break;
+    case BLUE_TURN :
+        palette.setColor(QPalette::Window, QColor::fromRgb(41, 128, 185));
+        setPalette(palette);
+        break;
+    default:
+        palette.setColor(QPalette::Window, QColor::fromRgb(149, 165, 166));
+        setPalette(palette);
+        break;
+    }
+}
+
 void QView::update() {
     if(game_.getState() != ENDED) {
         // if the game is still in progress -> update the graphical board

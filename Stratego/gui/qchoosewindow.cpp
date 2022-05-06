@@ -2,6 +2,7 @@
 #include <QHBoxLayout>
 
 #include "qchoosewindow.h"
+#include "gui.h"
 
 using namespace stratego;
 
@@ -10,6 +11,7 @@ QChooseWindow::QChooseWindow(QWidget * parent) : QWidget {parent} {
     QWidget * containerChooseMenu = new QWidget();
     QHBoxLayout * chooseMenu = new QHBoxLayout();
     title_ = new QLabel("Initialize your board");
+    title_->setStyleSheet("font-size: 20px");
     title_->setAlignment(Qt::AlignCenter);
     menu->addWidget(title_);
     choose_ = new QLabel("Choose : ");
@@ -25,6 +27,7 @@ QChooseWindow::QChooseWindow(QWidget * parent) : QWidget {parent} {
     setLayout(menu);
     adjustSize();
     parent->setWindowTitle("Choose initialize option");
+    static_cast<QView *>(parent)->addBackgroundColor();
     connect(submit_, SIGNAL(clicked()), this, SLOT(retrieveChosen()));
 }
 

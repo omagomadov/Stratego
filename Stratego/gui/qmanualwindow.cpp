@@ -2,6 +2,7 @@
 
 #include "qmanualwindow.h"
 #include "qsquare.h"
+#include "gui.h"
 
 using namespace stratego;
 using namespace std;
@@ -13,6 +14,7 @@ QManualWindow::QManualWindow(Game &game, Color player, QWidget * parent)
     QVBoxLayout * menu = new QVBoxLayout();
     QHBoxLayout * container = new QHBoxLayout();
     title_ = new QLabel("Initializiation manually");
+    title_->setStyleSheet("font-size: 20px");
     title_->setAlignment(Qt::AlignCenter);
     menu->addWidget(title_);
     pawns_ = new QGridLayout();
@@ -32,6 +34,7 @@ QManualWindow::QManualWindow(Game &game, Color player, QWidget * parent)
     container->setAlignment(Qt::AlignCenter);
     menu->addLayout(container);
     setLayout(menu);
+    static_cast<QView *>(parent)->addBackgroundColor();
     adjustSize();
     parent->setWindowTitle("Initializing the game board manually");
 }
