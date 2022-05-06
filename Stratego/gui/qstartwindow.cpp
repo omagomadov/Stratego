@@ -9,7 +9,7 @@ using namespace stratego;
 QStartWindow::QStartWindow(QWidget * parent) : QWidget {parent} {
     QVBoxLayout * menu = new QVBoxLayout();
     logo_ = new QLabel("Stratego");
-    QFontDatabase::addApplicationFont(("://resource/fonts/Quisand.otf"));
+    QFontDatabase::addApplicationFont(("://resource/fonts/Quicksand.otf"));
     QFont font ("Quicksand", 50, QFont::Bold);
     logo_->setFont(font);
     logo_->setAlignment(Qt::AlignCenter);
