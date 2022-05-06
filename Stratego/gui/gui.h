@@ -26,7 +26,7 @@ class QController {
 public:
     /**
      * @brief Controller constructor of Controller.
-     * @param game_
+     * @param game_ the game
      */
     QController(Game &game_);
     /**
@@ -107,7 +107,7 @@ private slots:
     void addManualBoard();
     /**
      * @brief option slots when the player finished to set the path of the file.
-     * @param file
+     * @param file the file
      */
     void option(const QString &file);
     /**

@@ -28,7 +28,7 @@ public:
     void populatePawns(QGridLayout * pawns);
     /**
      * @brief populateSquare adds grass squares on the board.
-     * @param squares
+     * @param squares the board containing squares
      */
     void populateSquare(QGridLayout * squares);
     ~QManualWindow() = default;
@@ -42,12 +42,12 @@ signals:
 private slots:
     /**
      * @brief on_pawns slots when clicked on a pawn.
-     * @param pawn the pawn.
+     * @param pawn the pawn
      */
     void on_pawns(stratego::QPawn * pawn);
     /**
      * @brief on_squares slots when clicked on a square.
-     * @param position
+     * @param position the position
      */
     void on_squares(stratego::Position position);
     /**
